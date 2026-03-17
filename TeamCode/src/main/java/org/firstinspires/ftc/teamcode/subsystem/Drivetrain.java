@@ -66,6 +66,10 @@ public class Drivetrain {
     private Follower follower;
     public static Pose startingPose; //See ExampleAuto to understand how to use this
 
+    private Supplier<PathChain> pathChain;
+
+    boolean automatedDrive = false;
+
     public Drivetrain(LinearOpMode opMode, Robot robot, Robot.TeamColor teamColor) {
         this.opMode = opMode;
         this.robot = robot;
@@ -112,18 +116,23 @@ public class Drivetrain {
 
         follower.startTeleopDrive();
 
+        pathChain = () -> follower.pathBuilder() //Lazy Curve Generation
+                .addPath(new Path(new BezierLine(follower::getPose, new Pose(45, 98))))
+                .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(follower::getHeading, Math.toRadians(45), 0.8))
+                .build();
+
 
     }
 
     public void drive() {
 
-        if (opMode.gamepad1.x) {
+        /*if (opMode.gamepad1.x) {
             driveToTarget(TARGET_X, 0.4);
         } else if (opMode.gamepad1.a) {
             driveToTarget(TARGET_A, 0.5);
         } else if (opMode.gamepad1.b) {
             driveToTarget(TARGET_B, 0.4);
-        } else if (opMode.gamepad1.y) {
+        } else if (opMode.gamepad1.yWasPressed()) {
             driveToTarget(TARGET_Y, 0.4);
         } else if (opMode.gamepad1.left_trigger > 0.1 && opMode.gamepad1.right_trigger > 0.1) {
             strafeToBall(robot.limelight.getBallRotationOffset(), opMode.gamepad1.left_trigger);
@@ -131,6 +140,18 @@ public class Drivetrain {
             smartCorrectAngleToShoot();
         } else {
             previousHeading = 0.0;
+            driveMecanumFieldOriented(opMode.gamepad1);
+        }*/
+        if(opMode.gamepad1.yWasPressed()){
+            automatedDrive = true;
+        }
+        else if (opMode.gamepad1.aWasPressed()){
+            automatedDrive = false;
+        }
+        if (automatedDrive){
+            driveToTarget(null, 0.0);
+        }
+        else {
             driveMecanumFieldOriented(opMode.gamepad1);
         }
 
@@ -170,18 +191,10 @@ public class Drivetrain {
     }
 
     public void driveToTarget(Pose2D targetPose, double speed) {
-       // odo.update();
-      //  this.targetPose = targetPose;
-       // nav.driveTo(odo.getPosition(), targetPose, speed, 0);
-       /* frontLeft.setPower(nav.getMotorPower(DriveToPoint.DriveMotor.LEFT_FRONT));
-        frontRight.setPower(nav.getMotorPower(DriveToPoint.DriveMotor.RIGHT_FRONT));
-        backLeft.setPower(nav.getMotorPower(DriveToPoint.DriveMotor.LEFT_BACK));
-        backRight.setPower(nav.getMotorPower(DriveToPoint.DriveMotor.RIGHT_BACK));*/
-
-        String data2 = String.format(Locale.US, "{X: %.3f, Y: %.3f, H: %.3f}", targetPose.getX(DistanceUnit.INCH), targetPose.getY(DistanceUnit.INCH), targetPose.getHeading(AngleUnit.RADIANS));
-        opMode.telemetry.addData("TARGET Position", data2);
-
-
+      //todo implement
+        follower.followPath(pathChain.get());
+        automatedDrive = true;
+        follower.update();
     }
 
     public void resetIMU() {
@@ -189,9 +202,6 @@ public class Drivetrain {
         follower.setStartingPose(new Pose(currentPose.getX(), currentPose.getY(), 0));
     }
 
-    public void setOdoTuningConstant(double p, double d, double accel){
-       // nav.setXYCoefficients(p, d, accel, DistanceUnit.INCH, 10.0);
-    }
 
 
     public double getYaw() {
@@ -201,13 +211,11 @@ public class Drivetrain {
 
     public void resetOdo(Pose2D resetPose) {
 
-        if (resetPose != null) {
-           // odo.setPosition(resetPose);
-        }
-      //  odo.update();
+       //TODO implement
 
     }
     public void resetOdoCorner(Pose2D resetPose) {
+        //TODO implement
         if (resetPose != null) {
 
            // Pose2D tempPos = new Pose2D(DistanceUnit.INCH, resetPose.getX(DistanceUnit.INCH), resetPose.getY(DistanceUnit.INCH), AngleUnit.RADIANS, 2*Math.atan(Math.tan((getYaw()+Math.PI/2)/2)));
