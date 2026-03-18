@@ -36,11 +36,11 @@ public class Drivetrain {
 
 
 
-    Pose2D TARGET_X;
-    Pose2D TARGET_Y;
-    Pose2D TARGET_A;
-    Pose2D TARGET_B;
-    Pose2D resetPosition;
+    Pose TARGET_X;
+    Pose TARGET_Y;
+    Pose TARGET_A;
+    Pose TARGET_B;
+    Pose resetPosition;
 
     double previousHeading = 0.0;
 
@@ -65,21 +65,22 @@ public class Drivetrain {
             targetX = -70.5;
             targetY = 70.5;
 
-            TARGET_X = new Pose2D(DistanceUnit.INCH, -4.1, 0, AngleUnit.RADIANS, 0.808);
-            TARGET_Y = new Pose2D(DistanceUnit.INCH, -26.7, 13.55, AngleUnit.RADIANS, 0.69);
-            TARGET_A = new Pose2D(DistanceUnit.INCH, 56.65, 13.8, AngleUnit.RADIANS, 1.200);
-            TARGET_B = new Pose2D(DistanceUnit.INCH, -17.8, -16.7, AngleUnit.RADIANS, 0.52);
-            resetPosition = new Pose2D(DistanceUnit.INCH, 58.5, -63, AngleUnit.RADIANS, -Math.PI/2);
+            TARGET_X = new Pose(-4.1, 0, 0.808);
+            TARGET_Y = new Pose(-26.7, 13.55, 0.69);
+            TARGET_A = new Pose(56.65, 13.8, 1.200);
+            TARGET_B = new Pose(-17.8, -16.7, 0.52);
+            resetPosition = new Pose(58.5, -63, -Math.PI/2);
+
             startingPose = new Pose(144, 144, 0);
         } else {
             targetX = -70.5;
             targetY = -70.5;
 
-            TARGET_X = new Pose2D(DistanceUnit.INCH, -6.0, 1.0, AngleUnit.RADIANS, 2.298);
-            TARGET_Y = new Pose2D(DistanceUnit.INCH, -26.7, -13.55, AngleUnit.RADIANS, 2.4);
-            TARGET_A = new Pose2D(DistanceUnit.INCH, 55, -13.75, AngleUnit.RADIANS, 1.954);
-            TARGET_B = new Pose2D(DistanceUnit.INCH, -14.5, 13.5, AngleUnit.RADIANS, 2.55);
-            resetPosition = new Pose2D(DistanceUnit.INCH, 58.5, 63, AngleUnit.RADIANS, Math.PI/2);
+            TARGET_X = new Pose(-6.0, 1.0, 2.298);
+            TARGET_Y = new Pose(-26.7, -13.55, 2.4);
+            TARGET_A = new Pose(55, -13.75, 1.954);
+            TARGET_B = new Pose(-14.5, 13.5, 2.55);
+            resetPosition = new Pose(58.5, 63, Math.PI/2);
         }
 
         follower = Constants.createFollower(opMode.hardwareMap);
@@ -182,7 +183,7 @@ public class Drivetrain {
        //TODO implement
 
     }
-    public void resetOdoCorner(Pose2D resetPose) {
+    public void resetOdoCorner(Pose resetPose) {
         //TODO implement
         if (resetPose != null) {
 
