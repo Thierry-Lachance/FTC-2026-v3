@@ -26,15 +26,11 @@ public class Drivetrain {
     LinearOpMode opMode;
     Robot robot;
 
-    Pose2D targetPose = new Pose2D(DistanceUnit.INCH, 0, 0, AngleUnit.DEGREES, 0);
 
     Robot.TeamColor teamColor;
 
     double targetX;
     double targetY;
-
-
-
 
     Pose TARGET_X;
     Pose TARGET_Y;
@@ -51,7 +47,12 @@ public class Drivetrain {
     private Follower follower;
     public static Pose startingPose; //See ExampleAuto to understand how to use this
 
-    private Supplier<PathChain> pathChain;
+    private Supplier<PathChain> pathChainX;
+    private Supplier<PathChain> pathChainY;
+    private Supplier<PathChain> pathChainA;
+    private Supplier<PathChain> pathChainB;
+
+
 
     boolean automatedDrive = false;
 
@@ -87,16 +88,32 @@ public class Drivetrain {
 
         follower.startTeleopDrive();
 
-        pathChain = () -> follower.pathBuilder() //Lazy Curve Generation
-                .addPath(new Path(new BezierLine(follower::getPose, new Pose(45, 98))))
-                .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(follower::getHeading, Math.toRadians(45), 0.8))
+
+        pathChainX = () -> follower.pathBuilder()
+                .addPath(new Path(new BezierLine(follower::getPose, new Pose(TARGET_X.getX(), TARGET_X.getY(), TARGET_X.getHeading()))))
+                .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(follower::getHeading, TARGET_X.getHeading(), 0.8))
+                .build();
+
+        pathChainY = () -> follower.pathBuilder()
+                .addPath(new Path(new BezierLine(follower::getPose, new Pose(TARGET_Y.getX(), TARGET_Y.getY(), TARGET_Y.getHeading()))))
+                .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(follower::getHeading, TARGET_Y.getHeading(), 0.8))
+                .build();
+
+        pathChainA = () -> follower.pathBuilder()
+                .addPath(new Path(new BezierLine(follower::getPose, new Pose(TARGET_A.getX(), TARGET_A.getY(), TARGET_A.getHeading()))))
+                .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(follower::getHeading, TARGET_A.getHeading(), 0.8))
+                .build();
+
+        pathChainB = () -> follower.pathBuilder()
+                .addPath(new Path(new BezierLine(follower::getPose, new Pose(TARGET_B.getX(), TARGET_B.getY(), TARGET_B.getHeading()))))
+                .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(follower::getHeading, TARGET_B.getHeading(), 0.8))
                 .build();
 
 
     }
 
     public void drive() {
-
+        follower.update();
         /*if (opMode.gamepad1.x) {
             driveToTarget(TARGET_X, 0.4);
         } else if (opMode.gamepad1.a) {
@@ -113,11 +130,19 @@ public class Drivetrain {
             previousHeading = 0.0;
             driveMecanumFieldOriented(opMode.gamepad1);
         }*/
-        if(opMode.gamepad1.yWasPressed()){
-            driveToTarget(null, 0.0);
+        if(opMode.gamepad1.xWasPressed()){
+            driveToTarget(pathChainX.get());
             automatedDrive  = true;
-        }
-        else if (opMode.gamepad1.left_stick_x > 0.1 || opMode.gamepad1.left_stick_x < -0.1 ||
+        } else if (opMode.gamepad1.yWasPressed()) {
+            driveToTarget(pathChainY.get());
+            automatedDrive  = true;
+        } else if (opMode.gamepad1.aWasPressed()) {
+            driveToTarget(pathChainA.get());
+            automatedDrive  = true;
+        }else if (opMode.gamepad1.bWasPressed()) {
+            driveToTarget(pathChainB.get());
+            automatedDrive  = true;
+        }else if (opMode.gamepad1.left_stick_x > 0.1 || opMode.gamepad1.left_stick_x < -0.1 ||
                  opMode.gamepad1.left_stick_y > 0.1 || opMode.gamepad1.left_stick_y < -0.1 ||
                  opMode.gamepad1.right_stick_x > 0.1 || opMode.gamepad1.right_stick_x < -0.1) {
             automatedDrive = false;
@@ -127,8 +152,6 @@ public class Drivetrain {
             driveMecanumFieldOriented(opMode.gamepad1);
         }
 
-
-
         if (opMode.gamepad1.options) {
             resetFieldOriented();
         }
@@ -137,8 +160,6 @@ public class Drivetrain {
         } else if (opMode.gamepad1.dpad_up) {
             resetOdoCorner(resetPosition);
         }
-
-
 
     }
     public void initTeleOp(){
@@ -159,18 +180,16 @@ public class Drivetrain {
                 -opMode.gamepad1.right_stick_x,
                 false
         );
-        follower.update();
-
     }
 
-    public void driveToTarget(Pose2D targetPose, double speed) {
-      //todo implement
-        follower.followPath(pathChain.get());
+    public void driveToTarget(PathChain path) {
+      //todo test method
+        follower.followPath(path);
         automatedDrive = true;
-        follower.update();
     }
 
     public void resetFieldOriented() {
+        //TODO check usage
         Pose currentPose = follower.getPose();
         follower.setStartingPose(new Pose(currentPose.getX(), currentPose.getY(), 0));
     }
