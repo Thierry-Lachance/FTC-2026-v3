@@ -62,19 +62,17 @@ public class Drivetrain {
 
 
         if (teamColor == Robot.TeamColor.RED) {
-            targetX = -70.5;
-            targetY = 70.5;
+            targetX = 144;
+            targetY = 144;
 
             TARGET_X = new Pose(-4.1, 0, 0.808);
             TARGET_Y = new Pose(-26.7, 13.55, 0.69);
             TARGET_A = new Pose(56.65, 13.8, 1.200);
             TARGET_B = new Pose(-17.8, -16.7, 0.52);
             resetPosition = new Pose(58.5, -63, -Math.PI/2);
-
-            startingPose = new Pose(144, 144, 0);
         } else {
-            targetX = -70.5;
-            targetY = -70.5;
+            targetX = 0;
+            targetY = 144;
 
             TARGET_X = new Pose(-6.0, 1.0, 2.298);
             TARGET_Y = new Pose(-26.7, -13.55, 2.4);
@@ -116,17 +114,19 @@ public class Drivetrain {
             driveMecanumFieldOriented(opMode.gamepad1);
         }*/
         if(opMode.gamepad1.yWasPressed()){
-            automatedDrive = true;
-        }
-        else if (opMode.gamepad1.aWasPressed()){
-            automatedDrive = false;
-        }
-        if (automatedDrive){
             driveToTarget(null, 0.0);
+            automatedDrive  = true;
         }
-        else {
+        else if (opMode.gamepad1.left_stick_x > 0.1 || opMode.gamepad1.left_stick_x < -0.1 ||
+                 opMode.gamepad1.left_stick_y > 0.1 || opMode.gamepad1.left_stick_y < -0.1 ||
+                 opMode.gamepad1.right_stick_x > 0.1 || opMode.gamepad1.right_stick_x < -0.1) {
+            automatedDrive = false;
+
+        }
+        if (!automatedDrive){
             driveMecanumFieldOriented(opMode.gamepad1);
         }
+
 
 
         if (opMode.gamepad1.options) {
