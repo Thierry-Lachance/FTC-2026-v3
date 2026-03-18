@@ -1,41 +1,27 @@
 package org.firstinspires.ftc.teamcode.subsystem;
 
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
-import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
-import org.firstinspires.ftc.teamcode.Constant;
 import org.firstinspires.ftc.teamcode.Robot;
-import org.firstinspires.ftc.teamcode.lib.DriveToPoint;
-import org.firstinspires.ftc.teamcode.lib.GoBildaPinpointDriver;
 
-import com.bylazar.configurables.annotations.Configurable;
-import com.bylazar.telemetry.PanelsTelemetry;
-import com.bylazar.telemetry.TelemetryManager;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.HeadingInterpolator;
 import com.pedropathing.paths.Path;
 import com.pedropathing.paths.PathChain;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 import java.util.function.Supplier;
 
-import java.util.Locale;
+
 
 public class Drivetrain {
-
-    IMU imu;
 
     LinearOpMode opMode;
     Robot robot;
@@ -46,8 +32,7 @@ public class Drivetrain {
 
     double targetX;
     double targetY;
-    double multiplier;
-    double additionner;
+
 
 
 
@@ -76,38 +61,25 @@ public class Drivetrain {
         this.teamColor = teamColor;
 
 
-        imu = opMode.hardwareMap.get(IMU.class, Constant.imuName);
-
-
-        // Initialize IMU
-        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
-                RevHubOrientationOnRobot.LogoFacingDirection.RIGHT,
-                RevHubOrientationOnRobot.UsbFacingDirection.UP));
-
-        imu.initialize(parameters);
-
-
-
         if (teamColor == Robot.TeamColor.RED) {
             targetX = -70.5;
             targetY = 70.5;
-            multiplier = 1;
+
             TARGET_X = new Pose2D(DistanceUnit.INCH, -4.1, 0, AngleUnit.RADIANS, 0.808);
             TARGET_Y = new Pose2D(DistanceUnit.INCH, -26.7, 13.55, AngleUnit.RADIANS, 0.69);
             TARGET_A = new Pose2D(DistanceUnit.INCH, 56.65, 13.8, AngleUnit.RADIANS, 1.200);
             TARGET_B = new Pose2D(DistanceUnit.INCH, -17.8, -16.7, AngleUnit.RADIANS, 0.52);
-            resetPosition = new Pose2D(DistanceUnit.INCH, 58.5, -63, AngleUnit.RADIANS, -Math.PI/2);//TODO add reset pos for human player
-           // startingPose = new Pose(144, 144, 0);
+            resetPosition = new Pose2D(DistanceUnit.INCH, 58.5, -63, AngleUnit.RADIANS, -Math.PI/2);
+            startingPose = new Pose(144, 144, 0);
         } else {
             targetX = -70.5;
             targetY = -70.5;
-            multiplier = -1;
-            additionner = -Math.PI;
+
             TARGET_X = new Pose2D(DistanceUnit.INCH, -6.0, 1.0, AngleUnit.RADIANS, 2.298);
             TARGET_Y = new Pose2D(DistanceUnit.INCH, -26.7, -13.55, AngleUnit.RADIANS, 2.4);
             TARGET_A = new Pose2D(DistanceUnit.INCH, 55, -13.75, AngleUnit.RADIANS, 1.954);
             TARGET_B = new Pose2D(DistanceUnit.INCH, -14.5, 13.5, AngleUnit.RADIANS, 2.55);
-            resetPosition = new Pose2D(DistanceUnit.INCH, 58.5, 63, AngleUnit.RADIANS, Math.PI/2);//TODO add reset pos for human player
+            resetPosition = new Pose2D(DistanceUnit.INCH, 58.5, 63, AngleUnit.RADIANS, Math.PI/2);
         }
 
         follower = Constants.createFollower(opMode.hardwareMap);
@@ -157,7 +129,7 @@ public class Drivetrain {
 
 
         if (opMode.gamepad1.options) {
-            resetIMU();
+            resetFieldOriented();
         }
         if (opMode.gamepad1.right_bumper || opMode.gamepad1.left_bumper) {
             resetOdo(robot.limelight.getRobotPoseFromLL());
@@ -197,16 +169,12 @@ public class Drivetrain {
         follower.update();
     }
 
-    public void resetIMU() {
+    public void resetFieldOriented() {
         Pose currentPose = follower.getPose();
         follower.setStartingPose(new Pose(currentPose.getX(), currentPose.getY(), 0));
     }
 
 
-
-    public double getYaw() {
-        return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
-    }
 
 
     public void resetOdo(Pose2D resetPose) {
