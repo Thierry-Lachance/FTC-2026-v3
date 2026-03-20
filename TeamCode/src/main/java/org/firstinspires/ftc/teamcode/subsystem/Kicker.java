@@ -12,10 +12,14 @@ public class Kicker {
     Servo chamber1Servo, chamber2Servo, chamber3Servo;
 
     private boolean shooting = false;
-    private double shootStartTime = -1.0;
-
     private int nbOfBallShot = 0;
     private double lastShotTime = 0.0;
+
+
+    private boolean shooting2 = false;
+    private int nbOfBallShot2 = 0;
+    private double lastShotTime2 = 0.0;
+
 
     public Kicker(LinearOpMode opMode, Robot robot) {
         this.opMode = opMode;
@@ -75,6 +79,17 @@ public class Kicker {
                 shooting = false;
                 engageKicker();
             }
+
+             if (robot.shooter.isReadyToShoot() && robot.drivetrain.checkIfAlignedWithGoal() && opMode.gamepad2.bWasPressed()) {
+                shooting2 = true;
+                lastShotTime2 = opMode.getRuntime() - 1.0;
+                nbOfBallShot2 = 0;
+                robot.shooter.setFullPower(true);
+
+            }
+             if(shooting2){
+                 shootFastAFV3();
+             }
             if (opMode.gamepad2.dpad_left) {
                 kickChamber1();
 
@@ -198,6 +213,26 @@ public class Kicker {
 
             }
             nbOfBallShot++;
+        }
+    }
+    public void shootFastAFV3() {
+        if (nbOfBallShot2 < 3 && (opMode.getRuntime() - lastShotTime2) >= 0.2) {
+            lastShotTime2 = opMode.getRuntime();
+            switch (nbOfBallShot2) {
+                case 0:
+                    kickChamber1();
+                    break;
+                case 1:
+                    kickChamber2();
+                    break;
+                case 2:
+                    kickChamber3();
+                    shooting2 = false;
+                    robot.shooter.setFullPower(false);
+                    break;
+
+            }
+            nbOfBallShot2++;
         }
     }
 }

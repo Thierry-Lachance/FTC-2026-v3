@@ -16,8 +16,8 @@ import org.firstinspires.ftc.teamcode.Constant;
 //TODO check the localizer
 public class Constants {
     public static FollowerConstants followerConstants = new FollowerConstants()
-            .forwardZeroPowerAcceleration(-34.2)
-            .lateralZeroPowerAcceleration(-56.18)
+            .forwardZeroPowerAcceleration(-26)
+            .lateralZeroPowerAcceleration(-54)
             .useSecondaryTranslationalPIDF(true)
             .useSecondaryHeadingPIDF(true)
             .useSecondaryDrivePIDF(true)
@@ -28,7 +28,7 @@ public class Constants {
             .drivePIDFCoefficients(new FilteredPIDFCoefficients(0.025, 0, 0.00001, 0.6, 0.01))
             .secondaryDrivePIDFCoefficients(new FilteredPIDFCoefficients(0.02, 0, 0.000005, 0.6, 0.01))
             .centripetalScaling(0.0008)
-            .mass(10.5);//todo change mass
+            .mass(10.5);
 
     public static MecanumConstants driveConstants = new MecanumConstants()
             .maxPower(1)

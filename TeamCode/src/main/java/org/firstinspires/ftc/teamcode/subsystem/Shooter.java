@@ -14,6 +14,7 @@ public class Shooter {
     Robot robot;
     double targetVelocity = 0.0;
     boolean shooting = false;
+    boolean fullPower = false;
 
     public Shooter(LinearOpMode opMode, Robot robot) {
         this.opMode = opMode;
@@ -52,7 +53,9 @@ public class Shooter {
         } else if (opMode.gamepad2.y) {
             shooting = false;
         }
-        if (shooting) {
+        if(fullPower){
+            shooterMotor.setPower(-1.0);//TODO check if this is the right direction
+        } else if (shooting) {
             shooterMotor.setVelocity(targetVelocity);
         } else {
 
@@ -81,5 +84,9 @@ public class Shooter {
 
     public boolean isReadyToShoot() {
         return shooterMotor.getVelocity() <= targetVelocity + 50 && shooterMotor.getVelocity() >= targetVelocity - 50;
+    }
+
+    public void setFullPower(boolean fullPower) {
+        this.fullPower = fullPower;
     }
 }

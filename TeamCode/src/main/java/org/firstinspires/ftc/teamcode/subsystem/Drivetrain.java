@@ -115,22 +115,6 @@ public class Drivetrain {
 
     public void drive() {
         follower.update();
-        /*if (opMode.gamepad1.x) {
-            driveToTarget(TARGET_X, 0.4);
-        } else if (opMode.gamepad1.a) {
-            driveToTarget(TARGET_A, 0.5);
-        } else if (opMode.gamepad1.b) {
-            driveToTarget(TARGET_B, 0.4);
-        } else if (opMode.gamepad1.yWasPressed()) {
-            driveToTarget(TARGET_Y, 0.4);
-        } else if (opMode.gamepad1.left_trigger > 0.1 && opMode.gamepad1.right_trigger > 0.1) {
-            strafeToBall(robot.limelight.getBallRotationOffset(), opMode.gamepad1.left_trigger);
-        } else if (opMode.gamepad1.left_trigger > 0.1 && opMode.gamepad1.right_trigger < 0.1) {
-            smartCorrectAngleToShoot();
-        } else {
-            previousHeading = 0.0;
-            driveMecanumFieldOriented(opMode.gamepad1);
-        }*/
         if (opMode.gamepad1.xWasPressed()) {
             driveToTarget(pathChainX.get());
             automatedDrive = true;
@@ -143,15 +127,20 @@ public class Drivetrain {
         } else if (opMode.gamepad1.bWasPressed()) {
             driveToTarget(pathChainB.get());
             automatedDrive = true;
-        } else if (opMode.gamepad1.left_stick_x > 0.1 || opMode.gamepad1.left_stick_x < -0.1 ||
+        } else if ((opMode.gamepad1.left_stick_x > 0.1 || opMode.gamepad1.left_stick_x < -0.1 ||
                 opMode.gamepad1.left_stick_y > 0.1 || opMode.gamepad1.left_stick_y < -0.1 ||
-                opMode.gamepad1.right_stick_x > 0.1 || opMode.gamepad1.right_stick_x < -0.1) {
+                opMode.gamepad1.right_stick_x > 0.1 || opMode.gamepad1.right_stick_x < -0.1) & automatedDrive) {
             automatedDrive = false;
+            follower.startTeleopDrive();
 
-        }
-        if (!automatedDrive) {
+        } else if (opMode.gamepad1.left_trigger > 0.1 && opMode.gamepad1.right_trigger > 0.1) {
+            strafeToBall(robot.limelight.getBallRotationOffset(), opMode.gamepad1.left_trigger);
+        } else if (opMode.gamepad1.left_trigger > 0.1 && opMode.gamepad1.right_trigger < 0.1) {
+            smartCorrectAngleToShoot();
+        } else if(!automatedDrive){
             driveMecanumFieldOriented(opMode.gamepad1);
         }
+
 
         if (opMode.gamepad1.options) {
             resetFieldOriented();
@@ -185,7 +174,6 @@ public class Drivetrain {
     }
 
     public void driveToTarget(PathChain path) {
-        //todo test method
         follower.followPath(path);
         automatedDrive = true;
     }
@@ -193,7 +181,7 @@ public class Drivetrain {
     public void resetFieldOriented() {
         //TODO check usage
         Pose currentPose = follower.getPose();
-        follower.setStartingPose(new Pose(currentPose.getX(), currentPose.getY(), 0));
+        follower.setPose(new Pose(currentPose.getX(), currentPose.getY(), 0));
     }
 
 
@@ -245,7 +233,6 @@ public class Drivetrain {
         return false;
     }
 
-
     public void strafeToBall(double ballOffset, double speed) {
         //TODO check for power inversion
         if (ballOffset == 0) {
@@ -258,7 +245,7 @@ public class Drivetrain {
 
         follower.setTeleOpDrive(
                 speed,
-                strafePower,
+                -strafePower,
                 0,
                 true
         );
@@ -271,7 +258,6 @@ public class Drivetrain {
         return x <= -y && x <= y;
 
     }
-
 
     public void smartCorrectAngleToShoot() {
         double x = follower.getPose().getX();
@@ -297,6 +283,7 @@ public class Drivetrain {
         );
 
     }
+
     public boolean checkIfAlignedWithGoal() {
         double tolerance = 0.25;
         double x = follower.getPose().getX();
@@ -333,6 +320,5 @@ public class Drivetrain {
                 - 63.05278661 * distanceInches
                 + 2825.23407233;
     }
-
 
 }

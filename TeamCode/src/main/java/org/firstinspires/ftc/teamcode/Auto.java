@@ -85,7 +85,7 @@ public class Auto {
     public void runAuto() {
         for (Action action : actionList) {
 
-            switch (action) {
+          /*  switch (action) {
                 case SHOOT_BALL_CLOSE:
                     robot.led.setLed1Color(0.5);
                     // Code to shoot ball from close range
@@ -137,9 +137,11 @@ public class Auto {
                     parkAtGate();
                     break;
             }
+            */
+
         }
     }
-
+/*
     private void shootBallClose() {
         // Implementation for shooting ball from close range
         robot.shooter.autonomousStartShooterClose();
@@ -151,7 +153,7 @@ public class Auto {
 
         }
         do {// drive to park position
-            robot.drivetrain.driveToTarget(parkPos, 0.4);
+            robot.drivetrain.driveToTarget(parkPos);
         } while (!robot.drivetrain.isAtTarget(Drivetrain.Precision.HIGH));
         if(!patternSet){
             patternSet = true;
@@ -330,5 +332,5 @@ public class Auto {
     private boolean timeout(double startTime, double timeoutDuration) {
         return (opMode.getRuntime() - startTime) >= timeoutDuration;
     }
-
+*/
 }
