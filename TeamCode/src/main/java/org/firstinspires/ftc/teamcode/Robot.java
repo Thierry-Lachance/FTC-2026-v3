@@ -48,12 +48,38 @@ public class Robot {
     }
 
     public void runTeleOp() {
-        drivetrain.drive();
-        intake.intakeIn();
-        shooter.shoot();
-        kicker.kickChamber();
-        led.updateLed();
-        limelight.telemetry();
+
+
+        if(opMode.gamepad1.dpad_right || opMode.gamepad1.dpad_left){
+            drivetrain.driveToTarget(drivetrain.pathChainPreHuman.get());
+            while (drivetrain.isBusy()) drivetrain.update();
+            intake.startIntake();
+            kicker.lowerKicker();
+            drivetrain.driveToTarget(drivetrain.pathChainPostHuman.get());
+            while (drivetrain.isBusy()) drivetrain.update();
+            intake.stopIntake();
+            kicker.engageKicker();
+            shooter.autonomousStartShooterClose();
+            drivetrain.driveToTarget(drivetrain.pathChainY.get());
+            while (drivetrain.isBusy()) drivetrain.update();
+            kicker.kickChamberAuto();
+            shooter.stopShooter();
+            if(opMode.gamepad1.dpad_left){
+                drivetrain.driveToTarget(drivetrain.pathChainGate.get());
+                while (drivetrain.isBusy()) drivetrain.update();
+                opMode.sleep(500);
+            }
+
+
+        }else{
+            drivetrain.drive();
+            intake.intakeIn();
+            shooter.shoot();
+            kicker.kickChamber();
+            led.updateLed();
+            limelight.telemetry();
+        }
+
         opMode.telemetry.update();
 
 

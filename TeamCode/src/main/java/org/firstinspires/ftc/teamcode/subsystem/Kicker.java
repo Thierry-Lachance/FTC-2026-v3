@@ -64,8 +64,9 @@ public class Kicker {
     public void kickChamber() {
         if (robot.intake.isIntaking()) {
             lowerKicker();
-        } else {
-            if (robot.shooter.isReadyToShoot() && robot.drivetrain.checkIfAlignedWithGoal()) {
+        }
+        else {
+            if (robot.shooter.isReadyToShoot()) {
                 if(opMode.gamepad2.a && !shooting) {
                     shooting = true;
                     lastShotTime = opMode.getRuntime()-1.0;
@@ -77,10 +78,10 @@ public class Kicker {
 
             } else {
                 shooting = false;
-                engageKicker();
+
             }
 
-             if (robot.shooter.isReadyToShoot() && robot.drivetrain.checkIfAlignedWithGoal() && opMode.gamepad2.bWasPressed()) {
+             if (robot.shooter.isReadyToShoot() && opMode.gamepad2.bWasPressed()) {//robot.shooter.isReadyToShoot() && robot.drivetrain.checkIfAlignedWithGoal() &&
                 shooting2 = true;
                 lastShotTime2 = opMode.getRuntime() - 1.0;
                 nbOfBallShot2 = 0;
@@ -103,6 +104,9 @@ public class Kicker {
 
             }
         }
+        if(!robot.intake.isIntaking() && !shooting && !shooting2){
+            engageKicker();
+        }
     }
 
     public void kickChamberAuto() {
@@ -110,7 +114,7 @@ public class Kicker {
         double lastShotTime = opMode.getRuntime();
 
         while (numberOfBallShot < 3 && opMode.opModeIsActive()) {
-            if (robot.shooter.isReadyToShoot() && (opMode.getRuntime() - lastShotTime) >= 0.5) {
+            if (robot.shooter.isReadyToShoot() && (opMode.getRuntime() - lastShotTime) >= 0.2) {
                 switch (numberOfBallShot) {
                     case 0:
                         kickChamber1();
@@ -127,7 +131,7 @@ public class Kicker {
             }
 
         }
-        opMode.sleep(500);
+        opMode.sleep(200);
         engageKicker();
     }
     public void kickChamberAutoPattern(Robot.ColorPattern patternInsideRobot) {
@@ -216,17 +220,20 @@ public class Kicker {
         }
     }
     public void shootFastAFV3() {
-        if (nbOfBallShot2 < 3 && (opMode.getRuntime() - lastShotTime2) >= 0.2) {
+        if (nbOfBallShot2 < 4 && (opMode.getRuntime() - lastShotTime2) >= 0.2) {
             lastShotTime2 = opMode.getRuntime();
             switch (nbOfBallShot2) {
                 case 0:
-                    kickChamber1();
+                    kickChamber2();
                     break;
                 case 1:
-                    kickChamber2();
+                    kickChamber1();
                     break;
                 case 2:
                     kickChamber3();
+
+                    break;
+                case 3:
                     shooting2 = false;
                     robot.shooter.setFullPower(false);
                     break;

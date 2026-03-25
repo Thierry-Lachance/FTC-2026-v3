@@ -38,6 +38,12 @@ public class Drivetrain {
     Pose TARGET_B;
     Pose resetPosition;
 
+    Pose preHuman;
+    Pose postHuman;
+
+
+    Pose gate;
+
     double previousHeading = 0.0;
 
     public enum Precision {//TODO check if deprecated
@@ -49,10 +55,15 @@ public class Drivetrain {
     public static Pose startingPose; //See ExampleAuto to understand how to use this
 
     private final Supplier<PathChain> pathChainX;
-    private final Supplier<PathChain> pathChainY;
+    public final Supplier<PathChain> pathChainY;
     private final Supplier<PathChain> pathChainA;
     private final Supplier<PathChain> pathChainB;
 
+    public final Supplier<PathChain> pathChainPreHuman;
+    public final Supplier<PathChain> pathChainPostHuman;
+
+
+    public final Supplier<PathChain> pathChainGate;
 
     boolean automatedDrive = false;
 
@@ -63,24 +74,33 @@ public class Drivetrain {
 
 
         if (teamColor == Robot.TeamColor.RED) {
-            targetX = 144;
-            targetY = 144;
+            targetX = 72;
+            targetY = 72;
             multiplier = 1;
-            TARGET_X = new Pose(-4.1, 0, 0.808);
-            TARGET_Y = new Pose(-26.7, 13.55, 0.69);
-            TARGET_A = new Pose(56.65, 13.8, 1.200);
-            TARGET_B = new Pose(-17.8, -16.7, 0.52);
-            resetPosition = new Pose(58.5, -63, -Math.PI / 2);
+            TARGET_X = new Pose(71.516, 71.469, -0.85);
+            TARGET_Y = new Pose(96.5, 95.063, -0.85);
+            TARGET_A = new Pose(84.563, 16.250, -0.4014);
+            TARGET_B = new Pose(47.469, 95.188, -1.2);
+            resetPosition = new Pose(6.1, 28.39, -Math.PI);
+            startingPose = resetPosition;
+
+            preHuman = new Pose(14,29.35, -1.633);
+            postHuman = new Pose(14, 15, -1.645);
+
+
+            gate = new Pose(138,71,0);
+
+
         } else {
-            targetX = 0;
-            targetY = 144;
+            targetX = -72;
+            targetY = 72;
             multiplier = -1;
             additionner = -Math.PI;
-            TARGET_X = new Pose(-6.0, 1.0, 2.298);
-            TARGET_Y = new Pose(-26.7, -13.55, 2.4);
-            TARGET_A = new Pose(55, -13.75, 1.954);
-            TARGET_B = new Pose(-14.5, 13.5, 2.55);
-            resetPosition = new Pose(58.5, 63, Math.PI / 2);
+            TARGET_X = new Pose(71.516, 71.469, -Math.PI/2);
+            TARGET_Y = new Pose(96.5, 95.063, -Math.PI/2);
+            TARGET_A = new Pose(84.563, 16.250, -0.4014);
+            TARGET_B = new Pose(47.469, 95.188, -1.01);
+            resetPosition = new Pose(9.594, 8.984, -Math.PI);
         }
 
         follower = Constants.createFollower(opMode.hardwareMap);
@@ -108,6 +128,20 @@ public class Drivetrain {
         pathChainB = () -> follower.pathBuilder()
                 .addPath(new Path(new BezierLine(follower::getPose, new Pose(TARGET_B.getX(), TARGET_B.getY(), TARGET_B.getHeading()))))
                 .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(follower::getHeading, TARGET_B.getHeading(), 0.8))
+                .build();
+
+        pathChainPreHuman = () -> follower.pathBuilder()
+                .addPath(new Path(new BezierLine(follower::getPose, preHuman)))
+                .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(follower::getHeading, preHuman.getHeading(), 0.8))
+                .build();
+        pathChainPostHuman = () -> follower.pathBuilder()
+                .addPath(new Path(new BezierLine(follower::getPose, postHuman)))
+                .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(follower::getHeading, postHuman.getHeading(), 0.8))
+                .build();
+
+        pathChainGate = () -> follower.pathBuilder()
+                .addPath(new Path(new BezierLine(follower::getPose, gate)))
+                .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(follower::getHeading, gate.getHeading(), 0.8))
                 .build();
 
 
@@ -146,10 +180,12 @@ public class Drivetrain {
             resetFieldOriented();
         }
         if (opMode.gamepad1.right_bumper || opMode.gamepad1.left_bumper) {
-            resetOdo(robot.limelight.getRobotPoseFromLL());
-        } else if (opMode.gamepad1.dpad_up) {
             resetOdoCorner(resetPosition);
+
         }
+        opMode.telemetry.addData("robotx", follower.getPose().getX());
+        opMode.telemetry.addData("roboty", follower.getPose().getY());
+        opMode.telemetry.addData("roboth", follower.getPose().getHeading());
 
     }
 
@@ -192,16 +228,11 @@ public class Drivetrain {
     }
 
     public void resetOdoCorner(Pose resetPose) {
-        //TODO implement
-        if (resetPose != null) {
+        follower.setPose(resetPose);
 
-            // Pose2D tempPos = new Pose2D(DistanceUnit.INCH, resetPose.getX(DistanceUnit.INCH), resetPose.getY(DistanceUnit.INCH), AngleUnit.RADIANS, 2*Math.atan(Math.tan((getYaw()+Math.PI/2)/2)));
-            //Pose2D tempPos = new Pose2D(DistanceUnit.INCH, resetPose.getX(DistanceUnit.INCH), resetPose.getY(DistanceUnit.INCH), AngleUnit.RADIANS, -Math.PI/2);
-            //Pose2D tempPos = new Pose2D(DistanceUnit.INCH, resetPose.getX(DistanceUnit.INCH), resetPose.getY(DistanceUnit.INCH), AngleUnit.RADIANS, 2*Math.PI*(((getYaw()+(Math.PI)/2)/(2*Math.PI))+Math.floor((getYaw()+(3*Math.PI)/2)/(2*Math.PI))));
-
-            // odo.setPosition(resetPose);
-        }
-        //  odo.update();
+    }
+    public void resetOdoCenter(Pose resetPose) {
+        follower.setPose(new Pose(72,72, -Math.PI/2));
 
     }
 
@@ -258,6 +289,9 @@ public class Drivetrain {
         return x <= -y && x <= y;
 
     }
+    public void update() {
+        follower.update();
+    }
 
     public void smartCorrectAngleToShoot() {
         double x = follower.getPose().getX();
@@ -286,8 +320,8 @@ public class Drivetrain {
 
     public boolean checkIfAlignedWithGoal() {
         double tolerance = 0.25;
-        double x = follower.getPose().getX();
-        double y = follower.getPose().getY();
+        double x = follower.getPose().getX()-72;
+        double y = follower.getPose().getY()-72;
 
         double d = Math.abs(targetX - x);
         double h = Math.abs(targetY - y);
@@ -299,7 +333,9 @@ public class Drivetrain {
         }
         target = multiplier * target;
         double error = target - follower.getPose().getHeading();
+        opMode.telemetry.addData("angle error", error);
         return Math.abs(error) < tolerance;
+
 
     }
 
@@ -319,6 +355,9 @@ public class Drivetrain {
                 + 0.6849218 * distanceInches * distanceInches
                 - 63.05278661 * distanceInches
                 + 2825.23407233;
+    }
+    public boolean isBusy() {
+        return follower.isBusy();
     }
 
 }

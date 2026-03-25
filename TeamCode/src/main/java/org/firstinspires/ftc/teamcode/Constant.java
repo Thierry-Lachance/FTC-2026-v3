@@ -10,18 +10,11 @@ public class Constant {
     public static String webcamName = "Webcam 1";
 
     //odo offsets
-    public static double xOffset = -180;
+    public static double xOffset = -7;
     public static double yOffset = 0;
 
     //Odo name
     public static String odoName = "odo";
-
-    //IMU name
-    public static String imuName = "imu";
-
-    //ColorSensor Name
-    public static String colorSensor1Name = "co1";
-    public static String colorSensor2Name = "co2";
 
     //Motor Name
     public static String frontLeftMotorName = "fl";

@@ -41,7 +41,8 @@ public class Led {
         if (robot.intake.isIntaking()) {
             setLed1Color(0.7);// Purple
         } else {
-            if (robot.shooter.isReadyToShoot() && robot.drivetrain.checkIfAlignedWithGoal()) {
+            if (robot.shooter.isReadyToShoot()) {
+
                 setLed1Color(0.5);// Green
             } else {
                 setLed1Color(0.3);// Red

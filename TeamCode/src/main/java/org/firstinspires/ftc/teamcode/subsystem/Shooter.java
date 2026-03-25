@@ -54,7 +54,7 @@ public class Shooter {
             shooting = false;
         }
         if(fullPower){
-            shooterMotor.setPower(-1.0);//TODO check if this is the right direction
+            //shooterMotor.setPower(-1.0);//TODO check if this is the right direction
         } else if (shooting) {
             shooterMotor.setVelocity(targetVelocity);
         } else {
