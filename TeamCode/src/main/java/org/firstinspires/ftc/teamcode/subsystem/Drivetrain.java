@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.subsystem;
 
 import com.pedropathing.follower.Follower;
+import com.pedropathing.geometry.BezierCurve;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.HeadingInterpolator;
@@ -13,7 +14,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import org.firstinspires.ftc.teamcode.Robot;
-import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
+import org.firstinspires.ftc.teamcode.pathing.Constants;
 
 import java.util.Locale;
 import java.util.function.Supplier;
@@ -32,14 +33,17 @@ public class Drivetrain {
     double multiplier = 1.0;
     double additionner = 0.0;
 
-    Pose TARGET_X;
-    Pose TARGET_Y;
-    Pose TARGET_A;
-    Pose TARGET_B;
+
     Pose resetPosition;
 
     Pose preHuman;
     Pose postHuman;
+
+    Pose shoot = new Pose(96.5, 95.063, -Math.PI/2);
+    Pose right = new Pose(105, 57);
+    Pose left = new Pose(45,110);
+
+
 
 
     Pose gate;
@@ -54,16 +58,17 @@ public class Drivetrain {
     private final Follower follower;
     public static Pose startingPose; //See ExampleAuto to understand how to use this
 
-    private final Supplier<PathChain> pathChainX;
-    public final Supplier<PathChain> pathChainY;
-    private final Supplier<PathChain> pathChainA;
-    private final Supplier<PathChain> pathChainB;
 
     public final Supplier<PathChain> pathChainPreHuman;
     public final Supplier<PathChain> pathChainPostHuman;
 
 
     public final Supplier<PathChain> pathChainGate;
+
+
+    public final PathChain rightPath;
+    public final PathChain leftPath;
+
 
     boolean automatedDrive = false;
 
@@ -77,10 +82,7 @@ public class Drivetrain {
             targetX = 72;
             targetY = 72;
             multiplier = 1;
-            TARGET_X = new Pose(71.516, 71.469, -0.85);
-            TARGET_Y = new Pose(96.5, 95.063, -0.85);
-            TARGET_A = new Pose(84.563, 16.250, -0.4014);
-            TARGET_B = new Pose(47.469, 95.188, -1.2);
+
             resetPosition = new Pose(6.1, 28.39, -Math.PI);
             startingPose = resetPosition;
 
@@ -96,10 +98,7 @@ public class Drivetrain {
             targetY = 72;
             multiplier = -1;
             additionner = -Math.PI;
-            TARGET_X = new Pose(71.516, 71.469, -Math.PI/2);
-            TARGET_Y = new Pose(96.5, 95.063, -Math.PI/2);
-            TARGET_A = new Pose(84.563, 16.250, -0.4014);
-            TARGET_B = new Pose(47.469, 95.188, -1.01);
+
             resetPosition = new Pose(9.594, 8.984, -Math.PI);
         }
 
@@ -110,25 +109,7 @@ public class Drivetrain {
         follower.startTeleopDrive();
 
 
-        pathChainX = () -> follower.pathBuilder()
-                .addPath(new Path(new BezierLine(follower::getPose, new Pose(TARGET_X.getX(), TARGET_X.getY(), TARGET_X.getHeading()))))
-                .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(follower::getHeading, TARGET_X.getHeading(), 0.8))
-                .build();
 
-        pathChainY = () -> follower.pathBuilder()
-                .addPath(new Path(new BezierLine(follower::getPose, new Pose(TARGET_Y.getX(), TARGET_Y.getY(), TARGET_Y.getHeading()))))
-                .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(follower::getHeading, TARGET_Y.getHeading(), 0.8))
-                .build();
-
-        pathChainA = () -> follower.pathBuilder()
-                .addPath(new Path(new BezierLine(follower::getPose, new Pose(TARGET_A.getX(), TARGET_A.getY(), TARGET_A.getHeading()))))
-                .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(follower::getHeading, TARGET_A.getHeading(), 0.8))
-                .build();
-
-        pathChainB = () -> follower.pathBuilder()
-                .addPath(new Path(new BezierLine(follower::getPose, new Pose(TARGET_B.getX(), TARGET_B.getY(), TARGET_B.getHeading()))))
-                .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(follower::getHeading, TARGET_B.getHeading(), 0.8))
-                .build();
 
         pathChainPreHuman = () -> follower.pathBuilder()
                 .addPath(new Path(new BezierLine(follower::getPose, preHuman)))
@@ -144,22 +125,52 @@ public class Drivetrain {
                 .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(follower::getHeading, gate.getHeading(), 0.8))
                 .build();
 
+        rightPath = follower.pathBuilder()
+                .addPath(
+                        new BezierCurve(
+                                follower::getPose,
+                                new Pose(9.609, 92.031),
+                                new Pose(98.047, -0.125),
+                                new Pose(125.234, 78.828),
+                                new Pose(96.500, 95.000)
+                        )
+                )
+                .setLinearHeadingInterpolation(Math.toRadians(-90), Math.toRadians(-45))
+                .build();
+
+        leftPath = follower.pathBuilder()
+                .addPath(
+                        new BezierCurve(
+                                follower::getPose,
+                                new Pose(86.391, 93.156),
+                                new Pose(2.000, 142.188),
+                                new Pose(110.047, 137.609),
+                                new Pose(96.500, 95.000)
+                        )
+                )
+                .setLinearHeadingInterpolation(Math.toRadians(-90), Math.toRadians(-45))
+                .build();
+
 
     }
 
     public void drive() {
         follower.update();
         if (opMode.gamepad1.xWasPressed()) {
-            driveToTarget(pathChainX.get());
+            robot.aimBot.setTargets(0);
+            driveToTarget(robot.aimBot.getPathToTarget());
             automatedDrive = true;
         } else if (opMode.gamepad1.yWasPressed()) {
-            driveToTarget(pathChainY.get());
+            robot.aimBot.setTargets(1);
+            driveToTarget(robot.aimBot.getPathToTarget());
             automatedDrive = true;
         } else if (opMode.gamepad1.aWasPressed()) {
-            driveToTarget(pathChainA.get());
+            robot.aimBot.setTargets(2);
+            driveToTarget(robot.aimBot.getPathToTarget());
             automatedDrive = true;
         } else if (opMode.gamepad1.bWasPressed()) {
-            driveToTarget(pathChainB.get());
+            robot.aimBot.setTargets(3);
+            driveToTarget(robot.aimBot.getPathToTarget());
             automatedDrive = true;
         } else if ((opMode.gamepad1.left_stick_x > 0.1 || opMode.gamepad1.left_stick_x < -0.1 ||
                 opMode.gamepad1.left_stick_y > 0.1 || opMode.gamepad1.left_stick_y < -0.1 ||
@@ -190,14 +201,7 @@ public class Drivetrain {
     }
 
     public void initTeleOp() {
-        Pose2D temp;
-        if (teamColor == Robot.TeamColor.RED) {//TODO add the correct positions
-            temp = new Pose2D(DistanceUnit.INCH, 0, 30, AngleUnit.RADIANS, Math.PI / 2);
-        } else {
-            temp = new Pose2D(DistanceUnit.INCH, 0, -30, AngleUnit.RADIANS, -Math.PI / 2);
 
-        }
-        //  odo.setPosition(temp);
     }
 
     public void driveMecanumFieldOriented(Gamepad gamepad) {
@@ -212,6 +216,14 @@ public class Drivetrain {
     public void driveToTarget(PathChain path) {
         follower.followPath(path);
         automatedDrive = true;
+    }
+    public void driveToTargetAuto(PathChain path, long timeout) {
+        follower.followPath(path);
+        automatedDrive = true;
+        while (isBusy() && !robot.timeToStop()) update();
+        if(robot.timeToStop()) return;
+        opMode.sleep(timeout);
+
     }
 
     public void resetFieldOriented() {
@@ -265,7 +277,6 @@ public class Drivetrain {
     }
 
     public void strafeToBall(double ballOffset, double speed) {
-        //TODO check for power inversion
         if (ballOffset == 0) {
             ballOffset = previousHeading;
         } else {
@@ -360,4 +371,7 @@ public class Drivetrain {
         return follower.isBusy();
     }
 
+    public Follower getFollower(){
+        return follower;
+    }
 }

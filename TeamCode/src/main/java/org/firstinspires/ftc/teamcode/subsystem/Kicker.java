@@ -85,7 +85,7 @@ public class Kicker {
                 shooting2 = true;
                 lastShotTime2 = opMode.getRuntime() - 1.0;
                 nbOfBallShot2 = 0;
-                robot.shooter.setFullPower(true);
+
 
             }
              if(shooting2){
@@ -113,7 +113,7 @@ public class Kicker {
         int numberOfBallShot = 0;
         double lastShotTime = opMode.getRuntime();
 
-        while (numberOfBallShot < 3 && opMode.opModeIsActive()) {
+        while (numberOfBallShot < 3 && opMode.opModeIsActive() && !robot.timeToStop()) {
             if (robot.shooter.isReadyToShoot() && (opMode.getRuntime() - lastShotTime) >= 0.2) {
                 switch (numberOfBallShot) {
                     case 0:
@@ -131,7 +131,7 @@ public class Kicker {
             }
 
         }
-        opMode.sleep(200);
+        if(!robot.timeToStop())opMode.sleep(200);
         engageKicker();
     }
     public void kickChamberAutoPattern(Robot.ColorPattern patternInsideRobot) {
@@ -220,7 +220,7 @@ public class Kicker {
         }
     }
     public void shootFastAFV3() {
-        if (nbOfBallShot2 < 4 && (opMode.getRuntime() - lastShotTime2) >= 0.2) {
+        if (nbOfBallShot2 < 4 && (opMode.getRuntime() - lastShotTime2) >= robot.aimBot.getTimeBetweenShots()) {
             lastShotTime2 = opMode.getRuntime();
             switch (nbOfBallShot2) {
                 case 0:
@@ -235,7 +235,6 @@ public class Kicker {
                     break;
                 case 3:
                     shooting2 = false;
-                    robot.shooter.setFullPower(false);
                     break;
 
             }

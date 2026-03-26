@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode.subsystem;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 import org.firstinspires.ftc.teamcode.Constant;
 import org.firstinspires.ftc.teamcode.Robot;
@@ -14,7 +15,7 @@ public class Shooter {
     Robot robot;
     double targetVelocity = 0.0;
     boolean shooting = false;
-    boolean fullPower = false;
+
 
     public Shooter(LinearOpMode opMode, Robot robot) {
         this.opMode = opMode;
@@ -30,32 +31,17 @@ public class Shooter {
 
     public void shoot() {
 
-
-        if (opMode.gamepad1.x) {
-            shooterMotor.setVelocityPIDFCoefficients(250, 2, 2, 0.0);
-            targetVelocity = Constant.shooterPowerX;
-        } else if (opMode.gamepad1.b) {
-            shooterMotor.setVelocityPIDFCoefficients(250, 2, 2, 0.0);
-            targetVelocity = Constant.shooterPowerB;
-        } else if (opMode.gamepad1.y) {//usefull pos for base use
-            shooterMotor.setVelocityPIDFCoefficients(250, 2, 2, 0.0);
-            targetVelocity = Constant.shooterPowerY;
-        }
-        else if(opMode.gamepad1.a){
-            shooterMotor.setVelocityPIDFCoefficients(250, 1, 2, 0.0);
-            targetVelocity = Constant.shooterPowerA;
-        }
-        else if(opMode.gamepad1.left_trigger > 0.1 && opMode.gamepad1.right_trigger < 0.1){
-            targetVelocity = -robot.drivetrain.calculateShooterPower();
-        }
         if (opMode.gamepad2.x) {
             shooting = true;
+            shooterMotor.setVelocityPIDFCoefficients(robot.aimBot.getPidfCoefficients().p,
+                    robot.aimBot.getPidfCoefficients().i,
+                    robot.aimBot.getPidfCoefficients().d,
+                    robot.aimBot.getPidfCoefficients().f);
+            targetVelocity = robot.aimBot.getTargetVelocity();
         } else if (opMode.gamepad2.y) {
             shooting = false;
         }
-        if(fullPower){
-            //shooterMotor.setPower(-1.0);//TODO check if this is the right direction
-        } else if (shooting) {
+        if (shooting) {
             shooterMotor.setVelocity(targetVelocity);
         } else {
 
@@ -86,7 +72,5 @@ public class Shooter {
         return shooterMotor.getVelocity() <= targetVelocity + 50 && shooterMotor.getVelocity() >= targetVelocity - 50;
     }
 
-    public void setFullPower(boolean fullPower) {
-        this.fullPower = fullPower;
-    }
+
 }

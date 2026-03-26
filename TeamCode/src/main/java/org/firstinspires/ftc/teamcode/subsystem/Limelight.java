@@ -124,46 +124,6 @@ public class Limelight {
         return 0;
     }
 
-    public Pose2D getRobotPoseFromLL() {
-        if (opMode.gamepad1.right_bumper || opMode.gamepad1.left_bumper) {
-            setLimelightPipeline(2);
-            LLResult result = limelight.getLatestResult();
-            if (result.isValid()) {
-                Pose3D pose3D = result.getBotpose();
-                opMode.telemetry.addData("limelight X", pose3D.getPosition().x);
-                opMode.telemetry.addData("limelight Y", pose3D.getPosition().y);
-                opMode.telemetry.addData("limelight Yaw", pose3D.getOrientation().getYaw(AngleUnit.RADIANS));
-                return new Pose2D(DistanceUnit.METER, pose3D.getPosition().x, pose3D.getPosition().y, AngleUnit.RADIANS, pose3D.getOrientation().getYaw(AngleUnit.RADIANS));
-            } else {
-                return null;
-            }
-        }
-        return null;
-    }
-
-
-    public Robot.ColorPattern getColorPatternFromLL(){
-        setLimelightPipeline(3);
-        LLResult result = limelight.getLatestResult();
-        if (result.isValid()) {
-           //get tag id from LLResult
-            switch (result.getFiducialResults().get(0).getFiducialId()){
-                case 21:
-                    return Robot.ColorPattern.GPP;
-                case 22:
-                    return Robot.ColorPattern.PGP;
-                case 23:
-                    return Robot.ColorPattern.PPG;
-                default:
-                    return null;
-
-
-            }
-        } else {
-            return null;
-        }
-    }
-
 }
     
 

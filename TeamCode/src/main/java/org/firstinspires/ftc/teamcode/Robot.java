@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.teamcode.pathing.AimBot;
 import org.firstinspires.ftc.teamcode.subsystem.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystem.Intake;
 import org.firstinspires.ftc.teamcode.subsystem.Kicker;
@@ -22,6 +23,7 @@ public class Robot {
     public Vision vision;
     public Limelight limelight;
 
+    public AimBot aimBot;
     private ColorPattern colorPattern;
 
     public enum TeamColor {
@@ -29,7 +31,7 @@ public class Robot {
         BLUE
     }
 
-    public enum ColorPattern{
+    public enum ColorPattern {
         GPP,
         PGP,
         PPG
@@ -44,57 +46,79 @@ public class Robot {
         led = new Led(opMode, this);
         vision = new Vision(opMode);
         limelight = new Limelight(opMode, this);
+        aimBot = new AimBot(teamColor, drivetrain.getFollower());
 
     }
 
     public void runTeleOp() {
+        if (opMode.gamepad1.dpad_right || opMode.gamepad1.dpad_left) {
+            automatedCycle();
 
+        } else {
+            manualDrive();
 
-        if(opMode.gamepad1.dpad_right || opMode.gamepad1.dpad_left){
-            drivetrain.driveToTarget(drivetrain.pathChainPreHuman.get());
-            while (drivetrain.isBusy()) drivetrain.update();
-            intake.startIntake();
-            kicker.lowerKicker();
-            drivetrain.driveToTarget(drivetrain.pathChainPostHuman.get());
-            while (drivetrain.isBusy()) drivetrain.update();
-            intake.stopIntake();
-            kicker.engageKicker();
-            shooter.autonomousStartShooterClose();
-            drivetrain.driveToTarget(drivetrain.pathChainY.get());
-            while (drivetrain.isBusy()) drivetrain.update();
-            kicker.kickChamberAuto();
-            shooter.stopShooter();
-            if(opMode.gamepad1.dpad_left){
-                drivetrain.driveToTarget(drivetrain.pathChainGate.get());
-                while (drivetrain.isBusy()) drivetrain.update();
-                opMode.sleep(500);
-            }
-
-
-        }else{
-            drivetrain.drive();
-            intake.intakeIn();
-            shooter.shoot();
-            kicker.kickChamber();
-            led.updateLed();
-            limelight.telemetry();
         }
 
         opMode.telemetry.update();
 
 
     }
-    public void initTeleOp(){
+
+    public void initTeleOp() {
         drivetrain.initTeleOp();
     }
 
 
-    public ColorPattern getColorPattern(){
+    public ColorPattern getColorPattern() {
         return colorPattern;
     }
 
-    public void setColorPattern(ColorPattern colorPattern){
+    public void setColorPattern(ColorPattern colorPattern) {
         this.colorPattern = colorPattern;
     }
+
+    private void manualDrive() {
+        drivetrain.drive();
+        intake.intakeIn();
+        shooter.shoot();
+        kicker.kickChamber();
+        led.updateLed();
+        limelight.telemetry();
+    }
+
+    private void automatedCycle() {
+        aimBot.setTargets(1);
+        drivetrain.driveToTargetAuto(drivetrain.pathChainPreHuman.get(), 0);
+        intake.startIntake();
+        kicker.lowerKicker();
+        drivetrain.driveToTargetAuto(drivetrain.pathChainPostHuman.get(), 0);
+        kicker.engageKicker();
+        shooter.autonomousStartShooterClose();
+        if(timeToStop()) return;
+        opMode.sleep(200);
+        intake.stopIntake();
+        if(opMode.gamepad1.right_trigger > 0.5){
+            drivetrain.driveToTargetAuto(drivetrain.rightPath, 0);
+        } else if (opMode.gamepad1.left_trigger > 0.5){
+            drivetrain.driveToTargetAuto(aimBot.getPathToTarget(), 0);
+
+        }
+        else{
+            drivetrain.driveToTargetAuto(drivetrain.leftPath, 0);
+        }
+
+
+        kicker.kickChamberAuto();
+        shooter.stopShooter();
+        if (opMode.gamepad1.dpad_left) {
+            drivetrain.driveToTargetAuto(drivetrain.pathChainGate.get(), 500);
+
+        }
+    }
+
+    public boolean timeToStop(){
+        return !opMode.gamepad1.dpad_left && !opMode.gamepad1.dpad_right;
+    }
+
 
 }
