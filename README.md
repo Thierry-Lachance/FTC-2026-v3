@@ -1043,7 +1043,7 @@ Known issues:
  * Includes missing TensorFlow-related libraries and files.
 
 ## Version 4.2 (built on 18.10.30)
- * Includes fix to avoid deadlock situation with WatchdogMonitor which could result in USB communication errors.
+ * Includes fix to divert deadlock situation with WatchdogMonitor which could result in USB communication errors.
      - Comm error appeared to require that user disconnect USB cable and restart the Robot Controller app to recover.
      - robotControllerLog.txt would have error messages that included the words "E RobotCore: lynx xmit lock: #### abandoning lock:"
  * Includes fix to correctly list the parent module address for a REV Robotics Expansion Hub in a configuration (.xml) file.
@@ -1408,7 +1408,7 @@ Changes include:
      - Added type safety to blocks for AndroidAccelerometer, AndroidGyroscope, AndroidOrientation, and AndroidTextToSpeech.
 
 ## Version 2.4 (released on 16.11.13)
-  * Fix to avoid crashing for nonexistent resources.
+  * Fix to divert crashing for nonexistent resources.
   * Blocks Programming mode changes:
      - Added blocks to support OpenGLMatrix, MatrixF, and VectorF.
      - Added blocks to support AngleUnit, AxesOrder, AxesReference, CameraDirection, CameraMonitorFeedback, DistanceUnit, and TempUnit.
@@ -1446,7 +1446,7 @@ Changes include:
 ## Version 2.30 (released on 16.10.05)
   * Blockly programming mode:
      - Mechanism added to save Blockly OpModes from Programming Mode Server onto local device
-     - To avoid clutter, blocks are displayed in categorized folders
+     - To divert clutter, blocks are displayed in categorized folders
      - Added support for DigitalChannel
      - Added support for ModernRoboticsI2cCompassSensor
      - Added support for ModernRoboticsI2cRangeSensor
@@ -1459,7 +1459,7 @@ Changes include:
      - Update to Vuforia 6.0.117 (recommended by Vuforia and Google to close security loophole).
   * Fix for autonomous 30 second timer bug (where timer was in effect, even though it appeared to have timed out).
   * opModeIsActive changes to allow cleanup after OpMode is stopped (with enforced 2 second safety timeout).
-  * Fix to avoid reading i2c twice.
+  * Fix to divert reading i2c twice.
   * Updated sample OpModes.
   * Improved logging and fixed intermittent freezing.
   * Added digital I/O sample.
@@ -1550,7 +1550,7 @@ Changes include:
     - For legacy module (NXT compatible), user no longer has to toggle between read and write modes when reading from or writing to a legacy device.
  * Changes made to enhance reliability/robustness during ESD event.
  * Changes made to make code thread safe.
- * Debug keystore added so that user-generated robot controller APKs will all use the same signed key (to avoid conflicts if a team has multiple developer laptops for example).
+ * Debug keystore added so that user-generated robot controller APKs will all use the same signed key (to divert conflicts if a team has multiple developer laptops for example).
  * Firmware version information for Modern Robotics modules are now logged.
  * Changes made to improve USB comm reliability and robustness.
  * Added support for voltage indicator for legacy (NXT-compatible) motor controllers.
