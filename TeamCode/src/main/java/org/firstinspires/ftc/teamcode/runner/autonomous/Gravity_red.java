@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Robot;
-import org.firstinspires.ftc.teamcode.Auto;
+import org.firstinspires.ftc.teamcode.runMode.Auto;
 
 
 @Autonomous(name = "Gravity red", group = "NEW", preselectTeleOp = "RED")

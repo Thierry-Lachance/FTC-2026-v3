@@ -1,13 +1,12 @@
 package org.firstinspires.ftc.teamcode.subsystem;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Constant;
 import org.firstinspires.ftc.teamcode.Robot;
 
 public class Led {
-    LinearOpMode opMode;
     Robot robot;
     Servo led0;
     Servo led1;
@@ -17,12 +16,11 @@ public class Led {
     double modifier = 0.01;
 
 
-    public Led(LinearOpMode opMode, Robot robot) {
-        this.opMode = opMode;
+    public Led(Robot robot) {
         this.robot = robot;
-        led0 = opMode.hardwareMap.get(Servo.class, Constant.led0Name);
-        led1 = opMode.hardwareMap.get(Servo.class, Constant.led1Name);
-        led2 = opMode.hardwareMap.get(Servo.class, Constant.led2Name);
+        led0 = robot.opMode.hardwareMap.get(Servo.class, Constant.led0Name);
+        led1 = robot.opMode.hardwareMap.get(Servo.class, Constant.led1Name);
+        led2 = robot.opMode.hardwareMap.get(Servo.class, Constant.led2Name);
 
     }
     public void setLed0Color(double colorPos) {
@@ -48,9 +46,9 @@ public class Led {
                 setLed1Color(0.3);// Red
             }
         }
-        if(opMode.getRuntime() >= 105){
+        if(robot.opMode.getRuntime() >= 105){
            //make the led falsh white when the match is about to end
-            if ((int)(opMode.getRuntime() * 10) % 2 == 0) {
+            if ((int)(robot.opMode.getRuntime() * 10) % 2 == 0) {
                 setLed0Color(1.0);
                 setLed2Color(1.0);
             } else {
@@ -58,7 +56,7 @@ public class Led {
                 setLed2Color(0.0);
             }
         }
-        else if(opMode.getRuntime() >= 90){
+        else if(robot.opMode.getRuntime() >= 90){
              setLed0Color(0.9);
              setLed2Color(0.9);
         }

@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.pathing.AimBot;
+import org.firstinspires.ftc.teamcode.runMode.AssistedDrive;
+import org.firstinspires.ftc.teamcode.runMode.TeleOp;
 import org.firstinspires.ftc.teamcode.subsystem.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystem.Intake;
 import org.firstinspires.ftc.teamcode.subsystem.Kicker;
@@ -13,19 +15,23 @@ import org.firstinspires.ftc.teamcode.subsystem.Vision;
 
 
 public class Robot {
-    LinearOpMode opMode;
+    public final LinearOpMode opMode;
 
-    public Drivetrain drivetrain;
-    public Intake intake;
-    public Shooter shooter;
-    public Kicker kicker;
-    public Led led;
-    public Vision vision;
-    public Limelight limelight;
+    public final Drivetrain drivetrain;
+    public final Intake intake;
+    public final Shooter shooter;
+    public final Kicker kicker;
+    public final Led led;
+    public final Vision vision;
+    public final Limelight limelight;
 
-    public AimBot aimBot;
+    public final AimBot aimBot;
+
+    public final TeleOp teleOp;
+    public final AssistedDrive assistedDrive;
+
     private ColorPattern colorPattern;
-
+    public final TeamColor teamColor;
     public enum TeamColor {
         RED,
         BLUE
@@ -39,24 +45,27 @@ public class Robot {
 
     public Robot(LinearOpMode opMode, TeamColor teamColor) {
         this.opMode = opMode;
-        drivetrain = new Drivetrain(opMode, this, teamColor);
-        intake = new Intake(opMode);
-        shooter = new Shooter(opMode, this);
-        kicker = new Kicker(opMode, this);
-        led = new Led(opMode, this);
-        vision = new Vision(opMode);
-        limelight = new Limelight(opMode, this);
+        this.teamColor = teamColor;
+        drivetrain = new Drivetrain(this);
+        intake = new Intake(this);
+        shooter = new Shooter(this);
+        kicker = new Kicker(this);
+        led = new Led(this);
+        vision = new Vision(this);
+        limelight = new Limelight(this);
         aimBot = new AimBot(teamColor, drivetrain.getFollower());
+        teleOp = new TeleOp(this);
+        assistedDrive = new AssistedDrive(this);
+
 
     }
 
     public void runTeleOp() {
         if (opMode.gamepad1.dpad_right || opMode.gamepad1.dpad_left) {
-            automatedCycle();
+            assistedDrive.drive();
 
         } else {
-            manualDrive();
-
+           teleOp.drive();
         }
 
         opMode.telemetry.update();
@@ -75,45 +84,6 @@ public class Robot {
 
     public void setColorPattern(ColorPattern colorPattern) {
         this.colorPattern = colorPattern;
-    }
-
-    private void manualDrive() {
-        drivetrain.drive();
-        intake.intakeIn();
-        shooter.shoot();
-        kicker.kickChamber();
-        led.updateLed();
-        limelight.telemetry();
-    }
-
-    private void automatedCycle() {
-        aimBot.setTargets(1);
-        drivetrain.driveToTargetAuto(drivetrain.pathChainPreHuman.get(), 0);
-        intake.startIntake();
-        kicker.lowerKicker();
-        drivetrain.driveToTargetAuto(drivetrain.pathChainPostHuman.get(), 0);
-        kicker.engageKicker();
-        shooter.autonomousStartShooterClose();
-        if(timeToStop()) return;
-        opMode.sleep(200);
-        intake.stopIntake();
-        if(opMode.gamepad1.right_trigger > 0.5){
-            drivetrain.driveToTargetAuto(drivetrain.rightPath, 0);
-        } else if (opMode.gamepad1.left_trigger > 0.5){
-            drivetrain.driveToTargetAuto(aimBot.getPathToTarget(), 0);
-
-        }
-        else{
-            drivetrain.driveToTargetAuto(drivetrain.leftPath, 0);
-        }
-
-
-        kicker.kickChamberAuto();
-        shooter.stopShooter();
-        if (opMode.gamepad1.dpad_left) {
-            drivetrain.driveToTargetAuto(drivetrain.pathChainGate.get(), 500);
-
-        }
     }
 
     public boolean timeToStop(){

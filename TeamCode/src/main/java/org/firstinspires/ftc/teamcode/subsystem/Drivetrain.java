@@ -7,11 +7,8 @@ import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.HeadingInterpolator;
 import com.pedropathing.paths.Path;
 import com.pedropathing.paths.PathChain;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.pathing.Constants;
@@ -21,12 +18,11 @@ import java.util.function.Supplier;
 
 
 public class Drivetrain {
-
-    LinearOpMode opMode;
+    
     Robot robot;
 
 
-    Robot.TeamColor teamColor;
+
 
     double targetX;
     double targetY;
@@ -72,13 +68,12 @@ public class Drivetrain {
 
     boolean automatedDrive = false;
 
-    public Drivetrain(LinearOpMode opMode, Robot robot, Robot.TeamColor teamColor) {
-        this.opMode = opMode;
+    public Drivetrain(Robot robot) {
         this.robot = robot;
-        this.teamColor = teamColor;
 
 
-        if (teamColor == Robot.TeamColor.RED) {
+
+        if (robot.teamColor == Robot.TeamColor.RED) {
             targetX = 72;
             targetY = 72;
             multiplier = 1;
@@ -102,7 +97,7 @@ public class Drivetrain {
             resetPosition = new Pose(9.594, 8.984, -Math.PI);
         }
 
-        follower = Constants.createFollower(opMode.hardwareMap);
+        follower = Constants.createFollower(robot.opMode.hardwareMap);
         follower.setStartingPose(startingPose == null ? new Pose() : startingPose);
         follower.update();
 
@@ -156,47 +151,47 @@ public class Drivetrain {
 
     public void drive() {
         follower.update();
-        if (opMode.gamepad1.xWasPressed()) {
+        if (robot.opMode.gamepad1.xWasPressed()) {
             robot.aimBot.setTargets(0);
             driveToTarget(robot.aimBot.getPathToTarget());
             automatedDrive = true;
-        } else if (opMode.gamepad1.yWasPressed()) {
+        } else if (robot.opMode.gamepad1.yWasPressed()) {
             robot.aimBot.setTargets(1);
             driveToTarget(robot.aimBot.getPathToTarget());
             automatedDrive = true;
-        } else if (opMode.gamepad1.aWasPressed()) {
+        } else if (robot.opMode.gamepad1.aWasPressed()) {
             robot.aimBot.setTargets(2);
             driveToTarget(robot.aimBot.getPathToTarget());
             automatedDrive = true;
-        } else if (opMode.gamepad1.bWasPressed()) {
+        } else if (robot.opMode.gamepad1.bWasPressed()) {
             robot.aimBot.setTargets(3);
             driveToTarget(robot.aimBot.getPathToTarget());
             automatedDrive = true;
-        } else if ((opMode.gamepad1.left_stick_x > 0.1 || opMode.gamepad1.left_stick_x < -0.1 ||
-                opMode.gamepad1.left_stick_y > 0.1 || opMode.gamepad1.left_stick_y < -0.1 ||
-                opMode.gamepad1.right_stick_x > 0.1 || opMode.gamepad1.right_stick_x < -0.1) & automatedDrive) {
+        } else if ((robot.opMode.gamepad1.left_stick_x > 0.1 || robot.opMode.gamepad1.left_stick_x < -0.1 ||
+                robot.opMode.gamepad1.left_stick_y > 0.1 || robot.opMode.gamepad1.left_stick_y < -0.1 ||
+                robot.opMode.gamepad1.right_stick_x > 0.1 || robot.opMode.gamepad1.right_stick_x < -0.1) & automatedDrive) {
             automatedDrive = false;
             follower.startTeleopDrive();
 
-        } else if (opMode.gamepad1.left_trigger > 0.1 && opMode.gamepad1.right_trigger > 0.1) {
-            strafeToBall(robot.limelight.getBallRotationOffset(), opMode.gamepad1.left_trigger);
-        } else if (opMode.gamepad1.left_trigger > 0.1 && opMode.gamepad1.right_trigger < 0.1) {
+        } else if (robot.opMode.gamepad1.left_trigger > 0.1 && robot.opMode.gamepad1.right_trigger > 0.1) {
+            strafeToBall(robot.limelight.getBallRotationOffset(), robot.opMode.gamepad1.left_trigger);
+        } else if (robot.opMode.gamepad1.left_trigger > 0.1 && robot.opMode.gamepad1.right_trigger < 0.1) {
             smartCorrectAngleToShoot();
         } else if(!automatedDrive){
-            driveMecanumFieldOriented(opMode.gamepad1);
+            driveMecanumFieldOriented(robot.opMode.gamepad1);
         }
 
 
-        if (opMode.gamepad1.options) {
+        if (robot.opMode.gamepad1.options) {
             resetFieldOriented();
         }
-        if (opMode.gamepad1.right_bumper || opMode.gamepad1.left_bumper) {
+        if (robot.opMode.gamepad1.right_bumper || robot.opMode.gamepad1.left_bumper) {
             resetOdoCorner(resetPosition);
 
         }
-        opMode.telemetry.addData("robotx", follower.getPose().getX());
-        opMode.telemetry.addData("roboty", follower.getPose().getY());
-        opMode.telemetry.addData("roboth", follower.getPose().getHeading());
+        robot.opMode.telemetry.addData("robotx", follower.getPose().getX());
+        robot.opMode.telemetry.addData("roboty", follower.getPose().getY());
+        robot.opMode.telemetry.addData("roboth", follower.getPose().getHeading());
 
     }
 
@@ -206,9 +201,9 @@ public class Drivetrain {
 
     public void driveMecanumFieldOriented(Gamepad gamepad) {
         follower.setTeleOpDrive(
-                -opMode.gamepad1.left_stick_y,
-                -opMode.gamepad1.left_stick_x,
-                -opMode.gamepad1.right_stick_x,
+                -robot.opMode.gamepad1.left_stick_y,
+                -robot.opMode.gamepad1.left_stick_x,
+                -robot.opMode.gamepad1.right_stick_x,
                 false
         );
     }
@@ -222,7 +217,7 @@ public class Drivetrain {
         automatedDrive = true;
         while (isBusy() && !robot.timeToStop()) update();
         if(robot.timeToStop()) return;
-        opMode.sleep(timeout);
+        robot.opMode.sleep(timeout);
 
     }
 
@@ -250,7 +245,7 @@ public class Drivetrain {
 
     public void printRobotPos() {
         String data = String.format(Locale.US, "{X: %.3f, Y: %.3f, H: %.3f}", follower.getPose().getX(), follower.getPose().getY(), follower.getPose().getHeading());
-        opMode.telemetry.addData("ROBOT Position", data);
+        robot.opMode.telemetry.addData("ROBOT Position", data);
 
     }
 
@@ -310,8 +305,8 @@ public class Drivetrain {
 
         double d = Math.abs(targetX - x);
         double h = Math.abs(targetY - y);
-        opMode.telemetry.addData("distance x", d);
-        opMode.telemetry.addData("distance y", h);
+        robot.opMode.telemetry.addData("distance x", d);
+        robot.opMode.telemetry.addData("distance y", h);
         double target = (1 * Math.PI / 2 - Math.atan(h / d)) + additionner;
         if (Math.abs(target) > Math.PI) {
             target = -2 * Math.PI + target;
@@ -321,8 +316,8 @@ public class Drivetrain {
 
         //TODO check for power inversion
         follower.setTeleOpDrive(
-                -opMode.gamepad1.left_stick_y,
-                -opMode.gamepad1.left_stick_x,
+                -robot.opMode.gamepad1.left_stick_y,
+                -robot.opMode.gamepad1.left_stick_x,
                 error,
                 false
         );
@@ -336,15 +331,15 @@ public class Drivetrain {
 
         double d = Math.abs(targetX - x);
         double h = Math.abs(targetY - y);
-        opMode.telemetry.addData("distance x", d);
-        opMode.telemetry.addData("distance y", h);
+        robot.opMode.telemetry.addData("distance x", d);
+        robot.opMode.telemetry.addData("distance y", h);
         double target = (1 * Math.PI / 2 - Math.atan(h / d)) + additionner;
         if (Math.abs(target) > Math.PI) {
             target = -2 * Math.PI + target;
         }
         target = multiplier * target;
         double error = target - follower.getPose().getHeading();
-        opMode.telemetry.addData("angle error", error);
+        robot.opMode.telemetry.addData("angle error", error);
         return Math.abs(error) < tolerance;
 
 
@@ -356,7 +351,7 @@ public class Drivetrain {
         double d = Math.abs(targetX - x);
         double h = Math.abs(targetY - y);
         double distance = Math.sqrt(d * d + h * h);
-        opMode.telemetry.addData("distance to goal", distance);
+        robot.opMode.telemetry.addData("distance to goal", distance);
 
         return getShooterPower(distance);
     }

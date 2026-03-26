@@ -5,16 +5,17 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.Constant;
+import org.firstinspires.ftc.teamcode.Robot;
 
 public class Intake {
     DcMotor intakeMotor;
     DcMotor feederMotor;
-    LinearOpMode opMode;
 
-    public Intake(LinearOpMode opMode) {
-        this.opMode = opMode;
-        intakeMotor = opMode.hardwareMap.get(DcMotor.class, Constant.intakeMotorName);
-        feederMotor = opMode.hardwareMap.get(DcMotor.class, Constant.feederMotorName);
+    Robot robot;
+    public Intake(Robot robot) {
+        this.robot = robot;
+        intakeMotor = robot.opMode.hardwareMap.get(DcMotor.class, Constant.intakeMotorName);
+        feederMotor = robot.opMode.hardwareMap.get(DcMotor.class, Constant.feederMotorName);
 
         intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         feederMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
@@ -25,8 +26,8 @@ public class Intake {
     }
 
     public void intakeIn() {
-        intakeMotor.setPower(opMode.gamepad1.right_trigger);
-        feederMotor.setPower(opMode.gamepad1.right_trigger);
+        intakeMotor.setPower(robot.opMode.gamepad1.right_trigger);
+        feederMotor.setPower(robot.opMode.gamepad1.right_trigger);
     }
 
     public boolean isIntaking() {

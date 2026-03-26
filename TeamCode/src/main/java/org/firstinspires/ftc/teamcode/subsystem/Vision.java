@@ -2,8 +2,6 @@ package org.firstinspires.ftc.teamcode.subsystem;
 
 import android.util.Size;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
@@ -20,15 +18,15 @@ import java.util.List;
 public class Vision {
 
     private AprilTagProcessor aprilTag;
-    LinearOpMode opMode;
+    Robot robot;
 
     private final Position cameraPosition = new Position(DistanceUnit.INCH,
             -2.0, -1, 12.25, 0);
     private final YawPitchRollAngles cameraOrientation = new YawPitchRollAngles(AngleUnit.DEGREES,
             90, -70, 0, 0);
 
-    public Vision(LinearOpMode opMode) {
-        this.opMode = opMode;
+    public Vision(Robot robot) {
+       this.robot = robot;
         initAprilTag();
 
     }
@@ -53,7 +51,7 @@ public class Vision {
                 .build();
 
         VisionPortal.Builder builder = new VisionPortal.Builder();
-        builder.setCamera(opMode.hardwareMap.get(WebcamName.class, Constant.webcamName));
+        builder.setCamera(robot.opMode.hardwareMap.get(WebcamName.class, Constant.webcamName));
         builder.addProcessor(aprilTag);
         builder.setCameraResolution(new Size(640, 480));
 

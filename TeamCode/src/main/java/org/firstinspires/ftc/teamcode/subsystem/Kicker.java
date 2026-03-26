@@ -1,13 +1,12 @@
 package org.firstinspires.ftc.teamcode.subsystem;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Constant;
 import org.firstinspires.ftc.teamcode.Robot;
 
 public class Kicker {
-    LinearOpMode opMode;
+    
     Robot robot;
     Servo chamber1Servo, chamber2Servo, chamber3Servo;
 
@@ -21,13 +20,12 @@ public class Kicker {
     private double lastShotTime2 = 0.0;
 
 
-    public Kicker(LinearOpMode opMode, Robot robot) {
-        this.opMode = opMode;
+    public Kicker(Robot robot) {
         this.robot = robot;
         
-        chamber1Servo = opMode.hardwareMap.get(Servo.class, Constant.chamber1Name);
-        chamber2Servo = opMode.hardwareMap.get(Servo.class, Constant.chamber2Name);
-        chamber3Servo = opMode.hardwareMap.get(Servo.class, Constant.chamber3Name);
+        chamber1Servo = robot.opMode.hardwareMap.get(Servo.class, Constant.chamber1Name);
+        chamber2Servo = robot.opMode.hardwareMap.get(Servo.class, Constant.chamber2Name);
+        chamber3Servo = robot.opMode.hardwareMap.get(Servo.class, Constant.chamber3Name);
 
     }
 
@@ -67,9 +65,9 @@ public class Kicker {
         }
         else {
             if (robot.shooter.isReadyToShoot()) {
-                if(opMode.gamepad2.a && !shooting) {
+                if(robot.opMode.gamepad2.a && !shooting) {
                     shooting = true;
-                    lastShotTime = opMode.getRuntime()-1.0;
+                    lastShotTime = robot.opMode.getRuntime()-1.0;
                     nbOfBallShot = 0;
                 }
                 if (shooting) {
@@ -81,9 +79,9 @@ public class Kicker {
 
             }
 
-             if (robot.shooter.isReadyToShoot() && opMode.gamepad2.bWasPressed()) {//robot.shooter.isReadyToShoot() && robot.drivetrain.checkIfAlignedWithGoal() &&
+             if (robot.shooter.isReadyToShoot() && robot.opMode.gamepad2.bWasPressed()) {//robot.shooter.isReadyToShoot() && robot.drivetrain.checkIfAlignedWithGoal() &&
                 shooting2 = true;
-                lastShotTime2 = opMode.getRuntime() - 1.0;
+                lastShotTime2 = robot.opMode.getRuntime() - 1.0;
                 nbOfBallShot2 = 0;
 
 
@@ -91,15 +89,15 @@ public class Kicker {
              if(shooting2){
                  shootFastAFV3();
              }
-            if (opMode.gamepad2.dpad_left) {
+            if (robot.opMode.gamepad2.dpad_left) {
                 kickChamber1();
 
             }
-            if (opMode.gamepad2.dpad_up) {
+            if (robot.opMode.gamepad2.dpad_up) {
                 kickChamber2();
 
             }
-            if (opMode.gamepad2.dpad_right) {
+            if (robot.opMode.gamepad2.dpad_right) {
                 kickChamber3();
 
             }
@@ -111,10 +109,10 @@ public class Kicker {
 
     public void kickChamberAuto() {
         int numberOfBallShot = 0;
-        double lastShotTime = opMode.getRuntime();
+        double lastShotTime = robot.opMode.getRuntime();
 
-        while (numberOfBallShot < 3 && opMode.opModeIsActive() && !robot.timeToStop()) {
-            if (robot.shooter.isReadyToShoot() && (opMode.getRuntime() - lastShotTime) >= 0.2) {
+        while (numberOfBallShot < 3 && robot.opMode.opModeIsActive() && !robot.timeToStop()) {
+            if (robot.shooter.isReadyToShoot() && (robot.opMode.getRuntime() - lastShotTime) >= 0.2) {
                 switch (numberOfBallShot) {
                     case 0:
                         kickChamber1();
@@ -127,16 +125,16 @@ public class Kicker {
                         break;
                 }
                 numberOfBallShot++;
-                lastShotTime = opMode.getRuntime();
+                lastShotTime = robot.opMode.getRuntime();
             }
 
         }
-        if(!robot.timeToStop())opMode.sleep(200);
+        if(!robot.timeToStop())robot.opMode.sleep(200);
         engageKicker();
     }
     public void kickChamberAutoPattern(Robot.ColorPattern patternInsideRobot) {
         int numberOfBallShot = 0;
-        double lastShotTime = opMode.getRuntime();
+        double lastShotTime = robot.opMode.getRuntime();
         int[] chamberOrder = new int[3];
         switch (patternInsideRobot){
             case GPP:
@@ -179,8 +177,8 @@ public class Kicker {
                 }
                 break;
         }
-        while (numberOfBallShot < 3 && opMode.opModeIsActive()) {
-            if (robot.shooter.isReadyToShoot() && ((opMode.getRuntime() - lastShotTime) >= 1.0 || numberOfBallShot == 0)) {
+        while (numberOfBallShot < 3 && robot.opMode.opModeIsActive()) {
+            if (robot.shooter.isReadyToShoot() && ((robot.opMode.getRuntime() - lastShotTime) >= 1.0 || numberOfBallShot == 0)) {
                 switch (chamberOrder[numberOfBallShot]){
                     case 1:
                         kickChamber1();
@@ -193,17 +191,17 @@ public class Kicker {
                         break;
                 }
                 numberOfBallShot++;
-                lastShotTime = opMode.getRuntime();
+                lastShotTime = robot.opMode.getRuntime();
             }
 
         }
-        opMode.sleep(500);
+        robot.opMode.sleep(500);
         engageKicker();
     }
 
     public void shootFastAFV2() {
-        if (nbOfBallShot < 3 && (opMode.getRuntime() - lastShotTime) >= 0.2) {
-            lastShotTime = opMode.getRuntime();
+        if (nbOfBallShot < 3 && (robot.opMode.getRuntime() - lastShotTime) >= 0.2) {
+            lastShotTime = robot.opMode.getRuntime();
             switch (nbOfBallShot) {
                 case 0:
                     kickChamber1();
@@ -220,8 +218,8 @@ public class Kicker {
         }
     }
     public void shootFastAFV3() {
-        if (nbOfBallShot2 < 4 && (opMode.getRuntime() - lastShotTime2) >= robot.aimBot.getTimeBetweenShots()) {
-            lastShotTime2 = opMode.getRuntime();
+        if (nbOfBallShot2 < 4 && (robot.opMode.getRuntime() - lastShotTime2) >= robot.aimBot.getTimeBetweenShots()) {
+            lastShotTime2 = robot.opMode.getRuntime();
             switch (nbOfBallShot2) {
                 case 0:
                     kickChamber2();
