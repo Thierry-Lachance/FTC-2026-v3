@@ -65,7 +65,7 @@ public class Limelight {
         robot.opMode.telemetry.update();
     }
 
-    public double getBallRotationOffset() {
+    public double getBallOffset() {
         if (!robot.opMode.gamepad1.right_bumper || !robot.opMode.gamepad1.left_bumper) {
             if (purpleWasDetected) {//if purple detected track purple
                 setLimelightPipeline(0);

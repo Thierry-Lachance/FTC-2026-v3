@@ -9,7 +9,7 @@ import com.pedropathing.paths.Path;
 import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
-import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
+
 import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.pathing.Constants;
 
@@ -20,16 +20,6 @@ import java.util.function.Supplier;
 public class Drivetrain {
     
     Robot robot;
-
-
-
-
-    double targetX;
-    double targetY;
-    double multiplier = 1.0;
-    double additionner = 0.0;
-
-
     Pose resetPosition;
 
     Pose preHuman;
@@ -46,10 +36,7 @@ public class Drivetrain {
 
     double previousHeading = 0.0;
 
-    public enum Precision {//TODO check if deprecated
-        HIGH,
-        LOW
-    }
+
 
     private final Follower follower;
     public static Pose startingPose; //See ExampleAuto to understand how to use this
@@ -74,9 +61,7 @@ public class Drivetrain {
 
 
         if (robot.teamColor == Robot.TeamColor.RED) {
-            targetX = 72;
-            targetY = 72;
-            multiplier = 1;
+
 
             resetPosition = new Pose(6.1, 28.39, -Math.PI);
             startingPose = resetPosition;
@@ -89,10 +74,7 @@ public class Drivetrain {
 
 
         } else {
-            targetX = -72;
-            targetY = 72;
-            multiplier = -1;
-            additionner = -Math.PI;
+
 
             resetPosition = new Pose(9.594, 8.984, -Math.PI);
         }
@@ -130,7 +112,7 @@ public class Drivetrain {
                                 new Pose(96.500, 95.000)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(-90), Math.toRadians(-45))
+                .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(follower::getHeading, -0.85, 0.8))
                 .build();
 
         leftPath = follower.pathBuilder()
@@ -143,10 +125,8 @@ public class Drivetrain {
                                 new Pose(96.500, 95.000)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(-90), Math.toRadians(-45))
+                .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(follower::getHeading, -0.85, 0.8))
                 .build();
-
-
     }
 
     public void drive() {
@@ -174,10 +154,8 @@ public class Drivetrain {
             follower.startTeleopDrive();
 
         } else if (robot.opMode.gamepad1.left_trigger > 0.1 && robot.opMode.gamepad1.right_trigger > 0.1) {
-            strafeToBall(robot.limelight.getBallRotationOffset(), robot.opMode.gamepad1.left_trigger);
-        } else if (robot.opMode.gamepad1.left_trigger > 0.1 && robot.opMode.gamepad1.right_trigger < 0.1) {
-            smartCorrectAngleToShoot();
-        } else if(!automatedDrive){
+            strafeToBall(robot.limelight.getBallOffset(), robot.opMode.gamepad1.left_trigger);
+        }else if(!automatedDrive){
             driveMecanumFieldOriented(robot.opMode.gamepad1);
         }
 
@@ -189,10 +167,7 @@ public class Drivetrain {
             resetOdoCorner(resetPosition);
 
         }
-        robot.opMode.telemetry.addData("robotx", follower.getPose().getX());
-        robot.opMode.telemetry.addData("roboty", follower.getPose().getY());
-        robot.opMode.telemetry.addData("roboth", follower.getPose().getHeading());
-
+        printRobotPos();
     }
 
     public void initTeleOp() {
@@ -222,24 +197,12 @@ public class Drivetrain {
     }
 
     public void resetFieldOriented() {
-        //TODO check usage
         Pose currentPose = follower.getPose();
         follower.setPose(new Pose(currentPose.getX(), currentPose.getY(), 0));
     }
 
-
-    public void resetOdo(Pose2D resetPose) {
-
-        //TODO implement
-
-    }
-
     public void resetOdoCorner(Pose resetPose) {
         follower.setPose(resetPose);
-
-    }
-    public void resetOdoCenter(Pose resetPose) {
-        follower.setPose(new Pose(72,72, -Math.PI/2));
 
     }
 
@@ -247,28 +210,6 @@ public class Drivetrain {
         String data = String.format(Locale.US, "{X: %.3f, Y: %.3f, H: %.3f}", follower.getPose().getX(), follower.getPose().getY(), follower.getPose().getHeading());
         robot.opMode.telemetry.addData("ROBOT Position", data);
 
-    }
-
-
-    public boolean isAtTarget(Precision precision) {
-        double posTolerance, velTolerance, angleTolerance;
-        if (precision == Precision.HIGH) {
-            posTolerance = 25;
-            velTolerance = 10;
-            angleTolerance = 0.15;
-        } else {
-            posTolerance = 30;
-            velTolerance = 75;
-            angleTolerance = 0.25;
-        }
-
-        // odo.update();
-       /* return Math.abs(odo.getPosX() - targetPose.getX(DistanceUnit.MM)) < posTolerance &&
-                Math.abs(odo.getPosY() - targetPose.getY(DistanceUnit.MM)) < posTolerance &&
-                Math.abs(odo.getPosition().getHeading(AngleUnit.RADIANS) - targetPose.getHeading(AngleUnit.RADIANS)) < angleTolerance &&
-                Math.abs(odo.getVelX()) < velTolerance &&
-                Math.abs(odo.getVelY()) < velTolerance;*/
-        return false;
     }
 
     public void strafeToBall(double ballOffset, double speed) {
@@ -288,80 +229,10 @@ public class Drivetrain {
         );
     }
 
-    public boolean checkIfInTriangle() {
-
-        double x = follower.getPose().getX();
-        double y = follower.getPose().getY();
-        return x <= -y && x <= y;
-
-    }
     public void update() {
         follower.update();
     }
 
-    public void smartCorrectAngleToShoot() {
-        double x = follower.getPose().getX();
-        double y = follower.getPose().getY();
-
-        double d = Math.abs(targetX - x);
-        double h = Math.abs(targetY - y);
-        robot.opMode.telemetry.addData("distance x", d);
-        robot.opMode.telemetry.addData("distance y", h);
-        double target = (1 * Math.PI / 2 - Math.atan(h / d)) + additionner;
-        if (Math.abs(target) > Math.PI) {
-            target = -2 * Math.PI + target;
-        }
-        target = multiplier * target;
-        double error = target - follower.getPose().getHeading();
-
-        //TODO check for power inversion
-        follower.setTeleOpDrive(
-                -robot.opMode.gamepad1.left_stick_y,
-                -robot.opMode.gamepad1.left_stick_x,
-                error,
-                false
-        );
-
-    }
-
-    public boolean checkIfAlignedWithGoal() {
-        double tolerance = 0.25;
-        double x = follower.getPose().getX()-72;
-        double y = follower.getPose().getY()-72;
-
-        double d = Math.abs(targetX - x);
-        double h = Math.abs(targetY - y);
-        robot.opMode.telemetry.addData("distance x", d);
-        robot.opMode.telemetry.addData("distance y", h);
-        double target = (1 * Math.PI / 2 - Math.atan(h / d)) + additionner;
-        if (Math.abs(target) > Math.PI) {
-            target = -2 * Math.PI + target;
-        }
-        target = multiplier * target;
-        double error = target - follower.getPose().getHeading();
-        robot.opMode.telemetry.addData("angle error", error);
-        return Math.abs(error) < tolerance;
-
-
-    }
-
-    public double calculateShooterPower() {
-        double x = follower.getPose().getX();
-        double y = follower.getPose().getY();
-        double d = Math.abs(targetX - x);
-        double h = Math.abs(targetY - y);
-        double distance = Math.sqrt(d * d + h * h);
-        robot.opMode.telemetry.addData("distance to goal", distance);
-
-        return getShooterPower(distance);
-    }
-
-    public static double getShooterPower(double distanceInches) {
-        return -0.00216713 * distanceInches * distanceInches * distanceInches
-                + 0.6849218 * distanceInches * distanceInches
-                - 63.05278661 * distanceInches
-                + 2825.23407233;
-    }
     public boolean isBusy() {
         return follower.isBusy();
     }

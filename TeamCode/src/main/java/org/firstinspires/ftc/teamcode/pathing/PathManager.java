@@ -1,9 +1,10 @@
 package org.firstinspires.ftc.teamcode.pathing;
 
+import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.Path;
 
 public class PathManager {
-    public enum fieldQuadrant {
+    public enum FieldQuadrant {
         TOP_LEFT,
         TOP_RIGHT,
         BOTTOM_LEFT,
@@ -20,14 +21,26 @@ public class PathManager {
     }
     public enum Divert {
         NONE,
-        RIGHT,
-        LEFT
+        TOP,
+        BOTTOM
     }
     public PathManager(){
 
     }
-    public Path getPath(Destination destination, fieldQuadrant currentPose, Divert divert){
+    public Path getPath(Destination destination, FieldQuadrant currentPose, Divert divert){
         return null;
+    }
+
+    public FieldQuadrant getFieldQuadrant(Pose pose){
+        if(pose.getX() < 72 && pose.getY() > 72){
+            return FieldQuadrant.TOP_LEFT;
+        } else if(pose.getX() > 72 && pose.getY() > 72){
+            return FieldQuadrant.TOP_RIGHT;
+        } else if(pose.getX() < 72 && pose.getY() < 72){
+            return FieldQuadrant.BOTTOM_LEFT;
+        } else {
+            return FieldQuadrant.BOTTOM_RIGHT;
+        }
     }
 
 }
