@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.pathing.AimBot;
+import org.firstinspires.ftc.teamcode.pathing.PathManager;
 import org.firstinspires.ftc.teamcode.runMode.AssistedDrive;
 import org.firstinspires.ftc.teamcode.runMode.TeleOp;
 import org.firstinspires.ftc.teamcode.subsystem.Drivetrain;
@@ -26,12 +27,14 @@ public class Robot {
     public final Limelight limelight;
 
     public final AimBot aimBot;
+    public final PathManager pathManager;
 
     public final TeleOp teleOp;
     public final AssistedDrive assistedDrive;
 
     private ColorPattern colorPattern;
     public final TeamColor teamColor;
+
     public enum TeamColor {
         RED,
         BLUE
@@ -42,6 +45,7 @@ public class Robot {
         PGP,
         PPG
     }
+
     private boolean assistedDriving = false;
 
     public Robot(LinearOpMode opMode, TeamColor teamColor) {
@@ -57,6 +61,7 @@ public class Robot {
         aimBot = new AimBot(teamColor, drivetrain.getFollower());
         teleOp = new TeleOp(this);
         assistedDrive = new AssistedDrive(this);
+        pathManager = new PathManager(this);
 
 
     }
@@ -65,11 +70,11 @@ public class Robot {
 
         if (assistedDriving) {
             assistedDrive.drive();
-            if(timeToStop()) assistedDriving = false;
+            if (timeToStop()) assistedDriving = false;
 
         } else {
-           teleOp.drive();
-            if(opMode.gamepad1.dpad_up)assistedDriving = true;
+            teleOp.drive();
+            if (opMode.gamepad1.dpad_up) assistedDriving = true;
         }
 
 
@@ -91,7 +96,7 @@ public class Robot {
         this.colorPattern = colorPattern;
     }
 
-    public boolean timeToStop(){
+    public boolean timeToStop() {
         return Math.abs(opMode.gamepad1.left_stick_y) > 0.4 || Math.abs(opMode.gamepad1.left_stick_x) > 0.4 || Math.abs(opMode.gamepad1.right_stick_y) > 0.4;
     }
 

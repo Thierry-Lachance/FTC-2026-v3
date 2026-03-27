@@ -26,7 +26,7 @@ public class Vision {
             90, -70, 0, 0);
 
     public Vision(Robot robot) {
-       this.robot = robot;
+        this.robot = robot;
         initAprilTag();
 
     }

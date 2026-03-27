@@ -1,12 +1,7 @@
 package org.firstinspires.ftc.teamcode.runMode;
 
-import static java.lang.Thread.sleep;
-
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import org.firstinspires.ftc.teamcode.Robot;
 
 public class Auto {
@@ -55,19 +50,19 @@ public class Auto {
             case CLOSE:
                 if (teamColor == Robot.TeamColor.RED) {
                     // Initialization code for red close starting position
-                   // robot.drivetrain.resetOdo(new Pose2D(DistanceUnit.INCH, -35.65, 51.00, AngleUnit.RADIANS, Math.PI / 2));
+                    // robot.drivetrain.resetOdo(new Pose2D(DistanceUnit.INCH, -35.65, 51.00, AngleUnit.RADIANS, Math.PI / 2));
                 } else {
                     // Initialization code for blue close starting position
-                   // robot.drivetrain.resetOdo(new Pose2D(DistanceUnit.INCH, -35.65, -51.00, AngleUnit.RADIANS, -Math.PI / 2));
+                    // robot.drivetrain.resetOdo(new Pose2D(DistanceUnit.INCH, -35.65, -51.00, AngleUnit.RADIANS, -Math.PI / 2));
                 }
                 break;
             case FAR:
                 if (teamColor == Robot.TeamColor.RED) {
                     // Initialization code for red close starting position
-                   // robot.drivetrain.resetOdo(new Pose2D(DistanceUnit.INCH, 60, 29, AngleUnit.RADIANS, 1.609));
+                    // robot.drivetrain.resetOdo(new Pose2D(DistanceUnit.INCH, 60, 29, AngleUnit.RADIANS, 1.609));
                 } else {
                     // Initialization code for blue close starting position
-                   // robot.drivetrain.resetOdo(new Pose2D(DistanceUnit.INCH, 57.777, -30.276, AngleUnit.RADIANS, -1.564));
+                    // robot.drivetrain.resetOdo(new Pose2D(DistanceUnit.INCH, 57.777, -30.276, AngleUnit.RADIANS, -1.564));
                 }
                 break;
         }

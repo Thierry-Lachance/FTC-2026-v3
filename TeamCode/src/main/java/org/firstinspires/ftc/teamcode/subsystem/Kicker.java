@@ -6,7 +6,7 @@ import org.firstinspires.ftc.teamcode.Constant;
 import org.firstinspires.ftc.teamcode.Robot;
 
 public class Kicker {
-    
+
     Robot robot;
     Servo chamber1Servo, chamber2Servo, chamber3Servo;
 
@@ -22,7 +22,7 @@ public class Kicker {
 
     public Kicker(Robot robot) {
         this.robot = robot;
-        
+
         chamber1Servo = robot.opMode.hardwareMap.get(Servo.class, Constant.chamber1Name);
         chamber2Servo = robot.opMode.hardwareMap.get(Servo.class, Constant.chamber2Name);
         chamber3Servo = robot.opMode.hardwareMap.get(Servo.class, Constant.chamber3Name);
@@ -62,12 +62,11 @@ public class Kicker {
     public void kickChamber() {
         if (robot.intake.isIntaking()) {
             lowerKicker();
-        }
-        else {
+        } else {
             if (robot.shooter.isReadyToShoot()) {
-                if(robot.opMode.gamepad2.a && !shooting) {
+                if (robot.opMode.gamepad2.a && !shooting) {
                     shooting = true;
-                    lastShotTime = robot.opMode.getRuntime()-1.0;
+                    lastShotTime = robot.opMode.getRuntime() - 1.0;
                     nbOfBallShot = 0;
                 }
                 if (shooting) {
@@ -79,16 +78,16 @@ public class Kicker {
 
             }
 
-             if (robot.shooter.isReadyToShoot() && robot.opMode.gamepad2.bWasPressed()) {//robot.shooter.isReadyToShoot() && robot.drivetrain.checkIfAlignedWithGoal() &&
+            if (robot.shooter.isReadyToShoot() && robot.opMode.gamepad2.bWasPressed()) {//robot.shooter.isReadyToShoot() && robot.drivetrain.checkIfAlignedWithGoal() &&
                 shooting2 = true;
                 lastShotTime2 = robot.opMode.getRuntime() - 1.0;
                 nbOfBallShot2 = 0;
 
 
             }
-             if(shooting2){
-                 shootFastAFV3();
-             }
+            if (shooting2) {
+                shootFastAFV3();
+            }
             if (robot.opMode.gamepad2.dpad_left) {
                 kickChamber1();
 
@@ -102,7 +101,7 @@ public class Kicker {
 
             }
         }
-        if(!robot.intake.isIntaking() && !shooting && !shooting2){
+        if (!robot.intake.isIntaking() && !shooting && !shooting2) {
             engageKicker();
         }
     }
@@ -110,7 +109,7 @@ public class Kicker {
     public void kickChamberAutoClose() {
         int numberOfBallShot = 0;
         double lastShotTime = robot.opMode.getRuntime();
-        while(!robot.shooter.isReadyToShoot() && !robot.timeToStop());
+        while (!robot.shooter.isReadyToShoot() && !robot.timeToStop()) ;
         while (numberOfBallShot < 4 && robot.opMode.opModeIsActive() && !robot.timeToStop()) {
             if ((robot.opMode.getRuntime() - lastShotTime) >= robot.aimBot.getTimeBetweenShots()) {
                 switch (numberOfBallShot) {
@@ -131,9 +130,10 @@ public class Kicker {
             }
 
         }
-        if(!robot.timeToStop())robot.opMode.sleep((long) robot.aimBot.getTimeBetweenShots());
+        if (!robot.timeToStop()) robot.opMode.sleep((long) robot.aimBot.getTimeBetweenShots());
         engageKicker();
     }
+
     public void kickChamberAutoFar() {
         int numberOfBallShot = 0;
         double lastShotTime = robot.opMode.getRuntime();
@@ -156,57 +156,58 @@ public class Kicker {
             }
 
         }
-        if(!robot.timeToStop())robot.opMode.sleep(200);
+        if (!robot.timeToStop()) robot.opMode.sleep(200);
         engageKicker();
     }
+
     public void kickChamberAutoPattern(Robot.ColorPattern patternInsideRobot) {
         int numberOfBallShot = 0;
         double lastShotTime = robot.opMode.getRuntime();
         int[] chamberOrder = new int[3];
-        switch (patternInsideRobot){
+        switch (patternInsideRobot) {
             case GPP:
-              switch (robot.getColorPattern()){
+                switch (robot.getColorPattern()) {
                     case GPP:
                         chamberOrder = new int[]{1, 2, 3};
                         break;
                     case PGP:
-                        chamberOrder = new int[]{3,1,2};
+                        chamberOrder = new int[]{3, 1, 2};
                         break;
                     case PPG:
-                        chamberOrder = new int[]{3,2,1};
+                        chamberOrder = new int[]{3, 2, 1};
                         break;
-              }
+                }
                 break;
             case PGP:
-                switch (robot.getColorPattern()){
+                switch (robot.getColorPattern()) {
                     case GPP:
-                        chamberOrder = new int[]{2,1,3};
+                        chamberOrder = new int[]{2, 1, 3};
                         break;
                     case PGP:
-                        chamberOrder = new int[]{1,2,3};
+                        chamberOrder = new int[]{1, 2, 3};
                         break;
                     case PPG:
-                        chamberOrder = new int[]{1,3,2};
+                        chamberOrder = new int[]{1, 3, 2};
                         break;
                 }
                 break;
             case PPG:
-                switch (robot.getColorPattern()){
+                switch (robot.getColorPattern()) {
                     case GPP:
-                        chamberOrder = new int[]{3,2,1};
+                        chamberOrder = new int[]{3, 2, 1};
                         break;
                     case PGP:
-                        chamberOrder = new int[]{1,3,2};
+                        chamberOrder = new int[]{1, 3, 2};
                         break;
                     case PPG:
-                        chamberOrder = new int[]{1,2,3};
+                        chamberOrder = new int[]{1, 2, 3};
                         break;
                 }
                 break;
         }
         while (numberOfBallShot < 3 && robot.opMode.opModeIsActive()) {
             if (robot.shooter.isReadyToShoot() && ((robot.opMode.getRuntime() - lastShotTime) >= 1.0 || numberOfBallShot == 0)) {
-                switch (chamberOrder[numberOfBallShot]){
+                switch (chamberOrder[numberOfBallShot]) {
                     case 1:
                         kickChamber1();
                         break;
@@ -244,6 +245,7 @@ public class Kicker {
             nbOfBallShot++;
         }
     }
+
     public void shootFastAFV3() {
         if (nbOfBallShot2 < 4 && (robot.opMode.getRuntime() - lastShotTime2) >= robot.aimBot.getTimeBetweenShots()) {
             lastShotTime2 = robot.opMode.getRuntime();

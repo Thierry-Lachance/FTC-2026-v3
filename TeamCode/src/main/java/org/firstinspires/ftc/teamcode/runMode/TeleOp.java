@@ -4,10 +4,12 @@ import org.firstinspires.ftc.teamcode.Robot;
 
 public class TeleOp {
     Robot robot;
-    public TeleOp(Robot robot){
+
+    public TeleOp(Robot robot) {
         this.robot = robot;
     }
-    public void drive(){
+
+    public void drive() {
         robot.drivetrain.drive();
         robot.intake.intakeIn();
         robot.shooter.shoot();

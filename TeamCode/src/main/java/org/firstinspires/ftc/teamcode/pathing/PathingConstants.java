@@ -12,18 +12,19 @@ import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.Constant;
+
 //TODO check the localizer
-public class Constants {
+public class PathingConstants {
     public static FollowerConstants followerConstants = new FollowerConstants()
             .forwardZeroPowerAcceleration(-26)
             .lateralZeroPowerAcceleration(-54)
             .useSecondaryTranslationalPIDF(true)
             .useSecondaryHeadingPIDF(true)
             .useSecondaryDrivePIDF(true)
-            .translationalPIDFCoefficients(new PIDFCoefficients(0.06,0,0.0005,0.001))
-            .secondaryTranslationalPIDFCoefficients(new PIDFCoefficients(0.06,0,0.02, 0.01))
+            .translationalPIDFCoefficients(new PIDFCoefficients(0.06, 0, 0.0005, 0.001))
+            .secondaryTranslationalPIDFCoefficients(new PIDFCoefficients(0.06, 0, 0.02, 0.01))
             .headingPIDFCoefficients(new PIDFCoefficients(0.8, 0, 0, 0.01))
-            .secondaryHeadingPIDFCoefficients(new PIDFCoefficients(1.25,0,0.08,0.01))
+            .secondaryHeadingPIDFCoefficients(new PIDFCoefficients(1.25, 0, 0.08, 0.01))
             .drivePIDFCoefficients(new FilteredPIDFCoefficients(0.025, 0, 0.00001, 0.6, 0.01))
             .secondaryDrivePIDFCoefficients(new FilteredPIDFCoefficients(0.02, 0, 0.000005, 0.6, 0.01))
             .centripetalScaling(0.0008)

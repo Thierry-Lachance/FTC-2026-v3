@@ -7,29 +7,24 @@ import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.HeadingInterpolator;
 import com.pedropathing.paths.Path;
 import com.pedropathing.paths.PathChain;
-import com.qualcomm.robotcore.hardware.Gamepad;
-
 
 import org.firstinspires.ftc.teamcode.Robot;
-import org.firstinspires.ftc.teamcode.pathing.Constants;
+import org.firstinspires.ftc.teamcode.pathing.PathingConstants;
 
 import java.util.Locale;
-import java.util.function.Supplier;
 
 
 public class Drivetrain {
-    
+
     Robot robot;
     Pose resetPosition;
 
     Pose preHuman;
     Pose postHuman;
 
-    Pose shoot = new Pose(96.5, 95.063, -Math.PI/2);
+    Pose shoot = new Pose(96.5, 95.063, -Math.PI / 2);
     Pose right = new Pose(105, 57);
-    Pose left = new Pose(45,110);
-
-
+    Pose left = new Pose(45, 110);
 
 
     Pose gate;
@@ -37,16 +32,15 @@ public class Drivetrain {
     double previousHeading = 0.0;
 
 
-
     private final Follower follower;
-    public static Pose startingPose; //See ExampleAuto to understand how to use this
+    public static Pose startingPose;
 
 
-    public final Supplier<PathChain> pathChainPreHuman;
-    public final Supplier<PathChain> pathChainPostHuman;
+    public final PathChain pathChainPreHuman;
+    public final PathChain pathChainPostHuman;
 
 
-    public final Supplier<PathChain> pathChainGate;
+    public final PathChain pathChainGate;
 
 
     public final PathChain rightPath;
@@ -59,18 +53,17 @@ public class Drivetrain {
         this.robot = robot;
 
 
-
         if (robot.teamColor == Robot.TeamColor.RED) {
 
 
             resetPosition = new Pose(6.1, 28.39, -Math.PI);
             startingPose = resetPosition;
 
-            preHuman = new Pose(14,29.35, -1.633);
+            preHuman = new Pose(14, 29.35, -1.633);
             postHuman = new Pose(14, 15, -1.645);
 
 
-            gate = new Pose(138,71,0);
+            gate = new Pose(138, 71, 0);
 
 
         } else {
@@ -79,25 +72,23 @@ public class Drivetrain {
             resetPosition = new Pose(9.594, 8.984, -Math.PI);
         }
 
-        follower = Constants.createFollower(robot.opMode.hardwareMap);
+        follower = PathingConstants.createFollower(robot.opMode.hardwareMap);
         follower.setStartingPose(startingPose == null ? new Pose() : startingPose);
         follower.update();
 
         follower.startTeleopDrive();
 
 
-
-
-        pathChainPreHuman = () -> follower.pathBuilder()
+        pathChainPreHuman = follower.pathBuilder()
                 .addPath(new Path(new BezierLine(follower::getPose, preHuman)))
                 .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(follower::getHeading, preHuman.getHeading(), 0.8))
                 .build();
-        pathChainPostHuman = () -> follower.pathBuilder()
+        pathChainPostHuman = follower.pathBuilder()
                 .addPath(new Path(new BezierLine(follower::getPose, postHuman)))
                 .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(follower::getHeading, postHuman.getHeading(), 0.8))
                 .build();
 
-        pathChainGate = () -> follower.pathBuilder()
+        pathChainGate = follower.pathBuilder()
                 .addPath(new Path(new BezierLine(follower::getPose, gate)))
                 .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(follower::getHeading, gate.getHeading(), 0.8))
                 .build();
@@ -132,21 +123,21 @@ public class Drivetrain {
 
     public void drive() {
         follower.update();
-        if (robot.opMode.gamepad1.xWasPressed()) {
+        if (robot.opMode.gamepad1.xWasPressed()) {//TODO deprecate this peasant manual routing and replace with auto routing
             robot.aimBot.setTargets(0);
-            driveToTarget(robot.aimBot.getPathToTarget());
+            //driveToTarget(robot.aimBot.getPathToTarget());
             automatedDrive = true;
         } else if (robot.opMode.gamepad1.yWasPressed()) {
             robot.aimBot.setTargets(1);
-            driveToTarget(robot.aimBot.getPathToTarget());
+            // driveToTarget(robot.aimBot.getPathToTarget());
             automatedDrive = true;
         } else if (robot.opMode.gamepad1.aWasPressed()) {
             robot.aimBot.setTargets(2);
-            driveToTarget(robot.aimBot.getPathToTarget());
+            //driveToTarget(robot.aimBot.getPathToTarget());
             automatedDrive = true;
         } else if (robot.opMode.gamepad1.bWasPressed()) {
             robot.aimBot.setTargets(3);
-            driveToTarget(robot.aimBot.getPathToTarget());
+            //driveToTarget(robot.aimBot.getPathToTarget());
             automatedDrive = true;
         } else if ((robot.opMode.gamepad1.left_stick_x > 0.1 || robot.opMode.gamepad1.left_stick_x < -0.1 ||
                 robot.opMode.gamepad1.left_stick_y > 0.1 || robot.opMode.gamepad1.left_stick_y < -0.1 ||
@@ -156,7 +147,7 @@ public class Drivetrain {
 
         } else if (robot.opMode.gamepad1.left_trigger > 0.1 && robot.opMode.gamepad1.right_trigger > 0.1) {
             strafeToBall(robot.limelight.getBallOffset(), robot.opMode.gamepad1.left_trigger);
-        }else if(!automatedDrive){
+        } else if (!automatedDrive) {
             driveMecanumFieldOriented();
         }
 
@@ -188,11 +179,12 @@ public class Drivetrain {
         follower.followPath(path);
         automatedDrive = true;
     }
+
     public void driveToTargetAuto(PathChain path, long timeout) {
         follower.followPath(path);
         automatedDrive = true;
         while (isBusy() && !robot.timeToStop()) update();
-        if(robot.timeToStop()) return;
+        if (robot.timeToStop()) return;
         robot.opMode.sleep(timeout);
 
     }
@@ -238,7 +230,7 @@ public class Drivetrain {
         return follower.isBusy();
     }
 
-    public Follower getFollower(){
+    public Follower getFollower() {
         return follower;
     }
 }

@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.subsystem;
 
 
-
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
@@ -56,12 +55,14 @@ public class Shooter {
         shooterMotor.setVelocityPIDFCoefficients(250, 2, 2, 0.0);
         shooterMotor.setVelocity(targetVelocity);
     }
+
     public void autonomousStartShooterFar() {
         targetVelocity = -1475;
         shooterMotor.setVelocityPIDFCoefficients(250, 2, 2, 0.0);
         shooterMotor.setVelocity(targetVelocity);
     }
-    public void autoStartShooter(){
+
+    public void autoStartShooter() {
         targetVelocity = robot.aimBot.getTargetVelocity();
         shooterMotor.setVelocityPIDFCoefficients(robot.aimBot.getPidfCoefficients().p,
                 robot.aimBot.getPidfCoefficients().i,

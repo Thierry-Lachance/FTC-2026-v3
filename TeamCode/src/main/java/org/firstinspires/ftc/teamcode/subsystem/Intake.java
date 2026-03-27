@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.subsystem;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
@@ -12,6 +11,7 @@ public class Intake {
     DcMotor feederMotor;
 
     Robot robot;
+
     public Intake(Robot robot) {
         this.robot = robot;
         intakeMotor = robot.opMode.hardwareMap.get(DcMotor.class, Constant.intakeMotorName);

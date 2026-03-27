@@ -23,6 +23,7 @@ public class Led {
         led2 = robot.opMode.hardwareMap.get(Servo.class, Constant.led2Name);
 
     }
+
     public void setLed0Color(double colorPos) {
         led0.setPosition(colorPos);
     }
@@ -34,6 +35,7 @@ public class Led {
     public void setLed2Color(double colorPos) {
         led2.setPosition(colorPos);
     }
+
     public void updateLed() {
 
         if (robot.intake.isIntaking()) {
@@ -46,21 +48,19 @@ public class Led {
                 setLed1Color(0.3);// Red
             }
         }
-        if(robot.opMode.getRuntime() >= 105){
-           //make the led falsh white when the match is about to end
-            if ((int)(robot.opMode.getRuntime() * 10) % 2 == 0) {
+        if (robot.opMode.getRuntime() >= 105) {
+            //make the led falsh white when the match is about to end
+            if ((int) (robot.opMode.getRuntime() * 10) % 2 == 0) {
                 setLed0Color(1.0);
                 setLed2Color(1.0);
             } else {
                 setLed0Color(0.0);
                 setLed2Color(0.0);
             }
-        }
-        else if(robot.opMode.getRuntime() >= 90){
-             setLed0Color(0.9);
-             setLed2Color(0.9);
-        }
-        else {
+        } else if (robot.opMode.getRuntime() >= 90) {
+            setLed0Color(0.9);
+            setLed2Color(0.9);
+        } else {
             if (rgbValue > 0.69) {
                 modifier = -0.005;
             } else if (rgbValue < 0.3) {
