@@ -24,7 +24,7 @@ public class AimBot {
             targets = new Target[] {
                     new Target(new Pose(71.516, 71.469, -Math.PI/2), -1180, 0.5, new PIDFCoefficients(250, 2, 2, 0.0), follower),//old x
                     new Target(new Pose(96.5, 95.063, -Math.PI/2), -1025.0, 0.2, new PIDFCoefficients(250, 2, 2, 0.0), follower),//old y
-                    new Target(new Pose(84.563, 16.250, -0.4014), -1475, 0.5, new PIDFCoefficients(250, 1, 2, 0.0), follower),//old a
+                    new Target(new Pose(84.563, 16.250, -0.4014), -1475, 0.9, new PIDFCoefficients(250, 1, 2, 0.0), follower),//old a
                     new Target(new Pose(47.469, 95.188, -1.01), -1220.0, 0.5, new PIDFCoefficients(250, 2, 2, 0.0), follower)//old b
             };
         }

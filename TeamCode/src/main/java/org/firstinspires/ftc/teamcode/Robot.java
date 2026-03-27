@@ -42,6 +42,7 @@ public class Robot {
         PGP,
         PPG
     }
+    private boolean assistedDriving = false;
 
     public Robot(LinearOpMode opMode, TeamColor teamColor) {
         this.opMode = opMode;
@@ -61,12 +62,16 @@ public class Robot {
     }
 
     public void runTeleOp() {
-        if (opMode.gamepad1.dpad_right || opMode.gamepad1.dpad_left) {
+
+        if (assistedDriving) {
             assistedDrive.drive();
+            if(timeToStop()) assistedDriving = false;
 
         } else {
            teleOp.drive();
+            if(opMode.gamepad1.dpad_up)assistedDriving = true;
         }
+
 
         opMode.telemetry.update();
 
@@ -87,7 +92,7 @@ public class Robot {
     }
 
     public boolean timeToStop(){
-        return !opMode.gamepad1.dpad_left && !opMode.gamepad1.dpad_right;
+        return Math.abs(opMode.gamepad1.left_stick_y) > 0.4 || Math.abs(opMode.gamepad1.left_stick_x) > 0.4 || Math.abs(opMode.gamepad1.right_stick_y) > 0.4;
     }
 
 

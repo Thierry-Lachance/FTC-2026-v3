@@ -113,6 +113,7 @@ public class Drivetrain {
                         )
                 )
                 .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(follower::getHeading, -0.85, 0.8))
+                .setTranslationalConstraint(3)
                 .build();
 
         leftPath = follower.pathBuilder()
@@ -156,7 +157,7 @@ public class Drivetrain {
         } else if (robot.opMode.gamepad1.left_trigger > 0.1 && robot.opMode.gamepad1.right_trigger > 0.1) {
             strafeToBall(robot.limelight.getBallOffset(), robot.opMode.gamepad1.left_trigger);
         }else if(!automatedDrive){
-            driveMecanumFieldOriented(robot.opMode.gamepad1);
+            driveMecanumFieldOriented();
         }
 
 
@@ -174,7 +175,7 @@ public class Drivetrain {
 
     }
 
-    public void driveMecanumFieldOriented(Gamepad gamepad) {
+    public void driveMecanumFieldOriented() {
         follower.setTeleOpDrive(
                 -robot.opMode.gamepad1.left_stick_y,
                 -robot.opMode.gamepad1.left_stick_x,

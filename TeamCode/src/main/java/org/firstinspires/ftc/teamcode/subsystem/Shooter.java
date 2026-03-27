@@ -61,6 +61,14 @@ public class Shooter {
         shooterMotor.setVelocityPIDFCoefficients(250, 2, 2, 0.0);
         shooterMotor.setVelocity(targetVelocity);
     }
+    public void autoStartShooter(){
+        targetVelocity = robot.aimBot.getTargetVelocity();
+        shooterMotor.setVelocityPIDFCoefficients(robot.aimBot.getPidfCoefficients().p,
+                robot.aimBot.getPidfCoefficients().i,
+                robot.aimBot.getPidfCoefficients().d,
+                robot.aimBot.getPidfCoefficients().f);
+        shooterMotor.setVelocity(targetVelocity);
+    }
 
     public void stopShooter() {
         shooterMotor.setVelocity(0);

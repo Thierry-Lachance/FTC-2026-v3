@@ -107,7 +107,34 @@ public class Kicker {
         }
     }
 
-    public void kickChamberAuto() {
+    public void kickChamberAutoClose() {
+        int numberOfBallShot = 0;
+        double lastShotTime = robot.opMode.getRuntime();
+        while(!robot.shooter.isReadyToShoot() && !robot.timeToStop());
+        while (numberOfBallShot < 4 && robot.opMode.opModeIsActive() && !robot.timeToStop()) {
+            if ((robot.opMode.getRuntime() - lastShotTime) >= robot.aimBot.getTimeBetweenShots()) {
+                switch (numberOfBallShot) {
+                    case 0:
+                        kickChamber2();
+                        break;
+                    case 1:
+                        kickChamber1();
+                        break;
+                    case 2:
+                        kickChamber3();
+                        break;
+                    case 3:
+                        break;
+                }
+                numberOfBallShot++;
+                lastShotTime = robot.opMode.getRuntime();
+            }
+
+        }
+        if(!robot.timeToStop())robot.opMode.sleep((long) robot.aimBot.getTimeBetweenShots());
+        engageKicker();
+    }
+    public void kickChamberAutoFar() {
         int numberOfBallShot = 0;
         double lastShotTime = robot.opMode.getRuntime();
 
