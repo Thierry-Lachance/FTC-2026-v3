@@ -84,9 +84,9 @@ public class PathManager {
                         break;
                 }
                 return CreateDirectPathFromRobotPoseToTarget(nearTeamGoalPose);
-            case NEAR_OPP_GOAL:
+            case NEAR_OPP_GOAL://TODO
                 return CreateDirectPathFromRobotPoseToTarget(nearOppGoalPose);
-            case HUMAN_BEFORE_INTAKING:
+            case HUMAN_BEFORE_INTAKING://TODO
                 return CreateDirectPathFromRobotPoseToTarget(humanBeforeIntakingPose);
             case HUMAN_AFTER_INTAKING://not much use for diversion here but we can add it later if needed
                 return CreateDirectPathFromRobotPoseToTarget(humanAfterIntakingPose);
@@ -142,8 +142,13 @@ public class PathManager {
                                 targetPose
                         )
                 )
-                .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(robot.drivetrain.getFollower()::getHeading, targetPose.getHeading(), 0.8))
-                .setTranslationalConstraint(3)
+                .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(robot.drivetrain.getFollower()::getHeading, targetPose.getHeading(), 0.5))
+                .setTranslationalConstraint(0.05)
+                .setVelocityConstraint(0.0)
+                .setHeadingConstraint(0.03)
+                .setTValueConstraint(1.0)
+                .setTimeoutConstraint(5000)
+                .setBrakingStrength(5)
                 .build();
 
     }
@@ -157,8 +162,13 @@ public class PathManager {
                                 targetPose
                         )
                 )
-                .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(robot.drivetrain.getFollower()::getHeading, targetPose.getHeading(), 0.8))
-                .setTranslationalConstraint(3)
+                .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(robot.drivetrain.getFollower()::getHeading, targetPose.getHeading(), 0.5))
+                .setTranslationalConstraint(0.05)
+                .setVelocityConstraint(0.0)
+                .setHeadingConstraint(0.03)
+                .setTValueConstraint(1.0)
+                .setTimeoutConstraint(5000)
+                .setBrakingStrength(5)
                 .build();
 
     }
@@ -171,8 +181,13 @@ public class PathManager {
                                 targetPose
                         )
                 )
-                .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(robot.drivetrain.getFollower()::getHeading, targetPose.getHeading(), 0.8))
-                .setTranslationalConstraint(3)
+                .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(robot.drivetrain.getFollower()::getHeading, targetPose.getHeading(), 0.5))
+                .setTranslationalConstraint(0.05)
+                .setVelocityConstraint(0.0)
+                .setHeadingConstraint(0.03)
+                .setTValueConstraint(1.0)
+                .setTimeoutConstraint(5000)
+                .setBrakingStrength(5)
                 .build();
 
     }
