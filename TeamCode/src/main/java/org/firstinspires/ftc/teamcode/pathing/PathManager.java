@@ -5,6 +5,7 @@ import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.HeadingInterpolator;
 import com.pedropathing.paths.PathChain;
+import com.pedropathing.paths.PathConstraints;
 
 import org.firstinspires.ftc.teamcode.Robot;
 
@@ -37,6 +38,11 @@ public class PathManager {
         BOTTOM
     }
 
+    public enum ConstraintLevel{
+        HIGH_PRECISION,
+        LOW_PRECISION
+    }
+
     private Pose gatePose;
     private Pose nearTeamGoalPose;
     private Pose farZonePose;
@@ -49,6 +55,9 @@ public class PathManager {
     private Pose parkGatePose;
     private Pose parkInsidePose;
     private Pose parkOutsidePose;
+
+    private double[] highPrecisionConstraints = new double[]{0.05, 0.0, 0.03, 1.0, 5000, 5};//translational, velocity, heading, tValue, timeout, brakingStrength
+    private double[] lowPrecisionConstraints = new double[]{0.25, 0.0, 0.075, 0.9, 5000, 5};//todo check value with gate testing
 
     public PathManager(Robot robot) {
         this.robot = robot;
@@ -80,61 +89,61 @@ public class PathManager {
                 switch (getFieldQuadrant(robot.drivetrain.getFollower().getPose())) {//diversion from top right is not available because it will go out of bounds
                     case TOP_LEFT:
                         if (divert == Divert.TOP) {
-                            return createPathFromRobotPoseAnd2Waypoint(nearTeamGoalPose, new Pose(48, 144), new Pose(96, 144));
+                            return createPathFromRobotPoseAnd2Waypoint(nearTeamGoalPose, new Pose(48, 144), new Pose(96, 144), ConstraintLevel.HIGH_PRECISION);
                         } else if (divert == Divert.BOTTOM) {
-                            return createPathFromRobotPoseAnd2Waypoint(nearTeamGoalPose, new Pose(0, 0), new Pose(144, 47));
+                            return createPathFromRobotPoseAnd2Waypoint(nearTeamGoalPose, new Pose(0, 0), new Pose(144, 47), ConstraintLevel.HIGH_PRECISION);
                         }
                         break;
                     case BOTTOM_LEFT:
                         if (divert == Divert.TOP) {
-                            return createPathFromRobotPoseAnd2Waypoint(nearTeamGoalPose, new Pose(72, 72), new Pose(0, 144));
+                            return createPathFromRobotPoseAnd2Waypoint(nearTeamGoalPose, new Pose(72, 72), new Pose(0, 144), ConstraintLevel.HIGH_PRECISION);
                         } else if (divert == Divert.BOTTOM) {
-                            return createPathFromRobotPoseAnd2Waypoint(nearTeamGoalPose, new Pose(91, 58), new Pose(127, 0));
+                            return createPathFromRobotPoseAnd2Waypoint(nearTeamGoalPose, new Pose(91, 58), new Pose(127, 0), ConstraintLevel.HIGH_PRECISION);
                         }
                         break;
                     case BOTTOM_RIGHT:
                         if (divert == Divert.TOP) {
-                            return createPathFromRobotPoseAnd2Waypoint(nearTeamGoalPose, new Pose(24, 24), new Pose(0, 144));
+                            return createPathFromRobotPoseAnd2Waypoint(nearTeamGoalPose, new Pose(24, 24), new Pose(0, 144), ConstraintLevel.HIGH_PRECISION);
                         } else if (divert == Divert.BOTTOM) {//todo check if diversion from bottom is mandatory
-                            return createPathFromRobotPoseAnd2Waypoint(nearTeamGoalPose, new Pose(72, 72), new Pose(133, 86));
+                            return createPathFromRobotPoseAnd2Waypoint(nearTeamGoalPose, new Pose(72, 72), new Pose(133, 86), ConstraintLevel.HIGH_PRECISION);
                         }
                         break;
                 }
-                return CreateDirectPathFromRobotPoseToTarget(nearTeamGoalPose);
+                return CreateDirectPathFromRobotPoseToTarget(nearTeamGoalPose, ConstraintLevel.HIGH_PRECISION);
             case NEAR_OPP_GOAL://TODO
-                return CreateDirectPathFromRobotPoseToTarget(nearOppGoalPose);
+                return CreateDirectPathFromRobotPoseToTarget(nearOppGoalPose, ConstraintLevel.HIGH_PRECISION);
             case HUMAN_BEFORE_INTAKING://TODO
-                return CreateDirectPathFromRobotPoseToTarget(humanBeforeIntakingPose);
+                return CreateDirectPathFromRobotPoseToTarget(humanBeforeIntakingPose, ConstraintLevel.HIGH_PRECISION);
             case HUMAN_AFTER_INTAKING://not much use for diversion here but we can add it later if needed
-                return CreateDirectPathFromRobotPoseToTarget(humanAfterIntakingPose);
+                return CreateDirectPathFromRobotPoseToTarget(humanAfterIntakingPose, ConstraintLevel.LOW_PRECISION);
             case GATE://TODO
-                return CreateDirectPathFromRobotPoseToTarget(gatePose);
+                return CreateDirectPathFromRobotPoseToTarget(gatePose, ConstraintLevel.LOW_PRECISION);
             case FAR_ZONE://not much use for diversion as there is not much use to divert from top of the field
-                return CreateDirectPathFromRobotPoseToTarget(farZonePose);
+                return CreateDirectPathFromRobotPoseToTarget(farZonePose, ConstraintLevel.HIGH_PRECISION);
             case CENTER_FIELD://not much use for bottom of field diversion here but we can add it later if needed
                 switch (getFieldQuadrant(robot.drivetrain.getFollower().getPose())) {
                     case TOP_LEFT:
                         if (divert == Divert.TOP) {
-                            return createPathFromRobotPoseAnd1Waypoint(centerFieldPose, new Pose(72, 144));
+                            return createPathFromRobotPoseAnd1Waypoint(centerFieldPose, new Pose(72, 144), ConstraintLevel.HIGH_PRECISION);
                         } else if (divert == Divert.BOTTOM) {
-                            return createPathFromRobotPoseAnd2Waypoint(centerFieldPose, new Pose(24, 24), new Pose(72, 48));
+                            return createPathFromRobotPoseAnd2Waypoint(centerFieldPose, new Pose(24, 24), new Pose(72, 48), ConstraintLevel.HIGH_PRECISION);
                         }
                         break;
                     case TOP_RIGHT:
                         if (divert == Divert.TOP) {
-                            return createPathFromRobotPoseAnd1Waypoint(centerFieldPose, new Pose(72, 144));
+                            return createPathFromRobotPoseAnd1Waypoint(centerFieldPose, new Pose(72, 144), ConstraintLevel.HIGH_PRECISION);
                         } else if (divert == Divert.BOTTOM) {
-                            return createPathFromRobotPoseAnd2Waypoint(centerFieldPose, new Pose(120, 24), new Pose(72, 48));
+                            return createPathFromRobotPoseAnd2Waypoint(centerFieldPose, new Pose(120, 24), new Pose(72, 48), ConstraintLevel.HIGH_PRECISION);
                         }
                         break;
                 }
-                return CreateDirectPathFromRobotPoseToTarget(centerFieldPose);
+                return CreateDirectPathFromRobotPoseToTarget(centerFieldPose, ConstraintLevel.HIGH_PRECISION);
             case PARK_GATE:
-                return CreateDirectPathFromRobotPoseToTarget(parkGatePose);//todo test if diversion is needed
+                return CreateDirectPathFromRobotPoseToTarget(parkGatePose, ConstraintLevel.HIGH_PRECISION);
             case PARK_INSIDE:
-                return CreateDirectPathFromRobotPoseToTarget(parkInsidePose);
+                return CreateDirectPathFromRobotPoseToTarget(parkInsidePose, ConstraintLevel.HIGH_PRECISION);
             case PARK_OUTSIDE:
-                return CreateDirectPathFromRobotPoseToTarget(parkOutsidePose);
+                return CreateDirectPathFromRobotPoseToTarget(parkOutsidePose, ConstraintLevel.HIGH_PRECISION);
         }
         return null;
     }
@@ -155,7 +164,7 @@ public class PathManager {
         }
     }
 
-    private PathChain createPathFromRobotPoseAnd2Waypoint(Pose targetPose, Pose waypoint1, Pose waypoint2) {
+    private PathChain createPathFromRobotPoseAnd2Waypoint(Pose targetPose, Pose waypoint1, Pose waypoint2, ConstraintLevel constraintLevel) {
         return robot.drivetrain.getFollower().pathBuilder()
                 .addPath(
                         new BezierCurve(
@@ -166,17 +175,17 @@ public class PathManager {
                         )
                 )
                 .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(robot.drivetrain.getFollower()::getHeading, targetPose.getHeading(), 0.5))
-                .setTranslationalConstraint(0.05)
-                .setVelocityConstraint(0.0)
-                .setHeadingConstraint(0.03)
-                .setTValueConstraint(1.0)
-                .setTimeoutConstraint(5000)
-                .setBrakingStrength(5)
+                .setTranslationalConstraint(getConstraint(constraintLevel)[0])
+                .setVelocityConstraint(getConstraint(constraintLevel)[1])
+                .setHeadingConstraint(getConstraint(constraintLevel)[2])
+                .setTValueConstraint(getConstraint(constraintLevel)[3])
+                .setTimeoutConstraint(getConstraint(constraintLevel)[4])
+                .setBrakingStrength(getConstraint(constraintLevel)[5])
                 .build();
 
     }
 
-    private PathChain createPathFromRobotPoseAnd1Waypoint(Pose targetPose, Pose waypoint) {
+    private PathChain createPathFromRobotPoseAnd1Waypoint(Pose targetPose, Pose waypoint, ConstraintLevel constraintLevel) {
         return robot.drivetrain.getFollower().pathBuilder()
                 .addPath(
                         new BezierCurve(
@@ -186,17 +195,17 @@ public class PathManager {
                         )
                 )
                 .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(robot.drivetrain.getFollower()::getHeading, targetPose.getHeading(), 0.5))
-                .setTranslationalConstraint(0.05)
-                .setVelocityConstraint(0.0)
-                .setHeadingConstraint(0.03)
-                .setTValueConstraint(1.0)
-                .setTimeoutConstraint(5000)
-                .setBrakingStrength(5)
+                .setTranslationalConstraint(getConstraint(constraintLevel)[0])
+                .setVelocityConstraint(getConstraint(constraintLevel)[1])
+                .setHeadingConstraint(getConstraint(constraintLevel)[2])
+                .setTValueConstraint(getConstraint(constraintLevel)[3])
+                .setTimeoutConstraint(getConstraint(constraintLevel)[4])
+                .setBrakingStrength(getConstraint(constraintLevel)[5])
                 .build();
 
     }
 
-    private PathChain CreateDirectPathFromRobotPoseToTarget(Pose targetPose) {
+    private PathChain CreateDirectPathFromRobotPoseToTarget(Pose targetPose, ConstraintLevel constraintLevel) {
         return robot.drivetrain.getFollower().pathBuilder()
                 .addPath(
                         new BezierLine(
@@ -205,14 +214,20 @@ public class PathManager {
                         )
                 )
                 .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(robot.drivetrain.getFollower()::getHeading, targetPose.getHeading(), 0.5))
-                .setTranslationalConstraint(0.05)
-                .setVelocityConstraint(0.0)
-                .setHeadingConstraint(0.03)
-                .setTValueConstraint(1.0)
-                .setTimeoutConstraint(5000)
-                .setBrakingStrength(5)
+                .setTranslationalConstraint(getConstraint(constraintLevel)[0])
+                .setVelocityConstraint(getConstraint(constraintLevel)[1])
+                .setHeadingConstraint(getConstraint(constraintLevel)[2])
+                .setTValueConstraint(getConstraint(constraintLevel)[3])
+                .setTimeoutConstraint(getConstraint(constraintLevel)[4])
+                .setBrakingStrength(getConstraint(constraintLevel)[5])
                 .build();
 
+    }
+
+    private double[] getConstraint(ConstraintLevel constraintLevel){
+        if(constraintLevel == ConstraintLevel.HIGH_PRECISION){
+            return highPrecisionConstraints;
+        }return lowPrecisionConstraints;
     }
 
 }
