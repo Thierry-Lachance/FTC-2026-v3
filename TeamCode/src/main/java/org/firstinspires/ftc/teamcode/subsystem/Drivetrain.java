@@ -20,10 +20,9 @@ public class Drivetrain {
 
 
     private final Follower follower;
-    public static Pose startingPose;
 
 
-    public Drivetrain(Robot robot) {
+    public Drivetrain(Robot robot, Pose startingPose) {
         this.robot = robot;
 
 

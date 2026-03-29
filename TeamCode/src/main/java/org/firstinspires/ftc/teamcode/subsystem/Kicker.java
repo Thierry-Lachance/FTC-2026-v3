@@ -106,7 +106,7 @@ public class Kicker {
     public void kickChamberAutoPattern(Robot.ColorPattern patternInsideRobot) {
         int numberOfBallShot = 0;
         double lastShotTime = robot.opMode.getRuntime();
-        int[] chamberOrder = new int[3];
+        int[] chamberOrder = {1, 2, 3};
         switch (patternInsideRobot) {
             case GPP:
                 switch (robot.getMatchColorPattern()) {

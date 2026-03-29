@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.pedropathing.geometry.Pose;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.pathing.AimBot;
@@ -34,8 +35,8 @@ public class Robot {
     public Autonomous autonomous;
     public final AutomatedAction automatedAction;
 
-    private ColorPattern matchColorPattern;
-    private ColorPattern patternInsideRobot;
+    private ColorPattern matchColorPattern = ColorPattern.UNKNOWN;
+    private ColorPattern patternInsideRobot = ColorPattern.UNKNOWN;
     public final TeamColor teamColor;
     public final RunMode runMode;
 
@@ -47,7 +48,8 @@ public class Robot {
     public enum ColorPattern {
         GPP,
         PGP,
-        PPG
+        PPG,
+        UNKNOWN
     }
 
     public enum RunMode {
@@ -60,7 +62,7 @@ public class Robot {
         this.opMode = opMode;
         this.teamColor = teamColor;
         this.runMode = RunMode.TELEOP;
-        drivetrain = new Drivetrain(this);
+        drivetrain = new Drivetrain(this, new Pose(0,0,0));
         intake = new Intake(this);
         shooter = new Shooter(this);
         kicker = new Kicker(this);
@@ -74,11 +76,11 @@ public class Robot {
 
     }
 
-    public Robot(LinearOpMode opMode, TeamColor teamColor, Autonomous.Action[] actionList) {//TODO add init pose to constructor
+    public Robot(LinearOpMode opMode, TeamColor teamColor, PathManager.StartingPosition startingPosition, Autonomous.Action[] actionList) {
         this.opMode = opMode;
         this.teamColor = teamColor;
         this.runMode = RunMode.AUTONOMOUS;
-        drivetrain = new Drivetrain(this);
+
         intake = new Intake(this);
         shooter = new Shooter(this);
         kicker = new Kicker(this);
@@ -89,6 +91,7 @@ public class Robot {
         autonomous = new Autonomous(this, actionList);
         automatedAction = new AutomatedAction(this);
         pathManager = new PathManager(this);
+        drivetrain = new Drivetrain(this, pathManager.getStartingPose(startingPosition));
 
 
     }

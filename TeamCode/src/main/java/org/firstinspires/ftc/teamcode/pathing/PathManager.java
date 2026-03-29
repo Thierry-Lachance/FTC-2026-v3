@@ -37,6 +37,11 @@ public class PathManager {
         POST_LINE_3
     }
 
+    public enum StartingPosition {
+        NEAR_TEAM_GOAL,
+        FAR_ZONE
+    }
+
     public enum Divert {
         NONE,
         TOP,
@@ -291,12 +296,31 @@ public class PathManager {
 
     }
 
-
     private double[] getConstraint(ConstraintLevel constraintLevel) {
         if (constraintLevel == ConstraintLevel.HIGH_PRECISION) {
             return highPrecisionConstraints;
         }
         return lowPrecisionConstraints;
     }
+
+    public Pose getStartingPose(StartingPosition startingPosition) {
+        if (robot.teamColor == Robot.TeamColor.RED) {
+            switch (startingPosition) {
+                case NEAR_TEAM_GOAL://TODO create these poses
+                    return new Pose(0,0,0);
+                case FAR_ZONE:
+                    return new Pose(0,0,0);
+            }
+        } else {
+            switch (startingPosition) {
+                case NEAR_TEAM_GOAL:
+                    return new Pose(0,0,0);
+                case FAR_ZONE:
+                    return new Pose(0,0,0);
+            }
+        }
+        return null;
+    }
+
 
 }
