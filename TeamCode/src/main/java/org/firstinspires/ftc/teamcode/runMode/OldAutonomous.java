@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Robot;
 
-public class Auto {
+public class OldAutonomous {
     public enum Action {
         SHOOT_BALL_CLOSE,
         SHOOT_BALL_FAR,
@@ -35,13 +35,13 @@ public class Auto {
     boolean patternSet = false;
     Robot.ColorPattern patternInsideRobot = Robot.ColorPattern.GPP;
 
-    public Auto(LinearOpMode opMode, Robot.TeamColor teamColor, StartingPosition startingPosition, Action[] actionList) {
+    public OldAutonomous(LinearOpMode opMode, Robot.TeamColor teamColor, StartingPosition startingPosition, Action[] actionList) {
         this.actionList = actionList;
         this.teamColor = teamColor;
         this.startingPosition = startingPosition;
         this.opMode = opMode;
 
-        robot = new Robot(opMode, teamColor);
+        robot = new Robot(opMode, teamColor, Robot.RunMode.AUTONOMOUS);
 
     }
 

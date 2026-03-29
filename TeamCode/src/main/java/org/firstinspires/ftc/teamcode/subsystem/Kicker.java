@@ -10,16 +10,6 @@ public class Kicker {
     Robot robot;
     Servo chamber1Servo, chamber2Servo, chamber3Servo;
 
-    private boolean shooting = false;
-    private int nbOfBallShot = 0;
-    private double lastShotTime = 0.0;
-
-
-    private boolean shooting2 = false;
-    private int nbOfBallShot2 = 0;
-    private double lastShotTime2 = 0.0;
-
-
     public Kicker(Robot robot) {
         this.robot = robot;
 
@@ -57,53 +47,6 @@ public class Kicker {
 
     public void kickChamber3() {
         chamber3Servo.setPosition(Constant.chamber3ActivePos);
-    }
-
-    public void kickChamber() {
-        if (robot.intake.isIntaking()) {
-            lowerKicker();
-        } else {
-            if (robot.shooter.isReadyToShoot()) {
-                if (robot.opMode.gamepad2.a && !shooting) {
-                    shooting = true;
-                    lastShotTime = robot.opMode.getRuntime() - 1.0;
-                    nbOfBallShot = 0;
-                }
-                if (shooting) {
-                    shootFastAFV2();
-                }
-
-            } else {
-                shooting = false;
-
-            }
-
-            if (robot.shooter.isReadyToShoot() && robot.opMode.gamepad2.bWasPressed()) {//robot.shooter.isReadyToShoot() && robot.drivetrain.checkIfAlignedWithGoal() &&
-                shooting2 = true;
-                lastShotTime2 = robot.opMode.getRuntime() - 1.0;
-                nbOfBallShot2 = 0;
-
-
-            }
-            if (shooting2) {
-                shootFastAFV3();
-            }
-            if (robot.opMode.gamepad2.dpad_left) {
-                kickChamber1();
-
-            }
-            if (robot.opMode.gamepad2.dpad_up) {
-                kickChamber2();
-
-            }
-            if (robot.opMode.gamepad2.dpad_right) {
-                kickChamber3();
-
-            }
-        }
-        if (!robot.intake.isIntaking() && !shooting && !shooting2) {
-            engageKicker();
-        }
     }
 
     public void kickChamberAutoClose() {
@@ -225,47 +168,5 @@ public class Kicker {
         }
         robot.opMode.sleep(500);
         engageKicker();
-    }
-
-    public void shootFastAFV2() {
-        if (nbOfBallShot < 3 && (robot.opMode.getRuntime() - lastShotTime) >= 0.2) {
-            lastShotTime = robot.opMode.getRuntime();
-            switch (nbOfBallShot) {
-                case 0:
-                    kickChamber1();
-                    break;
-                case 1:
-                    kickChamber2();
-                    break;
-                case 2:
-                    kickChamber3();
-                    break;
-
-            }
-            nbOfBallShot++;
-        }
-    }
-
-    public void shootFastAFV3() {
-        if (nbOfBallShot2 < 4 && (robot.opMode.getRuntime() - lastShotTime2) >= robot.aimBot.getTimeBetweenShots()) {
-            lastShotTime2 = robot.opMode.getRuntime();
-            switch (nbOfBallShot2) {
-                case 0:
-                    kickChamber2();
-                    break;
-                case 1:
-                    kickChamber1();
-                    break;
-                case 2:
-                    kickChamber3();
-
-                    break;
-                case 3:
-                    shooting2 = false;
-                    break;
-
-            }
-            nbOfBallShot2++;
-        }
     }
 }

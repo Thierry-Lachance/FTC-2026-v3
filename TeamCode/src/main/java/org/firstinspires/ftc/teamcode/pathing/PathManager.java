@@ -25,7 +25,10 @@ public class PathManager {
         NEAR_TEAM_GOAL,
         NEAR_OPP_GOAL,
         FAR_ZONE,
-        CENTER_FIELD
+        CENTER_FIELD,
+        PARK_GATE,
+        PARK_INSIDE,
+        PARK_OUTSIDE
     }
 
     public enum Divert {
@@ -35,23 +38,37 @@ public class PathManager {
     }
 
     private Pose gatePose;
+    private Pose nearTeamGoalPose;
+    private Pose farZonePose;
+
+    private Pose nearOppGoalPose;
+    private Pose centerFieldPose;
     private Pose humanBeforeIntakingPose;
     private Pose humanAfterIntakingPose;
-    private Pose nearTeamGoalPose;
-    private Pose nearOppGoalPose;
-    private Pose farZonePose;
-    private Pose centerFieldPose;
+
+    private Pose parkGatePose;
+    private Pose parkInsidePose;
+    private Pose parkOutsidePose;
 
     public PathManager(Robot robot) {
         this.robot = robot;
         if (robot.teamColor == Robot.TeamColor.RED) {
+            //general poses
             gatePose = new Pose(138, 71, 0);
+            nearTeamGoalPose = new Pose(96.5, 95.063, -0.85);
+            farZonePose = new Pose(84.563, 16.250, -0.4014);
+
+            //teleop specific poses
+
             humanBeforeIntakingPose = new Pose(14, 29.35, -1.633);
             humanAfterIntakingPose = new Pose(14, 15, -1.645);
-            nearTeamGoalPose = new Pose(96.5, 95.063, -0.85);
             centerFieldPose = new Pose(71.516, 71.469, -0.85);
             nearOppGoalPose = new Pose(47.469, 95.188, -1.2);
-            farZonePose = new Pose(84.563, 16.250, -0.4014);
+
+            //autonomous specific poses
+            parkGatePose = new Pose(0, 0, 0);//todo create these poses
+            parkInsidePose = new Pose(0, 0, 0);
+            parkOutsidePose = new Pose(0, 0, 0);
         }
 
     }
@@ -63,23 +80,23 @@ public class PathManager {
                 switch (getFieldQuadrant(robot.drivetrain.getFollower().getPose())) {//diversion from top right is not available because it will go out of bounds
                     case TOP_LEFT:
                         if (divert == Divert.TOP) {
-                            return createPathFromRobotPoseAnd2Waypoint(nearTeamGoalPose, new Pose(48, 144), new Pose(96, 144));//ok
+                            return createPathFromRobotPoseAnd2Waypoint(nearTeamGoalPose, new Pose(48, 144), new Pose(96, 144));
                         } else if (divert == Divert.BOTTOM) {
-                            return createPathFromRobotPoseAnd2Waypoint(nearTeamGoalPose, new Pose(0, 0), new Pose(144, 47));//ok
+                            return createPathFromRobotPoseAnd2Waypoint(nearTeamGoalPose, new Pose(0, 0), new Pose(144, 47));
                         }
                         break;
                     case BOTTOM_LEFT:
                         if (divert == Divert.TOP) {
-                            return createPathFromRobotPoseAnd2Waypoint(nearTeamGoalPose, new Pose(72, 72), new Pose(0, 144));//ok
+                            return createPathFromRobotPoseAnd2Waypoint(nearTeamGoalPose, new Pose(72, 72), new Pose(0, 144));
                         } else if (divert == Divert.BOTTOM) {
-                            return createPathFromRobotPoseAnd2Waypoint(nearTeamGoalPose, new Pose(91, 58), new Pose(127, 0));//ok
+                            return createPathFromRobotPoseAnd2Waypoint(nearTeamGoalPose, new Pose(91, 58), new Pose(127, 0));
                         }
                         break;
                     case BOTTOM_RIGHT:
                         if (divert == Divert.TOP) {
-                            return createPathFromRobotPoseAnd2Waypoint(nearTeamGoalPose, new Pose(24, 24), new Pose(0, 144));//ok
-                        } else if (divert == Divert.BOTTOM) {
-                            return createPathFromRobotPoseAnd2Waypoint(nearTeamGoalPose, new Pose(72, 72), new Pose(133, 86));//ok
+                            return createPathFromRobotPoseAnd2Waypoint(nearTeamGoalPose, new Pose(24, 24), new Pose(0, 144));
+                        } else if (divert == Divert.BOTTOM) {//todo check if diversion from bottom is mandatory
+                            return createPathFromRobotPoseAnd2Waypoint(nearTeamGoalPose, new Pose(72, 72), new Pose(133, 86));
                         }
                         break;
                 }
@@ -112,11 +129,17 @@ public class PathManager {
                         break;
                 }
                 return CreateDirectPathFromRobotPoseToTarget(centerFieldPose);
+            case PARK_GATE:
+                return CreateDirectPathFromRobotPoseToTarget(parkGatePose);//todo test if diversion is needed
+            case PARK_INSIDE:
+                return CreateDirectPathFromRobotPoseToTarget(parkInsidePose);
+            case PARK_OUTSIDE:
+                return CreateDirectPathFromRobotPoseToTarget(parkOutsidePose);
         }
         return null;
     }
 
-    public PathChain getPath(Destination destination, Pose robotPose) {
+    public PathChain getPath(Destination destination) {
         return getPath(destination, Divert.NONE);
     }
 

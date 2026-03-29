@@ -25,11 +25,6 @@ public class Intake {
         feederMotor.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
-    public void intakeIn() {
-        intakeMotor.setPower(robot.opMode.gamepad1.right_trigger);
-        feederMotor.setPower(robot.opMode.gamepad1.right_trigger);
-    }
-
     public boolean isIntaking() {
         return intakeMotor.getPower() != 0;
     }

@@ -52,10 +52,5 @@ public class Constant {
     public static double chamber2EngagedPos = 0.40;
     public static double chamber3EngagedPos = 0.3;
 
-    public static double shooterPowerY = -1025.0;
-    public static double shooterPowerX = -1180;
-    public static double shooterPowerB = -1220.0;
-    public static double shooterPowerA = -1475;
-    public static double shooterPowerAutoClose = -1025.0;
 
 }

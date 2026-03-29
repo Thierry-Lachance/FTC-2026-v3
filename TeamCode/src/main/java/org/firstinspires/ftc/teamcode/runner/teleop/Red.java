@@ -10,12 +10,11 @@ public class Red extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        Robot robot = new Robot(this, Robot.TeamColor.RED);
+        Robot robot = new Robot(this, Robot.TeamColor.RED, Robot.RunMode.TELEOP);
         waitForStart();
-        robot.initTeleOp();
         if (isStopRequested()) return;
         while (opModeIsActive()) {
-            robot.runTeleOp();
+            robot.teleOp.run();
         }
     }
 }

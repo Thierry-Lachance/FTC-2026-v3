@@ -3,25 +3,15 @@ package org.firstinspires.ftc.teamcode.runMode;
 import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.pathing.PathManager;
 
-public class AssistedDrive {
+public class AutomatedAction {
     Robot robot;
 
-    public AssistedDrive(Robot robot) {
+    public AutomatedAction(Robot robot) {
         this.robot = robot;
 
     }
 
-    public void drive() {
-        if (robot.opMode.gamepad2.dpad_down) intakeHuman();
-        if (robot.opMode.gamepad2.dpad_up) openGate();
-        if (robot.opMode.gamepad2.y) shootClose();
-        if (robot.opMode.gamepad2.a) shootFar();
-        if (robot.opMode.gamepad2.x) shootCenter();
-        if (robot.opMode.gamepad2.b) shootOpp();
-
-    }
-
-    private void shootClose() {
+    public void shootClose() {
         robot.aimBot.setTargets(1);
         robot.shooter.autoStartShooter();
         robot.drivetrain.driveToTargetAuto(robot.pathManager.getPath(robot.aimBot.getDestination(), getDivert()), 0);//todo test this shit
@@ -30,7 +20,7 @@ public class AssistedDrive {
 
     }
 
-    private void shootFar() {
+    public void shootFar() {
         robot.aimBot.setTargets(2);
         robot.shooter.autoStartShooter();
         robot.drivetrain.driveToTargetAuto(robot.pathManager.getPath(robot.aimBot.getDestination(), getDivert()), 0);//todo test this shit
@@ -39,7 +29,7 @@ public class AssistedDrive {
 
     }
 
-    private void shootCenter() {
+    public void shootCenter() {
         robot.aimBot.setTargets(0);
         robot.shooter.autoStartShooter();
         robot.drivetrain.driveToTargetAuto(robot.pathManager.getPath(robot.aimBot.getDestination(), getDivert()), 0);//todo test this shit
@@ -47,7 +37,7 @@ public class AssistedDrive {
         robot.shooter.stopShooter();
     }
 
-    private void shootOpp() {
+    public void shootOpp() {
         robot.aimBot.setTargets(3);
         robot.shooter.autoStartShooter();
         robot.drivetrain.driveToTargetAuto(robot.pathManager.getPath(robot.aimBot.getDestination(), getDivert()), 0);//todo test this shit
@@ -55,22 +45,35 @@ public class AssistedDrive {
         robot.shooter.stopShooter();
     }
 
-    private void openGate() {
-        robot.drivetrain.driveToTargetAuto(robot.drivetrain.pathChainGate, 500);
+    public void openGate() {
+        robot.drivetrain.driveToTargetAuto(robot.pathManager.getPath(PathManager.Destination.GATE, getDivert()), 500);
     }
 
-    private void intakeHuman() {
-        robot.drivetrain.driveToTargetAuto(robot.drivetrain.pathChainPreHuman, 0);
+    public void intakeHuman() {
+        robot.drivetrain.driveToTargetAuto(robot.pathManager.getPath(PathManager.Destination.HUMAN_BEFORE_INTAKING, getDivert()), 0);
         robot.intake.startIntake();
         robot.kicker.lowerKicker();
-        robot.drivetrain.driveToTargetAuto(robot.drivetrain.pathChainPostHuman, 0);
+        robot.drivetrain.driveToTargetAuto(robot.pathManager.getPath(PathManager.Destination.HUMAN_AFTER_INTAKING, getDivert()), 0);
         robot.kicker.engageKicker();
         if (robot.timeToStop()) return;
         robot.opMode.sleep(200);
         robot.intake.stopIntake();
     }
 
+    public void parkInside() {
+        robot.drivetrain.driveToTargetAuto(robot.pathManager.getPath(PathManager.Destination.PARK_INSIDE, getDivert()), 0);
+    }
+
+    public void parkOutside() {
+        robot.drivetrain.driveToTargetAuto(robot.pathManager.getPath(PathManager.Destination.PARK_OUTSIDE, getDivert()), 0);
+    }
+
+    public void parkGate() {
+        robot.drivetrain.driveToTargetAuto(robot.pathManager.getPath(PathManager.Destination.PARK_GATE, getDivert()), 0);
+    }
+
     private PathManager.Divert getDivert() {
+        if (robot.runMode == Robot.RunMode.AUTONOMOUS) return PathManager.Divert.NONE;
         if (robot.teamColor == Robot.TeamColor.RED) {
             if (robot.opMode.gamepad1.right_trigger > 0.5) return PathManager.Divert.BOTTOM;
             else if (robot.opMode.gamepad1.left_trigger > 0.5) return PathManager.Divert.TOP;

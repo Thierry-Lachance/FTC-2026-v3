@@ -36,7 +36,7 @@ public class Led {
         led2.setPosition(colorPos);
     }
 
-    public void updateLed() {
+    public void updateLed() {//TODO check this function
 
         if (robot.intake.isIntaking()) {
             setLed1Color(0.7);// Purple

@@ -4,7 +4,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.pathing.AimBot;
 import org.firstinspires.ftc.teamcode.pathing.PathManager;
-import org.firstinspires.ftc.teamcode.runMode.AssistedDrive;
+import org.firstinspires.ftc.teamcode.runMode.AutomatedAction;
+import org.firstinspires.ftc.teamcode.runMode.Autonomous;
 import org.firstinspires.ftc.teamcode.runMode.TeleOp;
 import org.firstinspires.ftc.teamcode.subsystem.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystem.Intake;
@@ -30,10 +31,12 @@ public class Robot {
     public final PathManager pathManager;
 
     public final TeleOp teleOp;
-    public final AssistedDrive assistedDrive;
+    public final Autonomous autonomous;
+    public final AutomatedAction automatedAction;
 
     private ColorPattern colorPattern;
     public final TeamColor teamColor;
+    public final RunMode runMode;
 
     public enum TeamColor {
         RED,
@@ -46,11 +49,16 @@ public class Robot {
         PPG
     }
 
-    private boolean assistedDriving = false;
+    public enum RunMode {
+        TELEOP,
+        AUTONOMOUS
+    }
 
-    public Robot(LinearOpMode opMode, TeamColor teamColor) {
+
+    public Robot(LinearOpMode opMode, TeamColor teamColor, RunMode runMode) {
         this.opMode = opMode;
         this.teamColor = teamColor;
+        this.runMode = runMode;
         drivetrain = new Drivetrain(this);
         intake = new Intake(this);
         shooter = new Shooter(this);
@@ -58,35 +66,13 @@ public class Robot {
         led = new Led(this);
         vision = new Vision(this);
         limelight = new Limelight(this);
-        aimBot = new AimBot(teamColor, drivetrain.getFollower());
+        aimBot = new AimBot();
         teleOp = new TeleOp(this);
-        assistedDrive = new AssistedDrive(this);
+        autonomous = new Autonomous(this);
+        automatedAction = new AutomatedAction(this);
         pathManager = new PathManager(this);
 
-
     }
-
-    public void runTeleOp() {
-
-        if (assistedDriving) {
-            assistedDrive.drive();
-            if (timeToStop()) assistedDriving = false;
-
-        } else {
-            teleOp.drive();
-            if (opMode.gamepad1.dpad_up) assistedDriving = true;
-        }
-
-
-        opMode.telemetry.update();
-
-
-    }
-
-    public void initTeleOp() {
-        drivetrain.initTeleOp();
-    }
-
 
     public ColorPattern getColorPattern() {
         return colorPattern;
@@ -97,7 +83,19 @@ public class Robot {
     }
 
     public boolean timeToStop() {
-        return Math.abs(opMode.gamepad1.left_stick_y) > 0.4 || Math.abs(opMode.gamepad1.left_stick_x) > 0.4 || Math.abs(opMode.gamepad1.right_stick_y) > 0.4;
+        if (Math.abs(opMode.gamepad1.left_stick_y) > 0.4 || Math.abs(opMode.gamepad1.left_stick_x) > 0.4 || Math.abs(opMode.gamepad1.right_stick_y) > 0.4) {
+            drivetrain.getFollower().startTeleopDrive();
+            return true;
+        }
+        return false;
+    }
+
+    public void periodic() {
+        drivetrain.periodic();
+        shooter.periodic();
+        led.updateLed();
+        limelight.telemetry();
+        opMode.telemetry.update();
     }
 
 

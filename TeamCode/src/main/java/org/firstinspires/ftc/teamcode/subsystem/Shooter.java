@@ -11,8 +11,6 @@ public class Shooter {
     DcMotorEx shooterMotor;
     Robot robot;
     double targetVelocity = 0.0;
-    boolean shooting = false;
-
 
     public Shooter(Robot robot) {
 
@@ -26,42 +24,6 @@ public class Shooter {
         shooterMotor.setVelocityPIDFCoefficients(250, 2, 2, 0.0);
     }
 
-    public void shoot() {
-
-        if (robot.opMode.gamepad2.x) {
-            shooting = true;
-            shooterMotor.setVelocityPIDFCoefficients(robot.aimBot.getPidfCoefficients().p,
-                    robot.aimBot.getPidfCoefficients().i,
-                    robot.aimBot.getPidfCoefficients().d,
-                    robot.aimBot.getPidfCoefficients().f);
-            targetVelocity = robot.aimBot.getTargetVelocity();
-        } else if (robot.opMode.gamepad2.y) {
-            shooting = false;
-        }
-        if (shooting) {
-            shooterMotor.setVelocity(targetVelocity);
-        } else {
-
-            stopShooter();
-        }
-        robot.opMode.telemetry.addData("target speed", targetVelocity);
-        robot.opMode.telemetry.addData("shooter speed", shooterMotor.getVelocity());
-
-    }
-
-
-    public void autonomousStartShooterClose() {
-        targetVelocity = Constant.shooterPowerAutoClose;
-        shooterMotor.setVelocityPIDFCoefficients(250, 2, 2, 0.0);
-        shooterMotor.setVelocity(targetVelocity);
-    }
-
-    public void autonomousStartShooterFar() {
-        targetVelocity = -1475;
-        shooterMotor.setVelocityPIDFCoefficients(250, 2, 2, 0.0);
-        shooterMotor.setVelocity(targetVelocity);
-    }
-
     public void autoStartShooter() {
         targetVelocity = robot.aimBot.getTargetVelocity();
         shooterMotor.setVelocityPIDFCoefficients(robot.aimBot.getPidfCoefficients().p,
@@ -69,6 +31,10 @@ public class Shooter {
                 robot.aimBot.getPidfCoefficients().d,
                 robot.aimBot.getPidfCoefficients().f);
         shooterMotor.setVelocity(targetVelocity);
+    }
+
+    public void startShooterManual() {
+        shooterMotor.setVelocity(-1025);
     }
 
     public void stopShooter() {
@@ -79,5 +45,9 @@ public class Shooter {
         return shooterMotor.getVelocity() <= targetVelocity + 50 && shooterMotor.getVelocity() >= targetVelocity - 50;
     }
 
+    public void periodic() {
+        robot.opMode.telemetry.addData("target speed", targetVelocity);
+        robot.opMode.telemetry.addData("shooter speed", shooterMotor.getVelocity());
+    }
 
 }

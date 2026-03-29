@@ -11,7 +11,7 @@ public class ZeroKicker extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        Robot robot = new Robot(this, Robot.TeamColor.RED);
+        Robot robot = new Robot(this, Robot.TeamColor.RED, Robot.RunMode.TELEOP);
         waitForStart();
         if (isStopRequested()) return;
         while (opModeIsActive()) {

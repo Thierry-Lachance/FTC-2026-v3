@@ -74,7 +74,6 @@ public class Limelight {
                     if (!colorResults.isEmpty()) {
                         purpleWasDetected = true;
                         for (LLResultTypes.ColorResult cr : colorResults) {
-                            robot.opMode.telemetry.addData("returned", cr.getTargetXDegrees());
                             return cr.getTargetXDegrees();
                         }
                     }
@@ -96,7 +95,6 @@ public class Limelight {
                     if (!colorResults.isEmpty()) {
                         greenWasDetected = true;
                         for (LLResultTypes.ColorResult cr : colorResults) {
-                            robot.opMode.telemetry.addData("returned", cr.getTargetXDegrees());
                             return cr.getTargetXDegrees();
                         }
                     }
