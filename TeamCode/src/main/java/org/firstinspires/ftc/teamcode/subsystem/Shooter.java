@@ -4,7 +4,7 @@ package org.firstinspires.ftc.teamcode.subsystem;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-import org.firstinspires.ftc.teamcode.Constant;
+import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.Robot;
 
 public class Shooter {
@@ -16,7 +16,7 @@ public class Shooter {
 
         this.robot = robot;
 
-        shooterMotor = robot.opMode.hardwareMap.get(DcMotorEx.class, Constant.shooterMotorName);
+        shooterMotor = robot.opMode.hardwareMap.get(DcMotorEx.class, Constants.shooterMotorName);
 
         shooterMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.FLOAT);
         shooterMotor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);

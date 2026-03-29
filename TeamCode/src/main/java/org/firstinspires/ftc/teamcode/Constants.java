@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-public class Constant {
+public class Constants {
     //Limelight Name
     public static String limelightName = "limelight";
 

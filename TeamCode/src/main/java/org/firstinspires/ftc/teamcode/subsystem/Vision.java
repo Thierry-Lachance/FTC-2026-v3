@@ -7,7 +7,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
-import org.firstinspires.ftc.teamcode.Constant;
+import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
@@ -35,7 +35,7 @@ public class Vision {
         aprilTag = new AprilTagProcessor.Builder().build();
 
         VisionPortal.Builder builder = new VisionPortal.Builder();
-        builder.setCamera(robot.opMode.hardwareMap.get(WebcamName.class, Constant.webcamName));
+        builder.setCamera(robot.opMode.hardwareMap.get(WebcamName.class, Constants.webcamName));
         builder.addProcessor(aprilTag);
         builder.setCameraResolution(new Size(640, 480));
 

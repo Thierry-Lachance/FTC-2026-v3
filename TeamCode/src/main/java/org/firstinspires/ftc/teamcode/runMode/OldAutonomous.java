@@ -41,7 +41,7 @@ public class OldAutonomous {
         this.startingPosition = startingPosition;
         this.opMode = opMode;
 
-        robot = new Robot(opMode, teamColor, Robot.RunMode.AUTONOMOUS);
+        robot = new Robot(opMode, teamColor);
 
     }
 

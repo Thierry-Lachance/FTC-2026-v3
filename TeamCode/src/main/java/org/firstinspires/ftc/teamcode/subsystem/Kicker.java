@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.subsystem;
 
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.Constant;
+import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.Robot;
 
 public class Kicker {
@@ -13,9 +13,9 @@ public class Kicker {
     public Kicker(Robot robot) {
         this.robot = robot;
 
-        chamber1Servo = robot.opMode.hardwareMap.get(Servo.class, Constant.chamber1Name);
-        chamber2Servo = robot.opMode.hardwareMap.get(Servo.class, Constant.chamber2Name);
-        chamber3Servo = robot.opMode.hardwareMap.get(Servo.class, Constant.chamber3Name);
+        chamber1Servo = robot.opMode.hardwareMap.get(Servo.class, Constants.chamber1Name);
+        chamber2Servo = robot.opMode.hardwareMap.get(Servo.class, Constants.chamber2Name);
+        chamber3Servo = robot.opMode.hardwareMap.get(Servo.class, Constants.chamber3Name);
 
     }
 
@@ -26,27 +26,27 @@ public class Kicker {
     }
 
     public void lowerKicker() {
-        chamber1Servo.setPosition(Constant.chamber1BasePos);
-        chamber2Servo.setPosition(Constant.chamber2BasePos);
-        chamber3Servo.setPosition(Constant.chamber3BasePos);
+        chamber1Servo.setPosition(Constants.chamber1BasePos);
+        chamber2Servo.setPosition(Constants.chamber2BasePos);
+        chamber3Servo.setPosition(Constants.chamber3BasePos);
     }
 
     public void engageKicker() {
-        chamber1Servo.setPosition(Constant.chamber1EngagedPos);
-        chamber2Servo.setPosition(Constant.chamber2EngagedPos);
-        chamber3Servo.setPosition(Constant.chamber3EngagedPos);
+        chamber1Servo.setPosition(Constants.chamber1EngagedPos);
+        chamber2Servo.setPosition(Constants.chamber2EngagedPos);
+        chamber3Servo.setPosition(Constants.chamber3EngagedPos);
     }
 
     public void kickChamber1() {
-        chamber1Servo.setPosition(Constant.chamber1ActivePos);
+        chamber1Servo.setPosition(Constants.chamber1ActivePos);
     }
 
     public void kickChamber2() {
-        chamber2Servo.setPosition(Constant.chamber2ActivePos);
+        chamber2Servo.setPosition(Constants.chamber2ActivePos);
     }
 
     public void kickChamber3() {
-        chamber3Servo.setPosition(Constant.chamber3ActivePos);
+        chamber3Servo.setPosition(Constants.chamber3ActivePos);
     }
 
     public void kickChamberAutoClose() {
@@ -109,7 +109,7 @@ public class Kicker {
         int[] chamberOrder = new int[3];
         switch (patternInsideRobot) {
             case GPP:
-                switch (robot.getColorPattern()) {
+                switch (robot.getMatchColorPattern()) {
                     case GPP:
                         chamberOrder = new int[]{1, 2, 3};
                         break;
@@ -122,7 +122,7 @@ public class Kicker {
                 }
                 break;
             case PGP:
-                switch (robot.getColorPattern()) {
+                switch (robot.getMatchColorPattern()) {
                     case GPP:
                         chamberOrder = new int[]{2, 1, 3};
                         break;
@@ -135,7 +135,7 @@ public class Kicker {
                 }
                 break;
             case PPG:
-                switch (robot.getColorPattern()) {
+                switch (robot.getMatchColorPattern()) {
                     case GPP:
                         chamberOrder = new int[]{3, 2, 1};
                         break;

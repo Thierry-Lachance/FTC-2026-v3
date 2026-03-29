@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.subsystem;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-import org.firstinspires.ftc.teamcode.Constant;
+import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.Robot;
 
 public class Intake {
@@ -14,8 +14,8 @@ public class Intake {
 
     public Intake(Robot robot) {
         this.robot = robot;
-        intakeMotor = robot.opMode.hardwareMap.get(DcMotor.class, Constant.intakeMotorName);
-        feederMotor = robot.opMode.hardwareMap.get(DcMotor.class, Constant.feederMotorName);
+        intakeMotor = robot.opMode.hardwareMap.get(DcMotor.class, Constants.intakeMotorName);
+        feederMotor = robot.opMode.hardwareMap.get(DcMotor.class, Constants.feederMotorName);
 
         intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         feederMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);

@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.subsystem;
 
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.Constant;
+import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.Robot;
 
 public class Led {
@@ -18,9 +18,9 @@ public class Led {
 
     public Led(Robot robot) {
         this.robot = robot;
-        led0 = robot.opMode.hardwareMap.get(Servo.class, Constant.led0Name);
-        led1 = robot.opMode.hardwareMap.get(Servo.class, Constant.led1Name);
-        led2 = robot.opMode.hardwareMap.get(Servo.class, Constant.led2Name);
+        led0 = robot.opMode.hardwareMap.get(Servo.class, Constants.led0Name);
+        led1 = robot.opMode.hardwareMap.get(Servo.class, Constants.led1Name);
+        led2 = robot.opMode.hardwareMap.get(Servo.class, Constants.led2Name);
 
     }
 

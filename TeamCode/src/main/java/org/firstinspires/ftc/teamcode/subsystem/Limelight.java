@@ -5,7 +5,7 @@ import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.hardware.limelightvision.LLStatus;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 
-import org.firstinspires.ftc.teamcode.Constant;
+import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.Robot;
 
 import java.util.List;
@@ -21,7 +21,7 @@ public class Limelight {
 
     public Limelight(Robot robot) {
         this.robot = robot;
-        limelight = robot.opMode.hardwareMap.get(Limelight3A.class, Constant.limelightName);
+        limelight = robot.opMode.hardwareMap.get(Limelight3A.class, Constants.limelightName);
 
         setLimelightPipeline(0);
         limelight.setPollRateHz(100);

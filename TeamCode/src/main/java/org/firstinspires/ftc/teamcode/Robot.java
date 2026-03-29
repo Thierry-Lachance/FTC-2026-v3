@@ -30,11 +30,12 @@ public class Robot {
     public final AimBot aimBot;
     public final PathManager pathManager;
 
-    public final TeleOp teleOp;
-    public final Autonomous autonomous;
+    public TeleOp teleOp;
+    public Autonomous autonomous;
     public final AutomatedAction automatedAction;
 
-    private ColorPattern colorPattern;
+    private ColorPattern matchColorPattern;
+    private ColorPattern patternInsideRobot;
     public final TeamColor teamColor;
     public final RunMode runMode;
 
@@ -55,10 +56,10 @@ public class Robot {
     }
 
 
-    public Robot(LinearOpMode opMode, TeamColor teamColor, RunMode runMode) {
+    public Robot(LinearOpMode opMode, TeamColor teamColor) {
         this.opMode = opMode;
         this.teamColor = teamColor;
-        this.runMode = runMode;
+        this.runMode = RunMode.TELEOP;
         drivetrain = new Drivetrain(this);
         intake = new Intake(this);
         shooter = new Shooter(this);
@@ -68,18 +69,52 @@ public class Robot {
         limelight = new Limelight(this);
         aimBot = new AimBot();
         teleOp = new TeleOp(this);
-        autonomous = new Autonomous(this);
         automatedAction = new AutomatedAction(this);
         pathManager = new PathManager(this);
 
     }
 
-    public ColorPattern getColorPattern() {
-        return colorPattern;
+    public Robot(LinearOpMode opMode, TeamColor teamColor, Autonomous.Action[] actionList) {//TODO add init pose to constructor
+        this.opMode = opMode;
+        this.teamColor = teamColor;
+        this.runMode = RunMode.AUTONOMOUS;
+        drivetrain = new Drivetrain(this);
+        intake = new Intake(this);
+        shooter = new Shooter(this);
+        kicker = new Kicker(this);
+        led = new Led(this);
+        vision = new Vision(this);
+        limelight = new Limelight(this);
+        aimBot = new AimBot();
+        autonomous = new Autonomous(this, actionList);
+        automatedAction = new AutomatedAction(this);
+        pathManager = new PathManager(this);
+
+
     }
 
-    public void setColorPattern(ColorPattern colorPattern) {
-        this.colorPattern = colorPattern;
+    public ColorPattern getMatchColorPattern() {
+        return matchColorPattern;
+    }
+
+    public ColorPattern getPatternInsideRobot() {
+        return patternInsideRobot;
+    }
+
+    public void setMatchColorPattern(ColorPattern matchColorPattern) {
+        this.matchColorPattern = matchColorPattern;
+    }
+
+    public void setPatternInsideRobot(ColorPattern patternInsideRobot) {
+        this.patternInsideRobot = patternInsideRobot;
+    }
+
+    public void run(){
+        if(runMode == RunMode.TELEOP) {
+            teleOp.run();
+        } else {
+            autonomous.run();
+        }
     }
 
     public boolean timeToStop() {

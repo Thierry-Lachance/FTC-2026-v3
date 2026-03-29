@@ -4,6 +4,7 @@ import org.firstinspires.ftc.teamcode.Robot;
 
 public class Autonomous {
     public enum Action {
+        SHOOT_BALL_CLOSE_PATTERN,
         SHOOT_BALL_CLOSE,
         SHOOT_BALL_FAR,
         PICK_LINE_1,
@@ -20,14 +21,10 @@ public class Autonomous {
     Robot robot;
     Action[] actionList;
 
-    public Autonomous(Robot robot) {
+    public Autonomous(Robot robot, Action[] actionList) {
         this.robot = robot;
-
-
-    }
-
-    public void createAutonomous(Action[] actionList) {
         this.actionList = actionList;
+
     }
 
     public void run() {
@@ -36,14 +33,20 @@ public class Autonomous {
                 case SHOOT_BALL_CLOSE:
                     robot.automatedAction.shootClose();
                     break;
+                case SHOOT_BALL_CLOSE_PATTERN:
+                    robot.automatedAction.shootClosePattern();
+                    break;
                 case SHOOT_BALL_FAR:
                     robot.automatedAction.shootFar();
                     break;
                 case PICK_LINE_1:
+                    robot.automatedAction.intakeLine1();
                     break;
                 case PICK_LINE_2:
+                    robot.automatedAction.intakeLine2();
                     break;
                 case PICK_LINE_3:
+                    robot.automatedAction.intakeLine3();
                     break;
                 case PICK_HUMAN_PLAYER:
                     break;

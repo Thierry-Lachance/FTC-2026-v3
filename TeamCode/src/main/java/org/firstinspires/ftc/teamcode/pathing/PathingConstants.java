@@ -11,7 +11,7 @@ import com.pedropathing.paths.PathConstraints;
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.Constant;
+import org.firstinspires.ftc.teamcode.Constants;
 
 //TODO check the localizer
 public class PathingConstants {
@@ -32,14 +32,14 @@ public class PathingConstants {
 
     public static MecanumConstants driveConstants = new MecanumConstants()
             .maxPower(1)
-            .rightFrontMotorName(Constant.frontRightMotorName)
-            .rightRearMotorName(Constant.backRightMotorName)
-            .leftRearMotorName(Constant.backLeftMotorName)
-            .leftFrontMotorName(Constant.frontLeftMotorName)
-            .leftFrontMotorDirection(Constant.frontLeftMotorDirection)
-            .leftRearMotorDirection(Constant.backLeftMotorDirection)
-            .rightFrontMotorDirection(Constant.frontRightMotorDirection)
-            .rightRearMotorDirection(Constant.backRightMotorDirection)
+            .rightFrontMotorName(Constants.frontRightMotorName)
+            .rightRearMotorName(Constants.backRightMotorName)
+            .leftRearMotorName(Constants.backLeftMotorName)
+            .leftFrontMotorName(Constants.frontLeftMotorName)
+            .leftFrontMotorDirection(Constants.frontLeftMotorDirection)
+            .leftRearMotorDirection(Constants.backLeftMotorDirection)
+            .rightFrontMotorDirection(Constants.frontRightMotorDirection)
+            .rightRearMotorDirection(Constants.backRightMotorDirection)
             .xVelocity(84.976)
             .yVelocity(67.2)
             .useBrakeModeInTeleOp(true);
@@ -47,9 +47,9 @@ public class PathingConstants {
     public static PathConstraints pathConstraints = new PathConstraints(0.99, 100, 1, 1);
 
     public static PinpointConstants localizerConstants = new PinpointConstants()
-            .forwardPodY(Constant.yOffset)
-            .strafePodX(Constant.xOffset)
-            .hardwareMapName(Constant.odoName)
+            .forwardPodY(Constants.yOffset)
+            .strafePodX(Constants.xOffset)
+            .hardwareMapName(Constants.odoName)
             .encoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD)
             .forwardEncoderDirection(GoBildaPinpointDriver.EncoderDirection.REVERSED)
             .strafeEncoderDirection(GoBildaPinpointDriver.EncoderDirection.FORWARD);
