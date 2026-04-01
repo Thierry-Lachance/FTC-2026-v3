@@ -5,19 +5,19 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 public class Target {
     private final double targetVelocity;
-    private final PathManager.Destination destination;
+    private final PathManager.DestinationTeleop destinationTeleop;
     private final double timeBetweenShots;
     private final PIDFCoefficients pidfCoefficients;
 
-    public Target(PathManager.Destination destination, double targetVelocity, double timeBetweenShots, PIDFCoefficients pidfCoefficients) {
+    public Target(PathManager.DestinationTeleop destinationTeleop, double targetVelocity, double timeBetweenShots, PIDFCoefficients pidfCoefficients) {
         this.targetVelocity = targetVelocity;
         this.timeBetweenShots = timeBetweenShots;
         this.pidfCoefficients = pidfCoefficients;
-        this.destination = destination;
+        this.destinationTeleop = destinationTeleop;
     }
 
-    public PathManager.Destination getDestination() {
-        return destination;
+    public PathManager.DestinationTeleop getDestination() {
+        return destinationTeleop;
     }
 
     public double getTargetVelocity() {

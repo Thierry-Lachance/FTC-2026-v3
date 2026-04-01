@@ -8,10 +8,10 @@ public class AimBot {
 
     public AimBot() {
         targets = new Target[]{
-                new Target(PathManager.Destination.CENTER_FIELD, -1180, 0.5, new PIDFCoefficients(250, 2, 2, 0.0)),
-                new Target(PathManager.Destination.NEAR_TEAM_GOAL, -1025.0, 0.2, new PIDFCoefficients(250, 2, 2, 0.0)),
-                new Target(PathManager.Destination.FAR_ZONE, -1475, 0.5, new PIDFCoefficients(250, 1, 2, 0.0)),
-                new Target(PathManager.Destination.NEAR_OPP_GOAL, -1220.0, 0.5, new PIDFCoefficients(250, 2, 2, 0.0))
+                new Target(PathManager.DestinationTeleop.CENTER_FIELD, -1180, 0.5, new PIDFCoefficients(250, 2, 2, 0.0)),
+                new Target(PathManager.DestinationTeleop.NEAR_TEAM_GOAL, -1025.0, 0.2, new PIDFCoefficients(250, 2, 2, 0.0)),
+                new Target(PathManager.DestinationTeleop.FAR_ZONE, -1475, 0.5, new PIDFCoefficients(250, 1, 2, 0.0)),
+                new Target(PathManager.DestinationTeleop.NEAR_OPP_GOAL, -1220.0, 0.5, new PIDFCoefficients(250, 2, 2, 0.0))
         };
     }
 
@@ -30,7 +30,7 @@ public class AimBot {
         return targets[currentTargetIndex].getTimeBetweenShots();
     }
 
-    public PathManager.Destination getDestination() {
+    public PathManager.DestinationTeleop getDestination() {
         return targets[currentTargetIndex].getDestination();
     }
 

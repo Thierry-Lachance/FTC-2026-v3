@@ -35,6 +35,10 @@ public class TeleOp {
         if (robot.opMode.gamepad1.x) robot.shooter.startShooterManual();
         if (robot.opMode.gamepad1.y) robot.shooter.stopShooter();
 
+        //lidar
+        if(robot.opMode.gamepad2.right_trigger > 0.5) robot.lidar.rotateLidarMax();
+        else if(robot.opMode.gamepad2.left_trigger > 0.5) robot.lidar.rotateLidarMin();
+
 
     }
 

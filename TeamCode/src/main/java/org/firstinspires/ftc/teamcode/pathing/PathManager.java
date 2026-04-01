@@ -18,7 +18,7 @@ public class PathManager {
         BOTTOM_RIGHT
     }
 
-    public enum Destination {
+    public enum DestinationTeleop {
         GATE,
         HUMAN_BEFORE_INTAKING,
         HUMAN_AFTER_INTAKING,
@@ -26,6 +26,10 @@ public class PathManager {
         NEAR_OPP_GOAL,
         FAR_ZONE,
         CENTER_FIELD,
+
+    }
+
+    public enum DestinationAuto {
         PARK_GATE,
         PARK_INSIDE,
         PARK_OUTSIDE,
@@ -35,7 +39,9 @@ public class PathManager {
         POST_LINE_1,
         POST_LINE_2,
         POST_LINE_3,
-        GATE_AUTO
+        GATE_AUTO,
+        NEAR_TEAM_GOAL,
+        FAR_ZONE
     }
 
     public enum StartingPosition {
@@ -114,9 +120,9 @@ public class PathManager {
     }
 
 
-    public PathChain getPath(Destination destination, Divert divert) {
+    public PathChain getPathTeleop(DestinationTeleop destinationTeleop, Divert divert) {
         if (robot.teamColor == Robot.TeamColor.RED) {
-            switch (destination) {
+            switch (destinationTeleop) {
                 case NEAR_TEAM_GOAL:
                     switch (getFieldQuadrant(robot.drivetrain.getFollower().getPose())) {//diversion from top right is not available because it will go out of bounds
                         case TOP_LEFT:
@@ -170,6 +176,33 @@ public class PathManager {
                             break;
                     }
                     return CreateDirectPathFromRobotPoseToTarget(centerFieldPose, ConstraintLevel.HIGH_PRECISION);
+
+            }
+        } else {
+            switch (destinationTeleop) {//TODO add diversion for blue side
+                case NEAR_TEAM_GOAL:
+                    return CreateDirectPathFromRobotPoseToTarget(nearTeamGoalPose, ConstraintLevel.HIGH_PRECISION);
+                case NEAR_OPP_GOAL:
+                    return CreateDirectPathFromRobotPoseToTarget(nearOppGoalPose, ConstraintLevel.HIGH_PRECISION);
+                case HUMAN_BEFORE_INTAKING:
+                    return CreateDirectPathFromRobotPoseToTarget(humanBeforeIntakingPose, ConstraintLevel.HIGH_PRECISION);
+                case HUMAN_AFTER_INTAKING:
+                    return CreateDirectPathFromRobotPoseToTarget(humanAfterIntakingPose, ConstraintLevel.LOW_PRECISION);
+                case GATE:
+                    return CreateDirectPathFromRobotPoseToTarget(gatePose, ConstraintLevel.LOW_PRECISION);
+                case FAR_ZONE:
+                    return CreateDirectPathFromRobotPoseToTarget(farZonePose, ConstraintLevel.HIGH_PRECISION);
+                case CENTER_FIELD:
+                    return CreateDirectPathFromRobotPoseToTarget(centerFieldPose, ConstraintLevel.HIGH_PRECISION);
+
+            }
+        }
+        return null;
+    }
+
+    public PathChain getPathAuto(DestinationAuto destinationAuto) {//TODO modify start pose of path based on last action and add auto diversions
+        if(robot.teamColor == Robot.TeamColor.RED) {
+            switch (destinationAuto) {
                 case PARK_GATE:
                     return CreateDirectPathFromRobotPoseToTarget(parkGatePose, ConstraintLevel.HIGH_PRECISION);
                 case PARK_INSIDE:
@@ -190,23 +223,13 @@ public class PathManager {
                     return CreateDirectPathFromRobotPoseToTargetConstantHeading(postLine3Pose, ConstraintLevel.HIGH_PRECISION);
                 case GATE_AUTO:
                     return CreateDirectPathFromRobotPoseToTarget(gatePoseAuto, ConstraintLevel.HIGH_PRECISION);
-            }
-        } else {
-            switch (destination) {//TODO add diversion for blue side
                 case NEAR_TEAM_GOAL:
                     return CreateDirectPathFromRobotPoseToTarget(nearTeamGoalPose, ConstraintLevel.HIGH_PRECISION);
-                case NEAR_OPP_GOAL:
-                    return CreateDirectPathFromRobotPoseToTarget(nearOppGoalPose, ConstraintLevel.HIGH_PRECISION);
-                case HUMAN_BEFORE_INTAKING:
-                    return CreateDirectPathFromRobotPoseToTarget(humanBeforeIntakingPose, ConstraintLevel.HIGH_PRECISION);
-                case HUMAN_AFTER_INTAKING:
-                    return CreateDirectPathFromRobotPoseToTarget(humanAfterIntakingPose, ConstraintLevel.LOW_PRECISION);
-                case GATE:
-                    return CreateDirectPathFromRobotPoseToTarget(gatePose, ConstraintLevel.LOW_PRECISION);
                 case FAR_ZONE:
                     return CreateDirectPathFromRobotPoseToTarget(farZonePose, ConstraintLevel.HIGH_PRECISION);
-                case CENTER_FIELD:
-                    return CreateDirectPathFromRobotPoseToTarget(centerFieldPose, ConstraintLevel.HIGH_PRECISION);
+            }
+        } else {
+            switch (destinationAuto) {
                 case PARK_GATE:
                     return CreateDirectPathFromRobotPoseToTarget(parkGatePose, ConstraintLevel.HIGH_PRECISION);
                 case PARK_INSIDE:
@@ -225,13 +248,20 @@ public class PathManager {
                     return CreateDirectPathFromRobotPoseToTarget(postLine2Pose, ConstraintLevel.HIGH_PRECISION);
                 case POST_LINE_3:
                     return CreateDirectPathFromRobotPoseToTarget(postLine3Pose, ConstraintLevel.HIGH_PRECISION);
+                case GATE_AUTO:
+                    return CreateDirectPathFromRobotPoseToTarget(gatePoseAuto, ConstraintLevel.HIGH_PRECISION);
+                case NEAR_TEAM_GOAL:
+                    return CreateDirectPathFromRobotPoseToTarget(nearTeamGoalPose, ConstraintLevel.HIGH_PRECISION);
+                case FAR_ZONE:
+                    return CreateDirectPathFromRobotPoseToTarget(farZonePose, ConstraintLevel.HIGH_PRECISION);
+
             }
         }
         return null;
     }
 
-    public PathChain getPath(Destination destination) {
-        return getPath(destination, Divert.NONE);
+    public PathChain getPathTeleop(DestinationTeleop destinationTeleop) {
+        return getPathTeleop(destinationTeleop, Divert.NONE);
     }
 
     private FieldQuadrant getFieldQuadrant(Pose pose) {
@@ -290,23 +320,7 @@ public class PathManager {
     }
 
     private PathChain CreateDirectPathFromRobotPoseToTarget(Pose targetPose, ConstraintLevel constraintLevel) {
-        return robot.drivetrain.getFollower().pathBuilder()
-                .addPath(
-                        new BezierLine(
-                                robot.drivetrain.getFollower()::getPose,
-                                targetPose
-                        )
-                )
-                .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(robot.drivetrain.getFollower()::getHeading, targetPose.getHeading(), 0.5))
-                .setTranslationalConstraint(getConstraint(constraintLevel)[0])
-                .setVelocityConstraint(getConstraint(constraintLevel)[1])
-                .setHeadingConstraint(getConstraint(constraintLevel)[2])
-                .setTValueConstraint(getConstraint(constraintLevel)[3])
-                .setTimeoutConstraint(getConstraint(constraintLevel)[4])
-                .setBrakingStrength(getConstraint(constraintLevel)[5])
-                .setBrakingStart(getConstraint(constraintLevel)[6])
-                .build();
-
+      return CreateDirectPathFromRobotPoseToTarget(targetPose, constraintLevel, 0.5);
     }
     private PathChain CreateDirectPathFromRobotPoseToTargetConstantHeading(Pose targetPose, ConstraintLevel constraintLevel) {
         return robot.drivetrain.getFollower().pathBuilder()

@@ -25,6 +25,7 @@ public class Autonomous {
         this.robot = robot;
         this.actionList = actionList;
         robot.kicker.engageKicker();
+        robot.setPatternInsideRobot(Robot.ColorPattern.GPP);
 
     }
 
@@ -32,22 +33,22 @@ public class Autonomous {
         for (Action action : actionList) {
             switch (action) {
                 case SHOOT_BALL_CLOSE:
-                    robot.automatedAction.shootClose();
+                    robot.automatedAction.shootCloseAuto();
                     break;
                 case SHOOT_BALL_CLOSE_PATTERN:
-                    robot.automatedAction.shootClosePattern();
+                    robot.automatedAction.shootClosePatternAuto();
                     break;
                 case SHOOT_BALL_FAR:
-                    robot.automatedAction.shootFar();
+                    robot.automatedAction.shootFarAuto();
                     break;
                 case PICK_LINE_1:
-                    robot.automatedAction.intakeLine1();
+                    robot.automatedAction.intakeLine1Auto();
                     break;
                 case PICK_LINE_2:
-                    robot.automatedAction.intakeLine2();
+                    robot.automatedAction.intakeLine2Auto();
                     break;
                 case PICK_LINE_3:
-                    robot.automatedAction.intakeLine3();
+                    robot.automatedAction.intakeLine3Auto();
                     break;
                 case PICK_HUMAN_PLAYER:
                     break;
@@ -55,13 +56,13 @@ public class Autonomous {
                     robot.automatedAction.openGateAuto();
                     break;
                 case PARK_INSIDE:
-                    robot.automatedAction.parkInside();
+                    robot.automatedAction.parkInsideAuto();
                     break;
                 case PARK_OUTSIDE:
-                    robot.automatedAction.parkOutside();
+                    robot.automatedAction.parkOutsideAuto();
                     break;
                 case PARK_GATE:
-                    robot.automatedAction.parkGate();
+                    robot.automatedAction.parkGateAuto();
                     break;
 
             }
