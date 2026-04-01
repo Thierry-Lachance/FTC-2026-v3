@@ -24,6 +24,7 @@ public class Autonomous {
     public Autonomous(Robot robot, Action[] actionList) {
         this.robot = robot;
         this.actionList = actionList;
+        robot.kicker.engageKicker();
 
     }
 
@@ -51,7 +52,7 @@ public class Autonomous {
                 case PICK_HUMAN_PLAYER:
                     break;
                 case OPEN_GATE:
-                    robot.automatedAction.openGate();
+                    robot.automatedAction.openGateAuto();
                     break;
                 case PARK_INSIDE:
                     robot.automatedAction.parkInside();

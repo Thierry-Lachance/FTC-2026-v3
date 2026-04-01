@@ -16,7 +16,7 @@ public class AutomatedAction {
         robot.shooter.autoStartShooter();
         robot.drivetrain.driveToTargetAuto(robot.pathManager.getPath(robot.aimBot.getDestination(), getDivert()), 0);
         robot.kicker.kickChamberAutoClose();
-        robot.shooter.stopShooter();
+        if(robot.runMode == Robot.RunMode.TELEOP) robot.shooter.stopShooter();
 
     }
     public void shootClosePattern() {
@@ -54,7 +54,13 @@ public class AutomatedAction {
     }
 
     public void openGate() {
-        robot.drivetrain.driveToTargetAuto(robot.pathManager.getPath(PathManager.Destination.GATE, getDivert()), 500);
+        robot.drivetrain.driveToTargetAuto(robot.pathManager.getPath(PathManager.Destination.GATE, getDivert()), 0);
+        robot.drivetrain.getFollower().update();
+    }
+    public void openGateAuto() {
+        robot.drivetrain.driveToTargetAuto(robot.pathManager.getPath(PathManager.Destination.GATE_AUTO, getDivert()), 0);
+        robot.drivetrain.getFollower().update();
+        robot.drivetrain.makeTheRobotJumpForward();
     }
 
     public void intakeHuman() {
@@ -81,36 +87,47 @@ public class AutomatedAction {
     }
 
     public void intakeLine1(){
-        robot.drivetrain.driveToTargetAuto(robot.pathManager.getPath(PathManager.Destination.PRE_LINE_1, getDivert()), 0);
+        robot.drivetrain.getFollower().setMaxPower(0.8);
+        robot.drivetrain.driveToTargetAuto(robot.pathManager.getPath(PathManager.Destination.PRE_LINE_1, getDivert()), false, 0);
+        robot.drivetrain.getFollower().setMaxPower(0.4);
         robot.intake.startIntake();
         robot.kicker.lowerKicker();
-        robot.drivetrain.driveToTargetAuto(robot.pathManager.getPath(PathManager.Destination.POST_LINE_1, getDivert()), 0);
+        robot.drivetrain.driveToTargetAuto(robot.pathManager.getPath(PathManager.Destination.POST_LINE_1, getDivert()), false, 0);
         robot.kicker.engageKicker();
         if (robot.timeToStop()) return;
         robot.opMode.sleep(200);
         robot.intake.stopIntake();
+        robot.drivetrain.getFollower().setMaxPower(1.0);
 
     }
     public void intakeLine2(){
-        robot.drivetrain.driveToTargetAuto(robot.pathManager.getPath(PathManager.Destination.PRE_LINE_2, getDivert()), 0);
+        robot.drivetrain.getFollower().setMaxPower(0.7);
+        robot.drivetrain.driveToTargetAuto(robot.pathManager.getPath(PathManager.Destination.PRE_LINE_2, getDivert()), false, 0);
+        robot.drivetrain.getFollower().setMaxPower(0.4);
         robot.intake.startIntake();
         robot.kicker.lowerKicker();
-        robot.drivetrain.driveToTargetAuto(robot.pathManager.getPath(PathManager.Destination.POST_LINE_2, getDivert()), 0);
+        robot.drivetrain.driveToTargetAuto(robot.pathManager.getPath(PathManager.Destination.POST_LINE_2, getDivert()), false, 0);
         robot.kicker.engageKicker();
         if (robot.timeToStop()) return;
         robot.opMode.sleep(200);
         robot.intake.stopIntake();
+        robot.drivetrain.getFollower().setMaxPower(1.0);
+        robot.drivetrain.driveToTargetAuto(robot.pathManager.getPath(PathManager.Destination.PRE_LINE_2, getDivert()), false, 0);
+
 
     }
     public void intakeLine3(){
-        robot.drivetrain.driveToTargetAuto(robot.pathManager.getPath(PathManager.Destination.PRE_LINE_3, getDivert()), 0);
+        robot.drivetrain.getFollower().setMaxPower(0.7);
+        robot.drivetrain.driveToTargetAuto(robot.pathManager.getPath(PathManager.Destination.PRE_LINE_3, getDivert()), false, 0);
+        robot.drivetrain.getFollower().setMaxPower(0.4);
         robot.intake.startIntake();
         robot.kicker.lowerKicker();
-        robot.drivetrain.driveToTargetAuto(robot.pathManager.getPath(PathManager.Destination.POST_LINE_3, getDivert()), 0);
+        robot.drivetrain.driveToTargetAuto(robot.pathManager.getPath(PathManager.Destination.POST_LINE_3, getDivert()), false, 0);
         robot.kicker.engageKicker();
         if (robot.timeToStop()) return;
         robot.opMode.sleep(200);
         robot.intake.stopIntake();
+        robot.drivetrain.getFollower().setMaxPower(1.0);
 
     }
 

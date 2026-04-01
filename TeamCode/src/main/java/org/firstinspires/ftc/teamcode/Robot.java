@@ -12,6 +12,7 @@ import org.firstinspires.ftc.teamcode.subsystem.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystem.Intake;
 import org.firstinspires.ftc.teamcode.subsystem.Kicker;
 import org.firstinspires.ftc.teamcode.subsystem.Led;
+import org.firstinspires.ftc.teamcode.subsystem.Lidar;
 import org.firstinspires.ftc.teamcode.subsystem.Limelight;
 import org.firstinspires.ftc.teamcode.subsystem.Shooter;
 import org.firstinspires.ftc.teamcode.subsystem.Vision;
@@ -27,6 +28,7 @@ public class Robot {
     public final Led led;
     public final Vision vision;
     public final Limelight limelight;
+    public final Lidar lidar;
 
     public final AimBot aimBot;
     public final PathManager pathManager;
@@ -69,6 +71,7 @@ public class Robot {
         led = new Led(this);
         vision = new Vision(this);
         limelight = new Limelight(this);
+        lidar = new Lidar(this);
         aimBot = new AimBot();
         teleOp = new TeleOp(this);
         automatedAction = new AutomatedAction(this);
@@ -87,6 +90,7 @@ public class Robot {
         led = new Led(this);
         vision = new Vision(this);
         limelight = new Limelight(this);
+        lidar = new Lidar(this);
         aimBot = new AimBot();
         autonomous = new Autonomous(this, actionList);
         automatedAction = new AutomatedAction(this);
@@ -121,6 +125,7 @@ public class Robot {
     }
 
     public boolean timeToStop() {
+        periodic();
         if (Math.abs(opMode.gamepad1.left_stick_y) > 0.4 || Math.abs(opMode.gamepad1.left_stick_x) > 0.4 || Math.abs(opMode.gamepad1.right_stick_y) > 0.4) {
             drivetrain.getFollower().startTeleopDrive();
             return true;
@@ -133,6 +138,7 @@ public class Robot {
         shooter.periodic();
         led.updateLed();
         limelight.telemetry();
+        lidar.update();
         opMode.telemetry.update();
     }
 

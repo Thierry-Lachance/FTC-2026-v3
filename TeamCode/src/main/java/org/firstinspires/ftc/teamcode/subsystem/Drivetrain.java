@@ -13,7 +13,8 @@ import java.util.Locale;
 public class Drivetrain {
 
     Robot robot;
-    Pose resetPosition;
+    Pose resetPositionHuman;
+    Pose resetPositionGoal;
 
 
     double previousHeading = 0.0;
@@ -29,14 +30,14 @@ public class Drivetrain {
         if (robot.teamColor == Robot.TeamColor.RED) {
 
 
-            resetPosition = new Pose(6.1, 28.39, -Math.PI);
-            startingPose = resetPosition;
+            resetPositionHuman = new Pose(6.1, 28.39, -Math.PI);
+            resetPositionGoal = new Pose(115,136.6,-2.455);
 
 
         } else {
 
 
-            resetPosition = new Pose(9.594, 8.984, -Math.PI);
+            resetPositionHuman = new Pose(9.594, 8.984, -Math.PI);
         }
 
         follower = PathingConstants.createFollower(robot.opMode.hardwareMap);
@@ -63,6 +64,34 @@ public class Drivetrain {
         robot.opMode.sleep(timeout);
 
     }
+    public void driveToTargetAuto(PathChain path, boolean hold, long timeout) {
+        follower.followPath(path);
+        while (follower.isBusy() && !robot.timeToStop()) follower.update();
+        if(!hold) follower.breakFollowing();
+        if (robot.timeToStop()) return;
+        robot.opMode.sleep(timeout);
+
+    }
+    public void makeTheRobotJumpForward() {
+        follower.startTeleopDrive();
+        follower.update();
+        follower.setTeleOpDrive(
+                0.50,
+                0,
+                0,
+                true
+        );
+        follower.update();
+        robot.opMode.sleep(800);
+        follower.setTeleOpDrive(
+                0,
+                0,
+                0,
+                true
+        );
+        follower.update();
+
+    }
 
     public void resetFieldOriented() {
         Pose currentPose = follower.getPose();
@@ -70,7 +99,11 @@ public class Drivetrain {
     }
 
     public void resetOdoCorner() {
-        follower.setPose(resetPosition);
+        follower.setPose(resetPositionHuman);
+
+    }
+    public void resetOdoGoal() {
+        follower.setPose(resetPositionGoal);
 
     }
 

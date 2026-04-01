@@ -16,6 +16,9 @@ public class Constants {
     //Odo name
     public static String odoName = "odo";
 
+    //Lidar Name
+    public static String lidarName = "d1";
+
     //Motor Name
     public static String frontLeftMotorName = "fl";
     public static String backLeftMotorName = "bl";

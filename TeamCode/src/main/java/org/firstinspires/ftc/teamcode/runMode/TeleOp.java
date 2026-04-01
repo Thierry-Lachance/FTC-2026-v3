@@ -17,8 +17,8 @@ public class TeleOp {
             robot.drivetrain.strafeToBall(robot.limelight.getBallOffset(), robot.opMode.gamepad1.left_trigger);
         else robot.drivetrain.driveMecanumFieldOriented();
         if (robot.opMode.gamepad1.options) robot.drivetrain.resetFieldOriented();
-        if (robot.opMode.gamepad1.right_bumper || robot.opMode.gamepad1.left_bumper)
-            robot.drivetrain.resetOdoCorner();
+        if (robot.opMode.gamepad1.a) robot.drivetrain.resetOdoCorner();
+        if(robot.opMode.gamepad1.b) robot.drivetrain.resetOdoGoal();
 
         //intake
         if (robot.opMode.gamepad1.right_trigger > 0.5) robot.intake.startIntake();

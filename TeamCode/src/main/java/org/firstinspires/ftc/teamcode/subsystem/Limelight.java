@@ -61,7 +61,6 @@ public class Limelight {
             robot.opMode.telemetry.addData("Limelight", "No data available");
         }
 
-        robot.opMode.telemetry.update();
     }
 
     public double getBallOffset() {

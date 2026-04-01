@@ -34,7 +34,8 @@ public class PathManager {
         PRE_LINE_3,
         POST_LINE_1,
         POST_LINE_2,
-        POST_LINE_3
+        POST_LINE_3,
+        GATE_AUTO
     }
 
     public enum StartingPosition {
@@ -50,7 +51,8 @@ public class PathManager {
 
     public enum ConstraintLevel {
         HIGH_PRECISION,
-        LOW_PRECISION
+        LOW_PRECISION,
+        SHORT_PRECISION
     }
 
     private Pose gatePose;
@@ -71,9 +73,14 @@ public class PathManager {
     private Pose postLine1Pose;
     private Pose postLine2Pose;
     private Pose postLine3Pose;
+    private Pose gatePoseAuto;
 
-    private final double[] highPrecisionConstraints = new double[]{0.05, 0.0, 0.03, 1.0, 5000, 5};//translational, velocity, heading, tValue, timeout, brakingStrength
-    private final double[] lowPrecisionConstraints = new double[]{0.25, 0.0, 0.075, 0.9, 5000, 5};//todo check value with gate testing
+
+    private final double[] highPrecisionConstraints = new double[]{0.05, 0.0, 0.03, 1.0, 10000, 5, 1.0};//translational, velocity, heading, tValue, timeout, brakingStrength
+    private final double[] lowPrecisionConstraints = new double[]{0.25, 0.0, 0.075, 0.9, 10000, 5, 1.05};
+    private final double[] shortPrecisionConstraints = new double[]{0.05, 0.0, 0.03, 1.0, 10000, 18, 3.0};
+    //private final double[] highPrecisionConstraints = new double[]{1.0, 0.0, 0.05, 0.98, 10000, 5, 0.8}; // translational, velocity, heading, tValue, timeout, brakingStrength, brakingStart
+    //private final double[] lowPrecisionConstraints  = new double[]{3.0, 0.0, 0.15, 0.95, 10000, 5, 0.9};
 
     public PathManager(Robot robot) {
         this.robot = robot;
@@ -90,15 +97,16 @@ public class PathManager {
             nearOppGoalPose = new Pose(47.469, 95.188, -1.2);
 
             //autonomous specific poses
-            parkGatePose = new Pose(0, 0, 0);//todo create these poses
-            parkInsidePose = new Pose(0, 0, 0);
-            parkOutsidePose = new Pose(0, 0, 0);
-            preLine1Pose = new Pose(0, 0, 0);
-            preLine2Pose = new Pose(0, 0, 0);
-            preLine3Pose = new Pose(0, 0, 0);
-            postLine1Pose = new Pose(0, 0, 0);
-            postLine2Pose = new Pose(0, 0, 0);
-            postLine3Pose = new Pose(0, 0, 0);
+            parkGatePose = new Pose(115, 70, 0);//todo create these poses
+            parkInsidePose = new Pose(91, 126, -1.208);
+            parkOutsidePose = new Pose(105, 45, 0);
+            preLine1Pose = new Pose(111, 84, 0);
+            preLine2Pose = new Pose(111, 62, 0);
+            preLine3Pose = new Pose(111,38,0);
+            postLine1Pose = new Pose(138, 84, 0);
+            postLine2Pose = new Pose(145, 56, 0);
+            postLine3Pose = new Pose(145, 36, 0);
+            gatePoseAuto  = new Pose(120, 78, 0);
         } else {
             //todo add blue side poses
         }
@@ -169,17 +177,19 @@ public class PathManager {
                 case PARK_OUTSIDE:
                     return CreateDirectPathFromRobotPoseToTarget(parkOutsidePose, ConstraintLevel.HIGH_PRECISION);
                 case PRE_LINE_1:
-                    return CreateDirectPathFromRobotPoseToTarget(preLine1Pose, ConstraintLevel.HIGH_PRECISION);
+                    return CreateDirectPathFromRobotPoseToTarget(preLine1Pose, ConstraintLevel.SHORT_PRECISION,  0.1);
                 case PRE_LINE_2:
-                    return CreateDirectPathFromRobotPoseToTarget(preLine2Pose, ConstraintLevel.HIGH_PRECISION);
+                    return CreateDirectPathFromRobotPoseToTarget(preLine2Pose, ConstraintLevel.SHORT_PRECISION, 0.1);
                 case PRE_LINE_3:
-                    return CreateDirectPathFromRobotPoseToTarget(preLine3Pose, ConstraintLevel.HIGH_PRECISION);
+                    return CreateDirectPathFromRobotPoseToTarget(preLine3Pose, ConstraintLevel.SHORT_PRECISION, 0.1);
                 case POST_LINE_1:
-                    return CreateDirectPathFromRobotPoseToTarget(postLine1Pose, ConstraintLevel.HIGH_PRECISION);
+                    return CreateDirectPathFromRobotPoseToTargetConstantHeading(postLine1Pose, ConstraintLevel.HIGH_PRECISION);
                 case POST_LINE_2:
-                    return CreateDirectPathFromRobotPoseToTarget(postLine2Pose, ConstraintLevel.HIGH_PRECISION);
+                    return CreateDirectPathFromRobotPoseToTargetConstantHeading(postLine2Pose, ConstraintLevel.HIGH_PRECISION);
                 case POST_LINE_3:
-                    return CreateDirectPathFromRobotPoseToTarget(postLine3Pose, ConstraintLevel.HIGH_PRECISION);
+                    return CreateDirectPathFromRobotPoseToTargetConstantHeading(postLine3Pose, ConstraintLevel.HIGH_PRECISION);
+                case GATE_AUTO:
+                    return CreateDirectPathFromRobotPoseToTarget(gatePoseAuto, ConstraintLevel.HIGH_PRECISION);
             }
         } else {
             switch (destination) {//TODO add diversion for blue side
@@ -253,6 +263,7 @@ public class PathManager {
                 .setTValueConstraint(getConstraint(constraintLevel)[3])
                 .setTimeoutConstraint(getConstraint(constraintLevel)[4])
                 .setBrakingStrength(getConstraint(constraintLevel)[5])
+                .setBrakingStart(getConstraint(constraintLevel)[6])
                 .build();
 
     }
@@ -273,6 +284,7 @@ public class PathManager {
                 .setTValueConstraint(getConstraint(constraintLevel)[3])
                 .setTimeoutConstraint(getConstraint(constraintLevel)[4])
                 .setBrakingStrength(getConstraint(constraintLevel)[5])
+                .setBrakingStart(getConstraint(constraintLevel)[6])
                 .build();
 
     }
@@ -292,6 +304,45 @@ public class PathManager {
                 .setTValueConstraint(getConstraint(constraintLevel)[3])
                 .setTimeoutConstraint(getConstraint(constraintLevel)[4])
                 .setBrakingStrength(getConstraint(constraintLevel)[5])
+                .setBrakingStart(getConstraint(constraintLevel)[6])
+                .build();
+
+    }
+    private PathChain CreateDirectPathFromRobotPoseToTargetConstantHeading(Pose targetPose, ConstraintLevel constraintLevel) {
+        return robot.drivetrain.getFollower().pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                robot.drivetrain.getFollower()::getPose,
+                                targetPose
+                        )
+                )
+                .setHeadingInterpolation(HeadingInterpolator.constant(targetPose.getHeading()))
+                .setTranslationalConstraint(getConstraint(constraintLevel)[0])
+                .setVelocityConstraint(getConstraint(constraintLevel)[1])
+                .setHeadingConstraint(getConstraint(constraintLevel)[2])
+                .setTValueConstraint(getConstraint(constraintLevel)[3])
+                .setTimeoutConstraint(getConstraint(constraintLevel)[4])
+                .setBrakingStrength(getConstraint(constraintLevel)[5])
+                .setBrakingStart(getConstraint(constraintLevel)[6])
+                .build();
+
+    }
+    private PathChain CreateDirectPathFromRobotPoseToTarget(Pose targetPose, ConstraintLevel constraintLevel, double endT) {
+        return robot.drivetrain.getFollower().pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                robot.drivetrain.getFollower()::getPose,
+                                targetPose
+                        )
+                )
+                .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(robot.drivetrain.getFollower()::getHeading, targetPose.getHeading(), endT))
+                .setTranslationalConstraint(getConstraint(constraintLevel)[0])
+                .setVelocityConstraint(getConstraint(constraintLevel)[1])
+                .setHeadingConstraint(getConstraint(constraintLevel)[2])
+                .setTValueConstraint(getConstraint(constraintLevel)[3])
+                .setTimeoutConstraint(getConstraint(constraintLevel)[4])
+                .setBrakingStrength(getConstraint(constraintLevel)[5])
+                .setBrakingStart(getConstraint(constraintLevel)[6])
                 .build();
 
     }
@@ -300,14 +351,21 @@ public class PathManager {
         if (constraintLevel == ConstraintLevel.HIGH_PRECISION) {
             return highPrecisionConstraints;
         }
-        return lowPrecisionConstraints;
+        else if (constraintLevel == ConstraintLevel.SHORT_PRECISION) {
+            return shortPrecisionConstraints;
+        }
+         else {
+            return lowPrecisionConstraints;
+        }
     }
+
+
 
     public Pose getStartingPose(StartingPosition startingPosition) {
         if (robot.teamColor == Robot.TeamColor.RED) {
             switch (startingPosition) {
                 case NEAR_TEAM_GOAL://TODO create these poses
-                    return new Pose(0,0,0);
+                    return new Pose(140.6,108.8,0);
                 case FAR_ZONE:
                     return new Pose(0,0,0);
             }
