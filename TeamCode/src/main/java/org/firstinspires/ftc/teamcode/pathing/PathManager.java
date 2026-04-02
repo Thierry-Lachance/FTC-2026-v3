@@ -85,8 +85,7 @@ public class PathManager {
     private final double[] highPrecisionConstraints = new double[]{0.05, 0.0, 0.03, 1.0, 10000, 5, 1.0};//translational, velocity, heading, tValue, timeout, brakingStrength
     private final double[] lowPrecisionConstraints = new double[]{0.25, 0.0, 0.075, 0.9, 10000, 5, 1.05};
     private final double[] shortPrecisionConstraints = new double[]{0.05, 0.0, 0.03, 1.0, 10000, 18, 3.0};
-    //private final double[] highPrecisionConstraints = new double[]{1.0, 0.0, 0.05, 0.98, 10000, 5, 0.8}; // translational, velocity, heading, tValue, timeout, brakingStrength, brakingStart
-    //private final double[] lowPrecisionConstraints  = new double[]{3.0, 0.0, 0.15, 0.95, 10000, 5, 0.9};
+
 
     public PathManager(Robot robot) {
         this.robot = robot;
@@ -103,7 +102,7 @@ public class PathManager {
             nearOppGoalPose = new Pose(47.469, 95.188, -1.2);
 
             //autonomous specific poses
-            parkGatePose = new Pose(115, 70, 0);//todo create these poses
+            parkGatePose = new Pose(115, 70, 0);
             parkInsidePose = new Pose(91, 126, -1.208);
             parkOutsidePose = new Pose(105, 45, 0);
             preLine1Pose = new Pose(111, 84, 0);
@@ -260,9 +259,6 @@ public class PathManager {
         return null;
     }
 
-    public PathChain getPathTeleop(DestinationTeleop destinationTeleop) {
-        return getPathTeleop(destinationTeleop, Divert.NONE);
-    }
 
     private FieldQuadrant getFieldQuadrant(Pose pose) {
         if (pose.getX() < 72 && pose.getY() > 72) {
