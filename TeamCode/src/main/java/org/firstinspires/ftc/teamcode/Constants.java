@@ -41,7 +41,6 @@ public class Constants {
     public static String chamber1Name = "c1";
     public static String chamber2Name = "c2";
     public static String chamber3Name = "c3";
-    public static String lidarRotationServoName = "lr1";
 
     //Servo Base Position
     public static double chamber1BasePos = 1.00;

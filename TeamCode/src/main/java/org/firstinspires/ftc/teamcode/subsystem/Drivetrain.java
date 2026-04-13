@@ -31,7 +31,7 @@ public class Drivetrain {
 
 
             resetPositionHuman = new Pose(6.1, 28.39, -Math.PI);
-            resetPositionGoal = new Pose(115,136.6,-2.455);
+            resetPositionGoal = new Pose(115, 136.6, -2.455);
 
 
         } else {
@@ -64,14 +64,16 @@ public class Drivetrain {
         robot.opMode.sleep(timeout);
 
     }
+
     public void driveToTargetAuto(PathChain path, boolean hold, long timeout) {
         follower.followPath(path);
         while (follower.isBusy() && !robot.timeToStop()) follower.update();
-        if(!hold) follower.breakFollowing();
+        if (!hold) follower.breakFollowing();
         if (robot.timeToStop()) return;
         robot.opMode.sleep(timeout);
 
     }
+
     public void makeTheRobotJumpForward() {
         follower.startTeleopDrive();
         follower.update();
@@ -102,9 +104,14 @@ public class Drivetrain {
         follower.setPose(resetPositionHuman);
 
     }
+
     public void resetOdoGoal() {
         follower.setPose(resetPositionGoal);
 
+    }
+    public void setStartingPose(Pose pose) {
+        follower.setStartingPose(pose);
+        follower.setPose(pose);
     }
 
     public void printRobotPos() {

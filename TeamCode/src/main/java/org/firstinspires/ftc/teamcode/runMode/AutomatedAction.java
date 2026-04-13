@@ -16,9 +16,10 @@ public class AutomatedAction {
         robot.shooter.autoStartShooter();
         robot.drivetrain.driveToTargetAuto(robot.pathManager.getPathTeleop(robot.aimBot.getDestination(), getDivert()), 0);
         robot.kicker.kickChamberAutoClose();
-        if(robot.runMode == Robot.RunMode.TELEOP) robot.shooter.stopShooter();
+        if (robot.runMode == Robot.RunMode.TELEOP) robot.shooter.stopShooter();
 
     }
+
     public void shootClosePattern() {
         robot.aimBot.setTargets(1);
         robot.shooter.autoStartShooter();
@@ -82,7 +83,7 @@ public class AutomatedAction {
         robot.drivetrain.driveToTargetAuto(robot.pathManager.getPathAuto(PathManager.DestinationAuto.PARK_GATE), 0);
     }
 
-    public void intakeLine1Auto(){
+    public void intakeLine1Auto() {
         robot.drivetrain.getFollower().setMaxPower(0.8);
         robot.drivetrain.driveToTargetAuto(robot.pathManager.getPathAuto(PathManager.DestinationAuto.PRE_LINE_1), false, 0);
         robot.drivetrain.getFollower().setMaxPower(0.4);
@@ -97,7 +98,8 @@ public class AutomatedAction {
         robot.setPatternInsideRobot(Robot.ColorPattern.GPP);
 
     }
-    public void intakeLine2Auto(){
+
+    public void intakeLine2Auto() {
         robot.drivetrain.getFollower().setMaxPower(0.7);
         robot.drivetrain.driveToTargetAuto(robot.pathManager.getPathAuto(PathManager.DestinationAuto.PRE_LINE_2), false, 0);
         robot.drivetrain.getFollower().setMaxPower(0.4);
@@ -114,7 +116,8 @@ public class AutomatedAction {
 
 
     }
-    public void intakeLine3Auto(){
+
+    public void intakeLine3Auto() {
         robot.drivetrain.getFollower().setMaxPower(0.7);
         robot.drivetrain.driveToTargetAuto(robot.pathManager.getPathAuto(PathManager.DestinationAuto.PRE_LINE_3), false, 0);
         robot.drivetrain.getFollower().setMaxPower(0.4);
@@ -129,6 +132,7 @@ public class AutomatedAction {
         robot.setPatternInsideRobot(Robot.ColorPattern.PPG);
 
     }
+
     public void openGateAuto() {
         robot.drivetrain.driveToTargetAuto(robot.pathManager.getPathAuto(PathManager.DestinationAuto.GATE_AUTO), 0);
         robot.drivetrain.getFollower().update();
@@ -140,14 +144,15 @@ public class AutomatedAction {
         robot.shooter.autoStartShooter();
         robot.drivetrain.driveToTargetAuto(robot.pathManager.getPathAuto(PathManager.DestinationAuto.NEAR_TEAM_GOAL), 0);
         robot.kicker.kickChamberAutoClose();
-        if(robot.runMode == Robot.RunMode.TELEOP) robot.shooter.stopShooter();
+        if (robot.runMode == Robot.RunMode.TELEOP) robot.shooter.stopShooter();
 
     }
+
     public void shootClosePatternAuto() {
         robot.aimBot.setTargets(1);
         robot.shooter.autoStartShooter();
         robot.drivetrain.driveToTargetAuto(robot.pathManager.getPathAuto(PathManager.DestinationAuto.NEAR_TEAM_GOAL), 0);
-        if(robot.getMatchColorPattern() == Robot.ColorPattern.UNKNOWN)
+        if (robot.getMatchColorPattern() == Robot.ColorPattern.UNKNOWN)
             robot.setMatchColorPattern(robot.vision.detectPattern());
         robot.kicker.kickChamberAutoPattern(robot.getPatternInsideRobot());
         robot.shooter.stopShooter();

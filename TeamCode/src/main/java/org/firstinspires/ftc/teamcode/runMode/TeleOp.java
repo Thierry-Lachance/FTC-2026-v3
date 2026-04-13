@@ -18,7 +18,7 @@ public class TeleOp {
         else robot.drivetrain.driveMecanumFieldOriented();
         if (robot.opMode.gamepad1.options) robot.drivetrain.resetFieldOriented();
         if (robot.opMode.gamepad1.a) robot.drivetrain.resetOdoCorner();
-        if(robot.opMode.gamepad1.b) robot.drivetrain.resetOdoGoal();
+        if (robot.opMode.gamepad1.b) robot.drivetrain.resetOdoGoal();
 
         //intake
         if (robot.opMode.gamepad1.right_trigger > 0.5) robot.intake.startIntake();
@@ -34,7 +34,6 @@ public class TeleOp {
         //shooter
         if (robot.opMode.gamepad1.x) robot.shooter.startShooterManual();
         if (robot.opMode.gamepad1.y) robot.shooter.stopShooter();
-
 
 
     }

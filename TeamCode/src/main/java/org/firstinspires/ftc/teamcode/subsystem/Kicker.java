@@ -148,7 +148,7 @@ public class Kicker {
                 }
                 break;
         }
-        while ((numberOfBallShot < 3 && robot.opMode.opModeIsActive())&& !robot.timeToStop()) {
+        while ((numberOfBallShot < 3 && robot.opMode.opModeIsActive()) && !robot.timeToStop()) {
             if (robot.shooter.isReadyToShoot() && ((robot.opMode.getRuntime() - lastShotTime) >= 1.0 || numberOfBallShot == 0)) {
                 switch (chamberOrder[numberOfBallShot]) {
                     case 1:

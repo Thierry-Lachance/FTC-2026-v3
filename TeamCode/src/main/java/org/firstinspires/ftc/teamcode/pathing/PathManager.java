@@ -107,11 +107,11 @@ public class PathManager {
             parkOutsidePose = new Pose(105, 45, 0);
             preLine1Pose = new Pose(111, 84, 0);
             preLine2Pose = new Pose(111, 62, 0);
-            preLine3Pose = new Pose(111,38,0);
+            preLine3Pose = new Pose(111, 38, 0);
             postLine1Pose = new Pose(138, 84, 0);
             postLine2Pose = new Pose(145, 56, 0);
             postLine3Pose = new Pose(145, 36, 0);
-            gatePoseAuto  = new Pose(120, 78, 0);
+            gatePoseAuto = new Pose(120, 78, 0);
         } else {
             //todo add blue side poses
         }
@@ -200,7 +200,7 @@ public class PathManager {
     }
 
     public PathChain getPathAuto(DestinationAuto destinationAuto) {//TODO modify start pose of path based on last action and add auto diversions
-        if(robot.teamColor == Robot.TeamColor.RED) {
+        if (robot.teamColor == Robot.TeamColor.RED) {
             switch (destinationAuto) {
                 case PARK_GATE:
                     return CreateDirectPathFromRobotPoseToTarget(parkGatePose, ConstraintLevel.HIGH_PRECISION);
@@ -209,7 +209,7 @@ public class PathManager {
                 case PARK_OUTSIDE:
                     return CreateDirectPathFromRobotPoseToTarget(parkOutsidePose, ConstraintLevel.HIGH_PRECISION);
                 case PRE_LINE_1:
-                    return CreateDirectPathFromRobotPoseToTarget(preLine1Pose, ConstraintLevel.SHORT_PRECISION,  0.1);
+                    return CreateDirectPathFromRobotPoseToTarget(preLine1Pose, ConstraintLevel.SHORT_PRECISION, 0.1);
                 case PRE_LINE_2:
                     return CreateDirectPathFromRobotPoseToTarget(preLine2Pose, ConstraintLevel.SHORT_PRECISION, 0.1);
                 case PRE_LINE_3:
@@ -316,8 +316,9 @@ public class PathManager {
     }
 
     private PathChain CreateDirectPathFromRobotPoseToTarget(Pose targetPose, ConstraintLevel constraintLevel) {
-      return CreateDirectPathFromRobotPoseToTarget(targetPose, constraintLevel, 0.5);
+        return CreateDirectPathFromRobotPoseToTarget(targetPose, constraintLevel, 0.5);
     }
+
     private PathChain CreateDirectPathFromRobotPoseToTargetConstantHeading(Pose targetPose, ConstraintLevel constraintLevel) {
         return robot.drivetrain.getFollower().pathBuilder()
                 .addPath(
@@ -337,6 +338,7 @@ public class PathManager {
                 .build();
 
     }
+
     private PathChain CreateDirectPathFromRobotPoseToTarget(Pose targetPose, ConstraintLevel constraintLevel, double endT) {
         return robot.drivetrain.getFollower().pathBuilder()
                 .addPath(
@@ -360,31 +362,28 @@ public class PathManager {
     private double[] getConstraint(ConstraintLevel constraintLevel) {
         if (constraintLevel == ConstraintLevel.HIGH_PRECISION) {
             return highPrecisionConstraints;
-        }
-        else if (constraintLevel == ConstraintLevel.SHORT_PRECISION) {
+        } else if (constraintLevel == ConstraintLevel.SHORT_PRECISION) {
             return shortPrecisionConstraints;
-        }
-         else {
+        } else {
             return lowPrecisionConstraints;
         }
     }
 
 
-
     public Pose getStartingPose(StartingPosition startingPosition) {
         if (robot.teamColor == Robot.TeamColor.RED) {
             switch (startingPosition) {
-                case NEAR_TEAM_GOAL://TODO create these poses
-                    return new Pose(140.6,108.8,0);
+                case NEAR_TEAM_GOAL:
+                    return new Pose(140.6, 108.8, 0);
                 case FAR_ZONE:
-                    return new Pose(0,0,0);
+                    return new Pose(0, 0, 0);//TODO create these poses
             }
         } else {
             switch (startingPosition) {
-                case NEAR_TEAM_GOAL:
-                    return new Pose(0,0,0);
+                case NEAR_TEAM_GOAL://TODO create these poses
+                    return new Pose(0, 0, 0);
                 case FAR_ZONE:
-                    return new Pose(0,0,0);
+                    return new Pose(0, 0, 0);
             }
         }
         return null;

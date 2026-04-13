@@ -20,11 +20,6 @@ public class Vision {
     private AprilTagProcessor aprilTag;
     Robot robot;
 
-    private final Position cameraPosition = new Position(DistanceUnit.INCH,
-            -2.0, -1, 12.25, 0);
-    private final YawPitchRollAngles cameraOrientation = new YawPitchRollAngles(AngleUnit.DEGREES,
-            90, -70, 0, 0);
-
     public Vision(Robot robot) {
         this.robot = robot;
         initAprilTag();

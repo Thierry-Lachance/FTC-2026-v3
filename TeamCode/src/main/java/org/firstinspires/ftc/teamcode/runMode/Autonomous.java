@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.runMode;
 
 import org.firstinspires.ftc.teamcode.Robot;
+import org.firstinspires.ftc.teamcode.pathing.PathManager;
+import org.firstinspires.ftc.teamcode.subsystem.Drivetrain;
 
 public class Autonomous {
     public enum Action {
@@ -15,6 +17,8 @@ public class Autonomous {
         PARK_INSIDE,
         PARK_OUTSIDE,
         PARK_GATE,
+        START_NEAR_TEAM_GOAL,
+        START_FAR
 
     }
 
@@ -63,6 +67,12 @@ public class Autonomous {
                     break;
                 case PARK_GATE:
                     robot.automatedAction.parkGateAuto();
+                    break;
+                case START_NEAR_TEAM_GOAL:
+                    robot.drivetrain.setStartingPose(robot.pathManager.getStartingPose(PathManager.StartingPosition.NEAR_TEAM_GOAL));
+                    break;
+                case START_FAR:
+                    robot.drivetrain.setStartingPose(robot.pathManager.getStartingPose(PathManager.StartingPosition.FAR_ZONE));
                     break;
 
             }

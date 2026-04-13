@@ -62,7 +62,7 @@ public class Robot {
         this.opMode = opMode;
         this.teamColor = teamColor;
         this.runMode = RunMode.TELEOP;
-        drivetrain = new Drivetrain(this, new Pose(0,0,0));
+        drivetrain = new Drivetrain(this, new Pose(0, 0, 0));
         intake = new Intake(this);
         shooter = new Shooter(this);
         kicker = new Kicker(this);
@@ -76,7 +76,7 @@ public class Robot {
 
     }
 
-    public Robot(LinearOpMode opMode, TeamColor teamColor, PathManager.StartingPosition startingPosition, Autonomous.Action[] actionList) {
+    public Robot(LinearOpMode opMode, TeamColor teamColor, Autonomous.Action[] actionList) {
         this.opMode = opMode;
         this.teamColor = teamColor;
         this.runMode = RunMode.AUTONOMOUS;
@@ -91,7 +91,7 @@ public class Robot {
         autonomous = new Autonomous(this, actionList);
         automatedAction = new AutomatedAction(this);
         pathManager = new PathManager(this);
-        drivetrain = new Drivetrain(this, pathManager.getStartingPose(startingPosition));
+        drivetrain = new Drivetrain(this, new Pose(0, 0, 0));
 
 
     }
@@ -112,8 +112,8 @@ public class Robot {
         this.patternInsideRobot = patternInsideRobot;
     }
 
-    public void run(){
-        if(runMode == RunMode.TELEOP) {
+    public void run() {
+        if (runMode == RunMode.TELEOP) {
             teleOp.run();
         } else {
             autonomous.run();
