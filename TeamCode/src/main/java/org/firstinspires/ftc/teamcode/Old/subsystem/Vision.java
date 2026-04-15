@@ -1,0 +1,59 @@
+package org.firstinspires.ftc.teamcode.Old.subsystem;
+
+import android.util.Size;
+
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.Old.Constants;
+import org.firstinspires.ftc.teamcode.Old.Robot;
+import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
+import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
+
+import java.util.List;
+
+public class Vision {
+
+    private AprilTagProcessor aprilTag;
+    Robot robot;
+
+    public Vision(Robot robot) {
+        this.robot = robot;
+        initAprilTag();
+
+    }
+
+    private void initAprilTag() {
+        aprilTag = new AprilTagProcessor.Builder().build();
+
+        VisionPortal.Builder builder = new VisionPortal.Builder();
+        builder.setCamera(robot.opMode.hardwareMap.get(WebcamName.class, Constants.webcamName));
+        builder.addProcessor(aprilTag);
+        builder.setCameraResolution(new Size(640, 480));
+
+        VisionPortal visionPortal = builder.build();
+
+    }
+
+    public Robot.ColorPattern detectPattern() {
+        List<AprilTagDetection> currentDetections = aprilTag.getDetections();
+
+        for (AprilTagDetection detection : currentDetections) {
+            if (detection.metadata != null) {
+                switch (detection.id) {
+                    case 21:
+                        return Robot.ColorPattern.GPP;
+
+                    case 22:
+                        return Robot.ColorPattern.PGP;
+
+                    case 23:
+                        return Robot.ColorPattern.PPG;
+
+                }
+            }
+        }
+        return Robot.ColorPattern.GPP;
+    }
+
+
+}
