@@ -1,7 +1,11 @@
 package org.firstinspires.ftc.teamcode.subsystem;
 
+import static com.pedropathing.ivy.commands.Commands.instant;
+import static com.pedropathing.ivy.commands.Commands.lazy;
+
 import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.Pose;
+import com.pedropathing.ivy.Command;
 import com.pedropathing.paths.PathChain;
 
 import org.firstinspires.ftc.teamcode.Robot;
@@ -20,7 +24,7 @@ public class Drivetrain {
     double previousHeading = 0.0;
 
 
-    private final Follower follower;
+    private Follower follower;
 
 
     public Drivetrain(Robot robot, Pose startingPose) {
@@ -95,20 +99,18 @@ public class Drivetrain {
 
     }
 
-    public void resetFieldOriented() {
+
+    public Command resetFieldOrientedCommand = instant(() ->{
         Pose currentPose = follower.getPose();
         follower.setPose(new Pose(currentPose.getX(), currentPose.getY(), 0));
-    }
+    });
+    public Command resetOdoCornerCommand = instant(() -> follower.setPose(resetPositionHuman));
+    public Command resetOdoGoalCommand = instant(() -> follower.setPose(resetPositionGoal));
 
-    public void resetOdoCorner() {
-        follower.setPose(resetPositionHuman);
 
-    }
 
-    public void resetOdoGoal() {
-        follower.setPose(resetPositionGoal);
 
-    }
+
     public void setStartingPose(Pose pose) {
         follower.setStartingPose(pose);
         follower.setPose(pose);

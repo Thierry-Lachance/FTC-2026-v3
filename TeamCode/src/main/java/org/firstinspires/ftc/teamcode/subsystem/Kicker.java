@@ -57,7 +57,7 @@ public class Kicker {
     public void kickChamberAutoClose() {
         int numberOfBallShot = 0;
         double lastShotTime = robot.opMode.getRuntime();
-        while (!robot.shooter.isReadyToShoot() && !robot.timeToStop()) ;
+        while (!robot.timeToStop()) ;
         while (numberOfBallShot < 4 && robot.opMode.opModeIsActive() && !robot.timeToStop()) {
             if ((robot.opMode.getRuntime() - lastShotTime) >= robot.aimBot.getTimeBetweenShots()) {
                 switch (numberOfBallShot) {
@@ -87,7 +87,7 @@ public class Kicker {
         double lastShotTime = robot.opMode.getRuntime();
 
         while (numberOfBallShot < 3 && robot.opMode.opModeIsActive() && !robot.timeToStop()) {
-            if (robot.shooter.isReadyToShoot() && (robot.opMode.getRuntime() - lastShotTime) >= 0.2) {
+            if ((robot.opMode.getRuntime() - lastShotTime) >= 0.2) {
                 switch (numberOfBallShot) {
                     case 0:
                         kickChamber1();
@@ -154,7 +154,7 @@ public class Kicker {
                 break;
         }
         while ((numberOfBallShot < 3 && robot.opMode.opModeIsActive()) && !robot.timeToStop()) {
-            if (robot.shooter.isReadyToShoot() && ((robot.opMode.getRuntime() - lastShotTime) >= 1.0 || numberOfBallShot == 0)) {
+            if ((robot.opMode.getRuntime() - lastShotTime) >= 1.0 || numberOfBallShot == 0) {
                 switch (chamberOrder[numberOfBallShot]) {
                     case 1:
                         kickChamber1();
