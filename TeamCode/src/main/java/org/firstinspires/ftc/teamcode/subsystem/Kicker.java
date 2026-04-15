@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.subsystem;
 
+import static com.pedropathing.ivy.commands.Commands.instant;
+
+import com.pedropathing.ivy.Command;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Constants;
@@ -25,27 +28,29 @@ public class Kicker {
         chamber3Servo.setPosition(0);
     }
 
-    public void lowerKicker() {
+    private void lowerKicker() {
         chamber1Servo.setPosition(Constants.chamber1BasePos);
         chamber2Servo.setPosition(Constants.chamber2BasePos);
         chamber3Servo.setPosition(Constants.chamber3BasePos);
     }
 
-    public void engageKicker() {
+    private void engageKicker() {
         chamber1Servo.setPosition(Constants.chamber1EngagedPos);
         chamber2Servo.setPosition(Constants.chamber2EngagedPos);
         chamber3Servo.setPosition(Constants.chamber3EngagedPos);
     }
 
-    public void kickChamber1() {
+
+
+    private void kickChamber1() {
         chamber1Servo.setPosition(Constants.chamber1ActivePos);
     }
 
-    public void kickChamber2() {
+    private void kickChamber2() {
         chamber2Servo.setPosition(Constants.chamber2ActivePos);
     }
 
-    public void kickChamber3() {
+    private void kickChamber3() {
         chamber3Servo.setPosition(Constants.chamber3ActivePos);
     }
 
@@ -169,4 +174,10 @@ public class Kicker {
         robot.opMode.sleep(500);
         engageKicker();
     }
+    public Command engageKickerCommand = instant(this::engageKicker);
+    public Command lowerKickerCommand = instant(this::lowerKicker);
+
+    public Command kickChamber1Command = instant(this::kickChamber1);
+    public Command kickChamber2Command = instant(this::kickChamber2);
+    public Command kickChamber3Command = instant(this::kickChamber3);
 }

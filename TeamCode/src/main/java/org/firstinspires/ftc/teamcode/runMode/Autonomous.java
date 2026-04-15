@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.runMode;
 
+import static com.pedropathing.ivy.Scheduler.schedule;
+
 import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.pathing.PathManager;
 import org.firstinspires.ftc.teamcode.subsystem.Drivetrain;
@@ -28,7 +30,7 @@ public class Autonomous {
     public Autonomous(Robot robot, Action[] actionList) {
         this.robot = robot;
         this.actionList = actionList;
-        robot.kicker.engageKicker();
+        schedule(robot.kicker.engageKickerCommand);
         robot.setPatternInsideRobot(Robot.ColorPattern.GPP);
 
     }

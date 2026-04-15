@@ -1,5 +1,9 @@
 package org.firstinspires.ftc.teamcode.runMode;
 
+import static com.pedropathing.ivy.groups.Groups.sequential;
+
+import com.pedropathing.ivy.Command;
+
 import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.pathing.PathManager;
 
@@ -10,6 +14,8 @@ public class AutomatedAction {
         this.robot = robot;
 
     }
+    public Command startIntaking = sequential(robot.intake.startIntakeCommand, robot.kicker.lowerKickerCommand);
+    public Command stopIntaking = sequential(robot.intake.stopIntakeCommand, robot.kicker.engageKickerCommand);
 
     public void shootClose() {
         robot.aimBot.setTargets(1);

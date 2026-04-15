@@ -38,18 +38,9 @@ public class Led {
 
     public void updateLed() {//TODO check this function
 
-        if (robot.intake.isIntaking()) {
-            setLed1Color(0.7);// Purple
-        } else {
-            if (robot.shooter.isReadyToShoot()) {
 
-                setLed1Color(0.5);// Green
-            } else {
-                setLed1Color(0.3);// Red
-            }
-        }
         if (robot.opMode.getRuntime() >= 105) {
-            //make the led falsh white when the match is about to end
+            //make the led flash white when the match is about to end
             if ((int) (robot.opMode.getRuntime() * 10) % 2 == 0) {
                 setLed0Color(1.0);
                 setLed2Color(1.0);

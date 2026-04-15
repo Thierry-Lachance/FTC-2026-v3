@@ -1,6 +1,11 @@
 package org.firstinspires.ftc.teamcode;
 
+import static com.pedropathing.ivy.commands.Commands.instant;
+import static com.pedropathing.ivy.groups.Groups.sequential;
+
 import com.pedropathing.geometry.Pose;
+import com.pedropathing.ivy.Command;
+import com.pedropathing.ivy.Scheduler;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.pathing.AimBot;
@@ -15,18 +20,19 @@ import org.firstinspires.ftc.teamcode.subsystem.Led;
 import org.firstinspires.ftc.teamcode.subsystem.Limelight;
 import org.firstinspires.ftc.teamcode.subsystem.Shooter;
 import org.firstinspires.ftc.teamcode.subsystem.Vision;
+import static com.pedropathing.ivy.Scheduler.schedule;
 
 
 public class Robot {
     public final LinearOpMode opMode;
 
-    public final Drivetrain drivetrain;
-    public final Intake intake;
-    public final Shooter shooter;
-    public final Kicker kicker;
-    public final Led led;
-    public final Vision vision;
-    public final Limelight limelight;
+    public  Drivetrain drivetrain;
+    public Intake intake;
+    public  Shooter shooter;
+    public Kicker kicker;
+    public  Led led;
+    public  Vision vision;
+    public  Limelight limelight;
 
     public final AimBot aimBot;
     public final PathManager pathManager;
@@ -135,7 +141,13 @@ public class Robot {
         led.updateLed();
         limelight.telemetry();
         opMode.telemetry.update();
+        Scheduler.execute();
     }
+
+
+
+
+
 
 
 }

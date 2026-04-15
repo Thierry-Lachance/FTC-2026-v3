@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.runMode;
 
 import org.firstinspires.ftc.teamcode.Robot;
+import static com.pedropathing.ivy.Scheduler.schedule;
 
 public class TeleOp {
     Robot robot;
@@ -21,19 +22,22 @@ public class TeleOp {
         if (robot.opMode.gamepad1.b) robot.drivetrain.resetOdoGoal();
 
         //intake
-        if (robot.opMode.gamepad1.right_trigger > 0.5) robot.intake.startIntake();
-        else robot.intake.stopIntake();
+        if (robot.opMode.gamepad1.right_trigger > 0.5) schedule(robot.automatedAction.stopIntaking);
+        else schedule(robot.automatedAction.stopIntaking);
 
         //kicker
-        if (robot.intake.isIntaking()) robot.kicker.lowerKicker();
-        else if (robot.opMode.gamepad1.dpad_left) robot.kicker.kickChamber1();
-        else if (robot.opMode.gamepad1.dpad_down) robot.kicker.kickChamber2();
-        else if (robot.opMode.gamepad1.dpad_right) robot.kicker.kickChamber3();
-        else robot.kicker.engageKicker();
+
+        if (robot.opMode.gamepad1.dpadLeftWasPressed()) schedule(robot.kicker.kickChamber1Command);
+        else if (robot.opMode.gamepad1.dpadDownWasPressed()) schedule(robot.kicker.kickChamber2Command);
+        else if (robot.opMode.gamepad1.dpadRightWasPressed()) schedule(robot.kicker.kickChamber3Command);
+        else if (robot.opMode.gamepad1.dpadLeftWasReleased() ||
+                robot.opMode.gamepad1.dpadDownWasReleased() ||
+                robot.opMode.gamepad1.dpadRightWasReleased())
+            schedule(robot.kicker.engageKickerCommand);
 
         //shooter
-        if (robot.opMode.gamepad1.x) robot.shooter.startShooterManual();
-        if (robot.opMode.gamepad1.y) robot.shooter.stopShooter();
+        if (robot.opMode.gamepad1.x) schedule(robot.shooter.startShooterManualCommand);
+        if (robot.opMode.gamepad1.y) schedule(robot.shooter.stopShooterCommand);
 
 
     }
