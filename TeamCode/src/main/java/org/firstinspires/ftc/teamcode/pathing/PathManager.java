@@ -141,19 +141,61 @@ public class PathManager {
                         case BOTTOM_RIGHT:
                             if (divert == Divert.TOP) {
                                 return createPathFromRobotPoseAnd2Waypoint(nearTeamGoalPose, new Pose(24, 24), new Pose(0, 144), ConstraintLevel.HIGH_PRECISION);
-                            } else if (divert == Divert.BOTTOM) {//todo check if diversion from bottom is mandatory
-                                return createPathFromRobotPoseAnd2Waypoint(nearTeamGoalPose, new Pose(72, 72), new Pose(133, 86), ConstraintLevel.HIGH_PRECISION);
                             }
-                            break;
+                            return createPathFromRobotPoseAnd2Waypoint(nearTeamGoalPose, new Pose(72, 72), new Pose(133, 86), ConstraintLevel.HIGH_PRECISION);
+
                     }
                     return CreateDirectPathFromRobotPoseToTarget(nearTeamGoalPose, ConstraintLevel.HIGH_PRECISION);
-                case NEAR_OPP_GOAL://TODO
+                case NEAR_OPP_GOAL:
+                    switch (getFieldQuadrant(robot.drivetrain.getFollower().getPose())) {
+                        case TOP_RIGHT:
+                            if(divert == Divert.TOP){
+                                return createPathFromRobotPoseAnd1Waypoint(nearOppGoalPose, new Pose(72, 144), ConstraintLevel.HIGH_PRECISION);
+                            }
+                            else if(divert == Divert.BOTTOM){
+                                return createPathFromRobotPoseAnd2Waypoint(nearOppGoalPose, new Pose(120, 48), new Pose(63, 0), ConstraintLevel.HIGH_PRECISION);
+                            }
+                            break;
+                        case BOTTOM_RIGHT:
+                            if (divert == Divert.TOP) {
+                                return createPathFromRobotPoseAnd2Waypoint(nearOppGoalPose, new Pose(81, 50), new Pose(106,144), ConstraintLevel.HIGH_PRECISION);
+                            }
+                            return createPathFromRobotPoseAnd1Waypoint(nearOppGoalPose, new Pose(72, 0), ConstraintLevel.HIGH_PRECISION);
+                        case BOTTOM_LEFT:
+                            return createPathFromRobotPoseAnd1Waypoint(nearOppGoalPose, new Pose(60, 67), ConstraintLevel.HIGH_PRECISION);
+                    }
                     return CreateDirectPathFromRobotPoseToTarget(nearOppGoalPose, ConstraintLevel.HIGH_PRECISION);
-                case HUMAN_BEFORE_INTAKING://TODO
+                case HUMAN_BEFORE_INTAKING:
+                    switch (getFieldQuadrant(robot.drivetrain.getFollower().getPose())) {
+                        case TOP_RIGHT:
+                            if (divert == Divert.TOP) {
+                                return createPathFromRobotPoseAnd2Waypoint(humanBeforeIntakingPose, new Pose(73, 142), new Pose(38, 142), ConstraintLevel.HIGH_PRECISION);
+                            } else if (divert == Divert.BOTTOM) {
+                                return createPathFromRobotPoseAnd2Waypoint(humanBeforeIntakingPose, new Pose(143, 1.5), new Pose(48, 96), ConstraintLevel.HIGH_PRECISION);
+                            }
+                            break;
+                        case TOP_LEFT:
+                            return createPathFromRobotPoseAnd1Waypoint(humanBeforeIntakingPose, new Pose(38.5, 73), ConstraintLevel.HIGH_PRECISION);
+
+                        case BOTTOM_RIGHT:
+                            return createPathFromRobotPoseAnd1Waypoint(humanBeforeIntakingPose, new Pose(72, 72), ConstraintLevel.HIGH_PRECISION);
+                    }
                     return CreateDirectPathFromRobotPoseToTarget(humanBeforeIntakingPose, ConstraintLevel.HIGH_PRECISION);
                 case HUMAN_AFTER_INTAKING://not much use for diversion here but we can add it later if needed
                     return CreateDirectPathFromRobotPoseToTarget(humanAfterIntakingPose, ConstraintLevel.LOW_PRECISION);
-                case GATE://TODO
+                case GATE:
+                    switch (getFieldQuadrant(robot.drivetrain.getFollower().getPose())) {
+                        case TOP_RIGHT:
+                        case BOTTOM_RIGHT:
+                            return createPathFromRobotPoseAnd1Waypoint(gatePose, new Pose(72, 72), ConstraintLevel.LOW_PRECISION);
+                        case TOP_LEFT:
+                            if (divert == Divert.TOP) {
+                                return createPathFromRobotPoseAnd1Waypoint(gatePose, new Pose(72, 144), ConstraintLevel.LOW_PRECISION);
+                            } else if (divert == Divert.BOTTOM) {
+                                return createPathFromRobotPoseAnd1Waypoint(gatePose, new Pose(24, 0), ConstraintLevel.LOW_PRECISION);
+                            }
+                            break;
+                    }
                     return CreateDirectPathFromRobotPoseToTarget(gatePose, ConstraintLevel.LOW_PRECISION);
                 case FAR_ZONE://not much use for diversion as there is not much use to divert from top of the field
                     return CreateDirectPathFromRobotPoseToTarget(farZonePose, ConstraintLevel.HIGH_PRECISION);

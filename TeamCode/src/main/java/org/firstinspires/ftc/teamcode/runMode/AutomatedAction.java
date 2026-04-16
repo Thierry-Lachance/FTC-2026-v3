@@ -144,7 +144,6 @@ public class AutomatedAction {
         robot.shooter.autoStartShooter();
         robot.drivetrain.driveToTargetAuto(robot.pathManager.getPathAuto(PathManager.DestinationAuto.NEAR_TEAM_GOAL), 0);
         robot.kicker.kickChamberAutoClose();
-        if (robot.runMode == Robot.RunMode.TELEOP) robot.shooter.stopShooter();
 
     }
 

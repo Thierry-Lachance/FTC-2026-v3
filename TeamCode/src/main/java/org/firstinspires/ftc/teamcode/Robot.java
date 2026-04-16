@@ -122,7 +122,7 @@ public class Robot {
 
     public boolean timeToStop() {
         periodic();
-        if (Math.abs(opMode.gamepad1.left_stick_y) > 0.4 || Math.abs(opMode.gamepad1.left_stick_x) > 0.4 || Math.abs(opMode.gamepad1.right_stick_y) > 0.4) {
+        if (Math.abs(opMode.gamepad1.left_stick_y) > 0.05 || Math.abs(opMode.gamepad1.left_stick_x) > 0.05 || Math.abs(opMode.gamepad1.right_stick_y) > 0.05) {
             drivetrain.getFollower().startTeleopDrive();
             return true;
         }
