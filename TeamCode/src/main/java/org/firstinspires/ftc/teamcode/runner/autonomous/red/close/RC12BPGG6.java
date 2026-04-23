@@ -1,12 +1,12 @@
-package org.firstinspires.ftc.teamcode.runner.autonomous;
+package org.firstinspires.ftc.teamcode.runner.autonomous.red.close;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.runMode.Autonomous;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "RC-12B-PC-G6", group = "RED")
-public class RC12BPCG6 extends LinearOpMode {
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "RC-12B-PG-G6", group = "RED")
+public class RC12BPGG6 extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -20,7 +20,7 @@ public class RC12BPCG6 extends LinearOpMode {
                 Autonomous.Action.SHOOT_BALL_CLOSE,
                 Autonomous.Action.PICK_LINE_3,
                 Autonomous.Action.SHOOT_BALL_CLOSE,
-                Autonomous.Action.PARK_INSIDE
+                Autonomous.Action.PARK_GATE
 
 
         });

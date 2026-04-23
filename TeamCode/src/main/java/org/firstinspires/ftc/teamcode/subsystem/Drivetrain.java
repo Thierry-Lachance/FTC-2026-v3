@@ -21,6 +21,7 @@ public class Drivetrain {
 
 
     private final Follower follower;
+    private double fieldOrientedHeadingOffset = 0.0;
 
 
     public Drivetrain(Robot robot, Pose startingPose) {
@@ -30,14 +31,14 @@ public class Drivetrain {
         if (robot.teamColor == Robot.TeamColor.RED) {
 
 
-            resetPositionHuman = new Pose(6.1, 28.39, -Math.PI);
-            resetPositionGoal = new Pose(115, 136.6, -2.455);
+            resetPositionHuman = new Pose(10.76, 10.76, -3.11);
+            resetPositionGoal = new Pose(121.1, 128.74, -2.43);
 
 
         } else {
-
-
-            resetPositionHuman = new Pose(9.594, 8.984, -Math.PI);
+            fieldOrientedHeadingOffset = -Math.PI;
+            resetPositionHuman = new Pose(133.5, 11.48, 0);
+            resetPositionGoal = new Pose(27.56, 131.15, -0.696);
         }
 
         follower = PathingConstants.createFollower(robot.opMode.hardwareMap);
@@ -52,7 +53,8 @@ public class Drivetrain {
                 -robot.opMode.gamepad1.left_stick_y,
                 -robot.opMode.gamepad1.left_stick_x,
                 -robot.opMode.gamepad1.right_stick_x,
-                false
+                false,
+                fieldOrientedHeadingOffset
         );
     }
 

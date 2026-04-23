@@ -9,9 +9,7 @@ public class Constants {
     //Webcam Name
     public static String webcamName = "Webcam 1";
 
-    //odo offsets
-    public static double xOffset = -7;
-    public static double yOffset = 0;
+
 
     //Odo name
     public static String odoName = "odo";
