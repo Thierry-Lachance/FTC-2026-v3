@@ -16,7 +16,11 @@ public class Shooter {
 
         this.robot = robot;
 
-        shooterMotor = robot.opMode.hardwareMap.get(DcMotorEx.class, Constants.shooterMotorName);
+        if(robot.teamColor == Robot.TeamColor.RED) {
+            shooterMotor = robot.opMode.hardwareMap.get(DcMotorEx.class, Constants.shooterMotor1Name);
+        } else {
+            shooterMotor = robot.opMode.hardwareMap.get(DcMotorEx.class, Constants.shooterMotor2Name);
+        }
 
         shooterMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.FLOAT);
         shooterMotor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);

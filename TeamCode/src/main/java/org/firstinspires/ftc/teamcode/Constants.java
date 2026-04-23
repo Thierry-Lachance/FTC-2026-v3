@@ -9,13 +9,8 @@ public class Constants {
     //Webcam Name
     public static String webcamName = "Webcam 1";
 
-
-
     //Odo name
     public static String odoName = "odo";
-
-    //Lidar Name
-    public static String lidarName = "d1";
 
     //Motor Name
     public static String frontLeftMotorName = "fl";
@@ -28,9 +23,9 @@ public class Constants {
     public static DcMotorSimple.Direction frontRightMotorDirection = DcMotorSimple.Direction.FORWARD;
     public static DcMotorSimple.Direction backRightMotorDirection = DcMotorSimple.Direction.FORWARD;
 
-    public static String shooterMotorName = "s1";
+    public static String shooterMotor1Name = "s1";
+    public static String shooterMotor2Name = "s2";
     public static String intakeMotorName = "i1";
-    public static String feederMotorName = "f1";
 
     //Servo Name
     public static String led0Name = "l0";

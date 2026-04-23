@@ -8,21 +8,17 @@ import org.firstinspires.ftc.teamcode.Robot;
 
 public class Intake {
     DcMotor intakeMotor;
-    DcMotor feederMotor;
+
 
     Robot robot;
 
     public Intake(Robot robot) {
         this.robot = robot;
         intakeMotor = robot.opMode.hardwareMap.get(DcMotor.class, Constants.intakeMotorName);
-        feederMotor = robot.opMode.hardwareMap.get(DcMotor.class, Constants.feederMotorName);
 
         intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        feederMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         intakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        feederMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        feederMotor.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     public boolean isIntaking() {
@@ -31,11 +27,9 @@ public class Intake {
 
     public void startIntake() {
         intakeMotor.setPower(1);
-        feederMotor.setPower(1);
     }
 
     public void stopIntake() {
         intakeMotor.setPower(0);
-        feederMotor.setPower(0);
     }
 }
