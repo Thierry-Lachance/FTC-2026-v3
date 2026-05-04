@@ -36,17 +36,17 @@ public class Constants {
     public static String chamber3Name = "c3";
 
     //Servo Base Position
-    public static double chamber1BasePos = 1.00;
+    public static double chamber1BasePos = 0.9;
     public static double chamber2BasePos = 0.15;
     public static double chamber3BasePos = 0.05;
     //Servo Active Position
-    public static double chamber1ActivePos = 0.3;
-    public static double chamber2ActivePos = 0.7;
+    public static double chamber1ActivePos = 0.4;
+    public static double chamber2ActivePos = 0.6;
     public static double chamber3ActivePos = 0.5;
 
-    public static double chamber1EngagedPos = 0.70;
+    public static double chamber1EngagedPos = 0.6;
     public static double chamber2EngagedPos = 0.40;
-    public static double chamber3EngagedPos = 0.3;
+    public static double chamber3EngagedPos = 0.35;
 
 
 }

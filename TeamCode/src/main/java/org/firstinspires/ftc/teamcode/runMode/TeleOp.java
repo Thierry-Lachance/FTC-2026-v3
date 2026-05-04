@@ -13,7 +13,7 @@ public class TeleOp {
 
     private void manualDrive() {
         //drivetrain
-        if (robot.opMode.gamepad1.left_trigger > 0.1 && robot.opMode.gamepad1.right_trigger > 0.1)
+        if (robot.opMode.gamepad1.left_trigger > 0.3 && robot.opMode.gamepad1.right_trigger > 0.1)
             robot.drivetrain.strafeToBall(robot.limelight.getBallOffset(), robot.opMode.gamepad1.left_trigger);
         else robot.drivetrain.driveMecanumFieldOriented();
         if (robot.opMode.gamepad1.options) robot.drivetrain.resetFieldOriented();

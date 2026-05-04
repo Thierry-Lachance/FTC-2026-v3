@@ -11,6 +11,7 @@ public class Shooter {
     DcMotorEx shooterMotor;
     Robot robot;
     double targetVelocity = 0.0;
+    double allianceModifier = 1.0;
 
     public Shooter(Robot robot) {
 
@@ -20,6 +21,7 @@ public class Shooter {
             shooterMotor = robot.opMode.hardwareMap.get(DcMotorEx.class, Constants.shooterMotor1Name);
         } else {
             shooterMotor = robot.opMode.hardwareMap.get(DcMotorEx.class, Constants.shooterMotor2Name);
+            allianceModifier = -1;
         }
 
         shooterMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.FLOAT);
@@ -29,7 +31,7 @@ public class Shooter {
     }
 
     public void autoStartShooter() {
-        targetVelocity = robot.aimBot.getTargetVelocity();
+        targetVelocity = robot.aimBot.getTargetVelocity()*allianceModifier;
         shooterMotor.setVelocityPIDFCoefficients(robot.aimBot.getPidfCoefficients().p,
                 robot.aimBot.getPidfCoefficients().i,
                 robot.aimBot.getPidfCoefficients().d,
@@ -38,7 +40,8 @@ public class Shooter {
     }
 
     public void startShooterManual() {
-        shooterMotor.setVelocity(-1025);
+        targetVelocity = 1025*allianceModifier;
+        shooterMotor.setVelocity(targetVelocity);
     }
 
     public void stopShooter() {

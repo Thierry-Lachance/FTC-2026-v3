@@ -82,13 +82,13 @@ public class Kicker {
         double lastShotTime = robot.opMode.getRuntime();
 
         while (numberOfBallShot < 3 && robot.opMode.opModeIsActive() && !robot.timeToStop()) {
-            if (robot.shooter.isReadyToShoot() && (robot.opMode.getRuntime() - lastShotTime) >= 0.2) {
+            if (robot.shooter.isReadyToShoot() && (robot.opMode.getRuntime() - lastShotTime) >= 0.5) {
                 switch (numberOfBallShot) {
                     case 0:
-                        kickChamber1();
+                        kickChamber2();
                         break;
                     case 1:
-                        kickChamber2();
+                        kickChamber1();
                         break;
                     case 2:
                         kickChamber3();

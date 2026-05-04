@@ -8,10 +8,10 @@ public class AimBot {
 
     public AimBot() {
         targets = new Target[]{
-                new Target(PathManager.DestinationTeleop.CENTER_FIELD, -1180, 0.5, new PIDFCoefficients(250, 2, 2, 0.0)),
-                new Target(PathManager.DestinationTeleop.NEAR_TEAM_GOAL, -1025.0, 0.2, new PIDFCoefficients(250, 2, 2, 0.0)),
-                new Target(PathManager.DestinationTeleop.FAR_ZONE, -1475, 0.5, new PIDFCoefficients(250, 1, 2, 0.0)),
-                new Target(PathManager.DestinationTeleop.NEAR_OPP_GOAL, -1220.0, 0.5, new PIDFCoefficients(250, 2, 2, 0.0))
+                new Target(PathManager.DestinationTeleop.CENTER_FIELD, 1180, 0.6, new PIDFCoefficients(250, 2, 2, 0.0)),
+                new Target(PathManager.DestinationTeleop.NEAR_TEAM_GOAL, 1030.0, 0.3, new PIDFCoefficients(250, 2, 2, 0.0)),
+                new Target(PathManager.DestinationTeleop.FAR_ZONE, 1525, 0.5, new PIDFCoefficients(250, 1, 2, 0.0)),
+                new Target(PathManager.DestinationTeleop.NEAR_OPP_GOAL, 1220.0, 0.8, new PIDFCoefficients(250, 2, 2, 0.0))
         };
     }
 

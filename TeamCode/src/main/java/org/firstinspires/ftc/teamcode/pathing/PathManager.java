@@ -91,8 +91,8 @@ public class PathManager {
         this.robot = robot;
         if (robot.teamColor == Robot.TeamColor.RED) {
             //general poses
-            gatePose = new Pose(138, 71, 0);
-            nearTeamGoalPose = new Pose(96.5, 95.063, -0.85);
+            gatePose = new Pose(127.4, 74, 0);
+            nearTeamGoalPose = new Pose(93.1, 97, -0.815);
             farZonePose = new Pose(84.563, 16.250, -0.4014);
 
             //teleop specific poses
@@ -105,15 +105,35 @@ public class PathManager {
             parkGatePose = new Pose(115, 70, 0);
             parkInsidePose = new Pose(91, 126, -1.208);
             parkOutsidePose = new Pose(105, 45, 0);
-            preLine1Pose = new Pose(111, 84, 0);
-            preLine2Pose = new Pose(111, 62, 0);
-            preLine3Pose = new Pose(111, 38, 0);
-            postLine1Pose = new Pose(138, 84, 0);
-            postLine2Pose = new Pose(145, 56, 0);
-            postLine3Pose = new Pose(145, 36, 0);
+            preLine1Pose = new Pose(94, 84.5, 0);
+            preLine2Pose = new Pose(94, 62, 0);
+            preLine3Pose = new Pose(94, 38, 0);
+            postLine1Pose = new Pose(126, 84.5, 0);
+            postLine2Pose = new Pose(133, 56, 0);
+            postLine3Pose = new Pose(133, 36, 0);
             gatePoseAuto = new Pose(120, 78, 0);
         } else {
-            //todo add blue side poses
+            //general poses
+            gatePose = new Pose(19.462, 67, -Math.PI);
+            nearTeamGoalPose = new Pose(49.5, 95, -2.348);
+            farZonePose = new Pose(59.66, 15, -2.77);
+
+            //teleop specific poses
+            humanBeforeIntakingPose = new Pose(125.6, 32.5, -1.633);
+            humanAfterIntakingPose = new Pose(125.6, 10, -1.537);
+            centerFieldPose = new Pose(70.7, 71.469, -2.422);
+            nearOppGoalPose = new Pose(97.59, 91, -2.0);
+
+            parkGatePose = new Pose(39.4, 72.75, Math.PI);
+            parkInsidePose = new Pose(54.7, 125, Math.PI);
+            parkOutsidePose = new Pose(56.5, 29.4, Math.PI);
+            preLine1Pose = new Pose(48, 83, Math.PI);
+            preLine2Pose = new Pose(48, 58, Math.PI);
+            preLine3Pose = new Pose(48, 34, Math.PI);
+            postLine1Pose = new Pose(20, 83, Math.PI);
+            postLine2Pose = new Pose(11.2, 58, Math.PI);
+            postLine3Pose = new Pose(11.2, 34, Math.PI);
+            gatePoseAuto = new Pose(47, 75, -Math.PI);
         }
 
     }
@@ -416,16 +436,16 @@ public class PathManager {
         if (robot.teamColor == Robot.TeamColor.RED) {
             switch (startingPosition) {
                 case NEAR_TEAM_GOAL:
-                    return new Pose(140.6, 108.8, 0);
+                    return new Pose(123.26, 111.1, 0);
                 case FAR_ZONE:
-                    return new Pose(0, 0, 0);//TODO create these poses
+                    return new Pose(86.1, 6.1, 0);
             }
         } else {
             switch (startingPosition) {
-                case NEAR_TEAM_GOAL://TODO create these poses
-                    return new Pose(0, 0, 0);
+                case NEAR_TEAM_GOAL:
+                    return new Pose(19.8, 108, Math.PI);
                 case FAR_ZONE:
-                    return new Pose(0, 0, 0);
+                    return new Pose(57.485, 5, Math.PI);
             }
         }
         return null;

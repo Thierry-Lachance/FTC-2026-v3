@@ -14,7 +14,6 @@ import org.firstinspires.ftc.teamcode.subsystem.Kicker;
 import org.firstinspires.ftc.teamcode.subsystem.Led;
 import org.firstinspires.ftc.teamcode.subsystem.Limelight;
 import org.firstinspires.ftc.teamcode.subsystem.Shooter;
-import org.firstinspires.ftc.teamcode.subsystem.Vision;
 
 
 public class Robot {
@@ -25,7 +24,6 @@ public class Robot {
     public final Shooter shooter;
     public final Kicker kicker;
     public final Led led;
-    public final Vision vision;
     public final Limelight limelight;
 
     public final AimBot aimBot;
@@ -67,7 +65,6 @@ public class Robot {
         shooter = new Shooter(this);
         kicker = new Kicker(this);
         led = new Led(this);
-        vision = new Vision(this);
         limelight = new Limelight(this);
         aimBot = new AimBot();
         teleOp = new TeleOp(this);
@@ -85,7 +82,6 @@ public class Robot {
         shooter = new Shooter(this);
         kicker = new Kicker(this);
         led = new Led(this);
-        vision = new Vision(this);
         limelight = new Limelight(this);
         aimBot = new AimBot();
         autonomous = new Autonomous(this, actionList);

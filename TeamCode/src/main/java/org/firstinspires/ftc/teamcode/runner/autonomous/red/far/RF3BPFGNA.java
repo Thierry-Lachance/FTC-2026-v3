@@ -5,8 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.runMode.Autonomous;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "RC-3B-PF-GNA", group = "RED")
-public class RC3BPFGNA extends LinearOpMode {
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "RF-3B-PF-GNA", group = "RED")
+public class RF3BPFGNA extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {

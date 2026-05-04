@@ -86,7 +86,7 @@ public class AutomatedAction {
     public void intakeLine1Auto() {
         robot.drivetrain.getFollower().setMaxPower(0.8);
         robot.drivetrain.driveToTargetAuto(robot.pathManager.getPathAuto(PathManager.DestinationAuto.PRE_LINE_1), false, 0);
-        robot.drivetrain.getFollower().setMaxPower(0.4);
+        robot.drivetrain.getFollower().setMaxPower(0.3);
         robot.intake.startIntake();
         robot.kicker.lowerKicker();
         robot.drivetrain.driveToTargetAuto(robot.pathManager.getPathAuto(PathManager.DestinationAuto.POST_LINE_1), false, 0);
@@ -102,7 +102,7 @@ public class AutomatedAction {
     public void intakeLine2Auto() {
         robot.drivetrain.getFollower().setMaxPower(0.7);
         robot.drivetrain.driveToTargetAuto(robot.pathManager.getPathAuto(PathManager.DestinationAuto.PRE_LINE_2), false, 0);
-        robot.drivetrain.getFollower().setMaxPower(0.4);
+        robot.drivetrain.getFollower().setMaxPower(0.3);
         robot.intake.startIntake();
         robot.kicker.lowerKicker();
         robot.drivetrain.driveToTargetAuto(robot.pathManager.getPathAuto(PathManager.DestinationAuto.POST_LINE_2), false, 0);
@@ -120,7 +120,7 @@ public class AutomatedAction {
     public void intakeLine3Auto() {
         robot.drivetrain.getFollower().setMaxPower(0.7);
         robot.drivetrain.driveToTargetAuto(robot.pathManager.getPathAuto(PathManager.DestinationAuto.PRE_LINE_3), false, 0);
-        robot.drivetrain.getFollower().setMaxPower(0.4);
+        robot.drivetrain.getFollower().setMaxPower(0.3);
         robot.intake.startIntake();
         robot.kicker.lowerKicker();
         robot.drivetrain.driveToTargetAuto(robot.pathManager.getPathAuto(PathManager.DestinationAuto.POST_LINE_3), false, 0);
@@ -151,8 +151,8 @@ public class AutomatedAction {
         robot.aimBot.setTargets(1);
         robot.shooter.autoStartShooter();
         robot.drivetrain.driveToTargetAuto(robot.pathManager.getPathAuto(PathManager.DestinationAuto.NEAR_TEAM_GOAL), 0);
-        if (robot.getMatchColorPattern() == Robot.ColorPattern.UNKNOWN)
-            robot.setMatchColorPattern(robot.vision.detectPattern());
+        if (robot.getMatchColorPattern() == Robot.ColorPattern.UNKNOWN);
+           //TODO detect pattern
         robot.kicker.kickChamberAutoPattern(robot.getPatternInsideRobot());
         robot.shooter.stopShooter();
 
