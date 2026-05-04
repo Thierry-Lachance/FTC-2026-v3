@@ -11,7 +11,6 @@ import org.firstinspires.ftc.teamcode.runMode.TeleOp;
 import org.firstinspires.ftc.teamcode.subsystem.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystem.Intake;
 import org.firstinspires.ftc.teamcode.subsystem.Kicker;
-import org.firstinspires.ftc.teamcode.subsystem.Led;
 import org.firstinspires.ftc.teamcode.subsystem.Limelight;
 import org.firstinspires.ftc.teamcode.subsystem.Shooter;
 
@@ -23,7 +22,6 @@ public class Robot {
     public final Intake intake;
     public final Shooter shooter;
     public final Kicker kicker;
-    public final Led led;
     public final Limelight limelight;
 
     public final AimBot aimBot;
@@ -34,7 +32,7 @@ public class Robot {
     public final AutomatedAction automatedAction;
 
     private ColorPattern matchColorPattern = ColorPattern.UNKNOWN;
-    private ColorPattern patternInsideRobot = ColorPattern.UNKNOWN;
+    private ColorPattern patternInsideRobot = ColorPattern.GPP;
     public final TeamColor teamColor;
     public final RunMode runMode;
 
@@ -64,7 +62,6 @@ public class Robot {
         intake = new Intake(this);
         shooter = new Shooter(this);
         kicker = new Kicker(this);
-        led = new Led(this);
         limelight = new Limelight(this);
         aimBot = new AimBot();
         teleOp = new TeleOp(this);
@@ -81,7 +78,7 @@ public class Robot {
         intake = new Intake(this);
         shooter = new Shooter(this);
         kicker = new Kicker(this);
-        led = new Led(this);
+
         limelight = new Limelight(this);
         aimBot = new AimBot();
         autonomous = new Autonomous(this, actionList);
@@ -128,7 +125,6 @@ public class Robot {
     public void periodic() {
         drivetrain.periodic();
         shooter.periodic();
-        led.updateLed();
         limelight.telemetry();
         opMode.telemetry.update();
     }

@@ -114,6 +114,33 @@ public class Limelight {
         return 0;
     }
 
+    public void updateArtifactPattern() {
+        setLimelightPipeline(3);
+        LLResult result = limelight.getLatestResult();
+        if (result.isValid()) {
+            //get tag id from LLResult
+            switch (result.getFiducialResults().get(0).getFiducialId()) {
+                case 21:
+                    robot.setPatternInsideRobot(Robot.ColorPattern.GPP);
+                    return;
+                case 22:
+                    robot.setPatternInsideRobot(Robot.ColorPattern.PGP);
+                    return;
+                case 23:
+                    robot.setPatternInsideRobot(Robot.ColorPattern.PPG);
+                    return;
+                default:
+                    robot.setPatternInsideRobot(Robot.ColorPattern.UNKNOWN);
+
+
+            }
+        } else {
+            robot.setPatternInsideRobot(Robot.ColorPattern.UNKNOWN);
+        }
+    }
+
 }
+
+
     
 

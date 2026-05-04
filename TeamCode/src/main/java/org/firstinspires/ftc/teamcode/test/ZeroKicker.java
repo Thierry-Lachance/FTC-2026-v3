@@ -15,7 +15,6 @@ public class ZeroKicker extends LinearOpMode {
         waitForStart();
         if (isStopRequested()) return;
         while (opModeIsActive()) {
-            robot.led.setLed1Color(0.5);
             robot.kicker.zeroKicker();
         }
     }

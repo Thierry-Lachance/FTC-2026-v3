@@ -41,7 +41,8 @@ public class PathManager {
         POST_LINE_3,
         GATE_AUTO,
         NEAR_TEAM_GOAL,
-        FAR_ZONE
+        FAR_ZONE,
+        DETECT_PATTERN
     }
 
     public enum StartingPosition {
@@ -80,6 +81,7 @@ public class PathManager {
     private Pose postLine2Pose;
     private Pose postLine3Pose;
     private Pose gatePoseAuto;
+    private Pose patternDetectionPose;
 
 
     private final double[] highPrecisionConstraints = new double[]{0.05, 0.0, 0.03, 1.0, 10000, 5, 1.0};//translational, velocity, heading, tValue, timeout, brakingStrength
@@ -112,6 +114,7 @@ public class PathManager {
             postLine2Pose = new Pose(133, 56, 0);
             postLine3Pose = new Pose(133, 36, 0);
             gatePoseAuto = new Pose(120, 78, 0);
+            patternDetectionPose = new Pose(nearTeamGoalPose.getX(), nearTeamGoalPose.getY(), 2);
         } else {
             //general poses
             gatePose = new Pose(19.462, 67, -Math.PI);
@@ -134,6 +137,7 @@ public class PathManager {
             postLine2Pose = new Pose(11.2, 58, Math.PI);
             postLine3Pose = new Pose(11.2, 34, Math.PI);
             gatePoseAuto = new Pose(47, 75, -Math.PI);
+            patternDetectionPose = new Pose(nearTeamGoalPose.getX(), nearTeamGoalPose.getY(), 1);
         }
 
     }
@@ -288,6 +292,8 @@ public class PathManager {
                     return CreateDirectPathFromRobotPoseToTarget(nearTeamGoalPose, ConstraintLevel.HIGH_PRECISION);
                 case FAR_ZONE:
                     return CreateDirectPathFromRobotPoseToTarget(farZonePose, ConstraintLevel.HIGH_PRECISION);
+                case DETECT_PATTERN:
+                    return  CreateDirectPathFromRobotPoseToTarget(patternDetectionPose, ConstraintLevel.HIGH_PRECISION);
             }
         } else {
             switch (destinationAuto) {
@@ -315,6 +321,8 @@ public class PathManager {
                     return CreateDirectPathFromRobotPoseToTarget(nearTeamGoalPose, ConstraintLevel.HIGH_PRECISION);
                 case FAR_ZONE:
                     return CreateDirectPathFromRobotPoseToTarget(farZonePose, ConstraintLevel.HIGH_PRECISION);
+                case DETECT_PATTERN:
+                    return  CreateDirectPathFromRobotPoseToTarget(patternDetectionPose, ConstraintLevel.HIGH_PRECISION);
 
             }
         }

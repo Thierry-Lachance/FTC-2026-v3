@@ -20,15 +20,6 @@ public class AutomatedAction {
 
     }
 
-    public void shootClosePattern() {
-        robot.aimBot.setTargets(1);
-        robot.shooter.autoStartShooter();
-        robot.drivetrain.driveToTargetAuto(robot.pathManager.getPathTeleop(robot.aimBot.getDestination(), getDivert()), 0);
-        robot.kicker.kickChamberAutoPattern(robot.getPatternInsideRobot());
-        robot.shooter.stopShooter();
-
-    }
-
     public void shootFar() {
         robot.aimBot.setTargets(2);
         robot.shooter.autoStartShooter();
@@ -151,8 +142,11 @@ public class AutomatedAction {
         robot.aimBot.setTargets(1);
         robot.shooter.autoStartShooter();
         robot.drivetrain.driveToTargetAuto(robot.pathManager.getPathAuto(PathManager.DestinationAuto.NEAR_TEAM_GOAL), 0);
-        if (robot.getMatchColorPattern() == Robot.ColorPattern.UNKNOWN);
-           //TODO detect pattern
+        if (robot.getMatchColorPattern() == Robot.ColorPattern.UNKNOWN){
+            robot.drivetrain.driveToTargetAuto(robot.pathManager.getPathAuto(PathManager.DestinationAuto.DETECT_PATTERN), 0);
+            robot.limelight.updateArtifactPattern();
+        }
+
         robot.kicker.kickChamberAutoPattern(robot.getPatternInsideRobot());
         robot.shooter.stopShooter();
 
