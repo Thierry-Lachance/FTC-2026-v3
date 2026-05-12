@@ -28,6 +28,7 @@ public class Shooter {
         shooterMotor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
         shooterMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         shooterMotor.setVelocityPIDFCoefficients(250, 2, 2, 0.0);
+
     }
 
     public void autoStartShooter() {

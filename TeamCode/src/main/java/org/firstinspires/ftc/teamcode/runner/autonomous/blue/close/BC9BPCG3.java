@@ -22,6 +22,7 @@ public class BC9BPCG3 extends LinearOpMode {
 
 
         });
+        robot.autonomous.init();
         waitForStart();
         if (isStopRequested()) return;
         robot.run();

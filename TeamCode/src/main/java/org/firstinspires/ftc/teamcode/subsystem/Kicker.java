@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.Robot;
 public class Kicker {
 
     Robot robot;
-    Servo chamber1Servo, chamber2Servo, chamber3Servo;
+    Servo chamber1Servo, chamber2Servo, chamber3Servo, pusher1Servo;
 
     public Kicker(Robot robot) {
         this.robot = robot;
@@ -16,6 +16,7 @@ public class Kicker {
         chamber1Servo = robot.opMode.hardwareMap.get(Servo.class, Constants.chamber1Name);
         chamber2Servo = robot.opMode.hardwareMap.get(Servo.class, Constants.chamber2Name);
         chamber3Servo = robot.opMode.hardwareMap.get(Servo.class, Constants.chamber3Name);
+        pusher1Servo = robot.opMode.hardwareMap.get(Servo.class, "push");
 
     }
 
@@ -29,12 +30,14 @@ public class Kicker {
         chamber1Servo.setPosition(Constants.chamber1BasePos);
         chamber2Servo.setPosition(Constants.chamber2BasePos);
         chamber3Servo.setPosition(Constants.chamber3BasePos);
+        pusher1Servo.setPosition(0);
     }
 
     public void engageKicker() {
         chamber1Servo.setPosition(Constants.chamber1EngagedPos);
         chamber2Servo.setPosition(Constants.chamber2EngagedPos);
         chamber3Servo.setPosition(Constants.chamber3EngagedPos);
+        pusher1Servo.setPosition(1);
     }
 
     public void kickChamber1() {

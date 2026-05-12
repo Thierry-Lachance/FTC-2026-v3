@@ -105,16 +105,16 @@ public class PathManager {
 
             //autonomous specific poses
             parkGatePose = new Pose(115, 70, 0);
-            parkInsidePose = new Pose(91, 126, -1.208);
+            parkInsidePose = new Pose(91, 126, 0);
             parkOutsidePose = new Pose(105, 45, 0);
             preLine1Pose = new Pose(94, 84.5, 0);
             preLine2Pose = new Pose(94, 62, 0);
             preLine3Pose = new Pose(94, 38, 0);
-            postLine1Pose = new Pose(126, 84.5, 0);
+            postLine1Pose = new Pose(128, 84.5, 0);
             postLine2Pose = new Pose(133, 56, 0);
             postLine3Pose = new Pose(133, 36, 0);
             gatePoseAuto = new Pose(120, 78, 0);
-            patternDetectionPose = new Pose(nearTeamGoalPose.getX(), nearTeamGoalPose.getY(), 2);
+            patternDetectionPose = new Pose(93.1, 97, 2);
         } else {
             //general poses
             gatePose = new Pose(19.462, 67, -Math.PI);
@@ -127,17 +127,17 @@ public class PathManager {
             centerFieldPose = new Pose(70.7, 71.469, -2.422);
             nearOppGoalPose = new Pose(97.59, 91, -2.0);
 
-            parkGatePose = new Pose(39.4, 72.75, Math.PI);
-            parkInsidePose = new Pose(54.7, 125, Math.PI);
-            parkOutsidePose = new Pose(56.5, 29.4, Math.PI);
-            preLine1Pose = new Pose(48, 83, Math.PI);
-            preLine2Pose = new Pose(48, 58, Math.PI);
-            preLine3Pose = new Pose(48, 34, Math.PI);
-            postLine1Pose = new Pose(20, 83, Math.PI);
-            postLine2Pose = new Pose(11.2, 58, Math.PI);
-            postLine3Pose = new Pose(11.2, 34, Math.PI);
+            parkGatePose = new Pose(39.4, 72.75, 0);
+            parkInsidePose = new Pose(54.7, 125, 0);
+            parkOutsidePose = new Pose(56.5, 29.4, 0);
+            preLine1Pose = new Pose(48, 85, Math.PI);
+            preLine2Pose = new Pose(48, 60, Math.PI);
+            preLine3Pose = new Pose(48, 36, Math.PI);
+            postLine1Pose = new Pose(22, 85, Math.PI);
+            postLine2Pose = new Pose(11.2, 60, Math.PI);
+            postLine3Pose = new Pose(11.2, 36, Math.PI);
             gatePoseAuto = new Pose(47, 75, -Math.PI);
-            patternDetectionPose = new Pose(nearTeamGoalPose.getX(), nearTeamGoalPose.getY(), 1);
+            patternDetectionPose = new Pose(49.5, 95, 1);
         }
 
     }
@@ -444,14 +444,14 @@ public class PathManager {
         if (robot.teamColor == Robot.TeamColor.RED) {
             switch (startingPosition) {
                 case NEAR_TEAM_GOAL:
-                    return new Pose(123.26, 111.1, 0);
+                    return new Pose(121.1, 128.74, -2.43);
                 case FAR_ZONE:
                     return new Pose(86.1, 6.1, 0);
             }
         } else {
             switch (startingPosition) {
                 case NEAR_TEAM_GOAL:
-                    return new Pose(19.8, 108, Math.PI);
+                    return new Pose(27.56, 131.15, -0.696);
                 case FAR_ZONE:
                     return new Pose(57.485, 5, Math.PI);
             }

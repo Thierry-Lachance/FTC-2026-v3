@@ -19,6 +19,7 @@ public class RF6BPFGNA extends LinearOpMode {
 
 
         });
+        robot.autonomous.init();
         waitForStart();
         if (isStopRequested()) return;
         robot.run();

@@ -1,24 +1,28 @@
 package org.firstinspires.ftc.teamcode.subsystem;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.Robot;
 
 public class Intake {
-    DcMotor intakeMotor;
+    DcMotorEx intakeMotor;
 
 
     Robot robot;
 
     public Intake(Robot robot) {
         this.robot = robot;
-        intakeMotor = robot.opMode.hardwareMap.get(DcMotor.class, Constants.intakeMotorName);
+        intakeMotor = robot.opMode.hardwareMap.get(DcMotorEx.class, Constants.intakeMotorName);
 
         intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         intakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         intakeMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        intakeMotor.setCurrentAlert(4.5, CurrentUnit.AMPS);
+
     }
 
     public boolean isIntaking() {
@@ -26,7 +30,13 @@ public class Intake {
     }
 
     public void startIntake() {
-        intakeMotor.setPower(1);
+        if(intakeMotor.isOverCurrent()){
+            intakeMotor.setPower(0.3);
+        }
+        else{
+            intakeMotor.setPower(1);
+        }
+
     }
 
     public void stopIntake() {

@@ -32,6 +32,17 @@ public class Autonomous {
         robot.setPatternInsideRobot(Robot.ColorPattern.GPP);
 
     }
+    public void init(){
+        robot.setMatchColorPattern(Robot.ColorPattern.UNKNOWN);
+        if(actionList[0] == Action.START_NEAR_TEAM_GOAL){
+            robot.drivetrain.setStartingPose(robot.pathManager.getStartingPose(PathManager.StartingPosition.NEAR_TEAM_GOAL));
+            robot.opMode.sleep(250);
+        }
+        else{
+            robot.drivetrain.setStartingPose(robot.pathManager.getStartingPose(PathManager.StartingPosition.FAR_ZONE));
+            robot.opMode.sleep(250);
+        }
+    }
 
     public void run() {
         for (Action action : actionList) {
@@ -69,10 +80,10 @@ public class Autonomous {
                     robot.automatedAction.parkGateAuto();
                     break;
                 case START_NEAR_TEAM_GOAL:
-                    robot.drivetrain.setStartingPose(robot.pathManager.getStartingPose(PathManager.StartingPosition.NEAR_TEAM_GOAL));
+
                     break;
                 case START_FAR:
-                    robot.drivetrain.setStartingPose(robot.pathManager.getStartingPose(PathManager.StartingPosition.FAR_ZONE));
+
                     break;
 
             }

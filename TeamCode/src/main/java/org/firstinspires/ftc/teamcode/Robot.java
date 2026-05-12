@@ -13,6 +13,8 @@ import org.firstinspires.ftc.teamcode.subsystem.Intake;
 import org.firstinspires.ftc.teamcode.subsystem.Kicker;
 import org.firstinspires.ftc.teamcode.subsystem.Limelight;
 import org.firstinspires.ftc.teamcode.subsystem.Shooter;
+import org.firstinspires.ftc.teamcode.subsystem.Vision;
+
 
 
 public class Robot {
@@ -23,6 +25,7 @@ public class Robot {
     public final Shooter shooter;
     public final Kicker kicker;
     public final Limelight limelight;
+    public final Vision vision;
 
     public final AimBot aimBot;
     public final PathManager pathManager;
@@ -63,6 +66,7 @@ public class Robot {
         shooter = new Shooter(this);
         kicker = new Kicker(this);
         limelight = new Limelight(this);
+        vision = new Vision(this);
         aimBot = new AimBot();
         teleOp = new TeleOp(this);
         automatedAction = new AutomatedAction(this);
@@ -78,7 +82,7 @@ public class Robot {
         intake = new Intake(this);
         shooter = new Shooter(this);
         kicker = new Kicker(this);
-
+        vision = new Vision(this);
         limelight = new Limelight(this);
         aimBot = new AimBot();
         autonomous = new Autonomous(this, actionList);

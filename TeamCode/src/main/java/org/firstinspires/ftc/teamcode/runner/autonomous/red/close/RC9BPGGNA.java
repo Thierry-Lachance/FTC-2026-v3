@@ -21,6 +21,7 @@ public class RC9BPGGNA extends LinearOpMode {
 
 
         });
+        robot.autonomous.init();
         waitForStart();
         if (isStopRequested()) return;
         robot.run();

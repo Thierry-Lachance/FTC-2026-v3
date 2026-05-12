@@ -17,6 +17,7 @@ public class RC3BPGGNA extends LinearOpMode {
 
 
         });
+        robot.autonomous.init();
         waitForStart();
         if (isStopRequested()) return;
         robot.run();
