@@ -147,4 +147,7 @@ public class Drivetrain {
         follower.update();
         printRobotPos();
     }
+    public boolean isStalled(){
+        return !(follower.getAngularVelocity() > 1);
+    }
 }

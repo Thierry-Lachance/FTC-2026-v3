@@ -29,7 +29,7 @@ public class PathingConstants {
             .drivePIDFCoefficients(new FilteredPIDFCoefficients(0.025, 0, 0.00001, 0.6, 0.01))
             .secondaryDrivePIDFCoefficients(new FilteredPIDFCoefficients(0.02, 0, 0.000005, 0.6, 0.01))
             .centripetalScaling(0.0008)
-            .mass(10.5);
+            .mass(12.5);
 
     public static MecanumConstants driveConstants = new MecanumConstants()
             .maxPower(1)

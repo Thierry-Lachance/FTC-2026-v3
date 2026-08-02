@@ -130,9 +130,9 @@ public class PathManager {
             parkGatePose = new Pose(39.4, 72.75, 0);
             parkInsidePose = new Pose(54.7, 125, 0);
             parkOutsidePose = new Pose(56.5, 29.4, 0);
-            preLine1Pose = new Pose(48, 85, Math.PI);
-            preLine2Pose = new Pose(48, 60, Math.PI);
-            preLine3Pose = new Pose(48, 36, Math.PI);
+            preLine1Pose = new Pose(54, 85, Math.PI);
+            preLine2Pose = new Pose(54, 60, Math.PI);
+            preLine3Pose = new Pose(54, 36, Math.PI);
             postLine1Pose = new Pose(22, 85, Math.PI);
             postLine2Pose = new Pose(11.2, 60, Math.PI);
             postLine3Pose = new Pose(11.2, 36, Math.PI);

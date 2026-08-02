@@ -30,12 +30,9 @@ public class Intake {
     }
 
     public void startIntake() {
-        if(intakeMotor.isOverCurrent()){
-            intakeMotor.setPower(0.3);
-        }
-        else{
+
             intakeMotor.setPower(1);
-        }
+
 
     }
 

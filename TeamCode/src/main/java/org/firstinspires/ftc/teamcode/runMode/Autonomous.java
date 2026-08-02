@@ -57,13 +57,14 @@ public class Autonomous {
                     robot.automatedAction.shootFarAuto();
                     break;
                 case PICK_LINE_1:
-                    robot.automatedAction.intakeLine1Auto();
+                    //robot.automatedAction.intakeLine1Auto();
+                    robot.automatedAction.intakeLine1AutoLimelight();
                     break;
                 case PICK_LINE_2:
-                    robot.automatedAction.intakeLine2Auto();
+                    robot.automatedAction.intakeLine2AutoLimelight();
                     break;
                 case PICK_LINE_3:
-                    robot.automatedAction.intakeLine3Auto();
+                    robot.automatedAction.intakeLine3AutoLimelight();
                     break;
                 case PICK_HUMAN_PLAYER:
                     break;

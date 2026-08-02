@@ -89,7 +89,61 @@ public class AutomatedAction {
         robot.setPatternInsideRobot(Robot.ColorPattern.GPP);
 
     }
+    public void intakeLine1AutoLimelight() {
+        robot.drivetrain.getFollower().setMaxPower(0.8);
+        robot.drivetrain.driveToTargetAuto(robot.pathManager.getPathAuto(PathManager.DestinationAuto.PRE_LINE_1), false, 0);
+        robot.drivetrain.getFollower().setMaxPower(1.0);
+        robot.intake.startIntake();
+        robot.kicker.lowerKicker();
+        double time = robot.opMode.getRuntime();
+        robot.drivetrain.getFollower().startTeleopDrive();
+        while((robot.opMode.getRuntime()-time < 1.5 || !robot.drivetrain.isStalled()) && !robot.timeToStop()) robot.drivetrain.strafeToBall(robot.limelight.getBallOffset(), 0.3);
+        robot.kicker.engageKicker();
+        if (robot.timeToStop()) return;
+        robot.opMode.sleep(200);
+        robot.intake.stopIntake();
+        robot.drivetrain.getFollower().setMaxPower(1.0);
+        robot.setPatternInsideRobot(Robot.ColorPattern.GPP);
 
+
+    }
+
+    public void intakeLine2AutoLimelight() {
+        robot.drivetrain.getFollower().setMaxPower(0.7);
+        robot.drivetrain.driveToTargetAuto(robot.pathManager.getPathAuto(PathManager.DestinationAuto.PRE_LINE_2), false, 0);
+        robot.drivetrain.getFollower().setMaxPower(1.0);
+        robot.intake.startIntake();
+        robot.kicker.lowerKicker();
+        double time = robot.opMode.getRuntime();
+        robot.drivetrain.getFollower().startTeleopDrive();
+        while((robot.opMode.getRuntime()-time < 1.5 || !robot.drivetrain.isStalled()) && !robot.timeToStop()) robot.drivetrain.strafeToBall(robot.limelight.getBallOffset(), 0.3);
+        robot.kicker.engageKicker();
+        if (robot.timeToStop()) return;
+        robot.opMode.sleep(200);
+        robot.intake.stopIntake();
+        robot.drivetrain.getFollower().setMaxPower(1.0);
+        robot.drivetrain.driveToTargetAuto(robot.pathManager.getPathAuto(PathManager.DestinationAuto.PRE_LINE_2), false, 0);
+        robot.setPatternInsideRobot(Robot.ColorPattern.PGP);
+
+
+    }
+    public void intakeLine3AutoLimelight() {
+        robot.drivetrain.getFollower().setMaxPower(0.7);
+        robot.drivetrain.driveToTargetAuto(robot.pathManager.getPathAuto(PathManager.DestinationAuto.PRE_LINE_3), false, 0);
+        robot.drivetrain.getFollower().setMaxPower(1.0);
+        robot.intake.startIntake();
+        robot.kicker.lowerKicker();
+        double time = robot.opMode.getRuntime();
+        robot.drivetrain.getFollower().startTeleopDrive();
+        while((robot.opMode.getRuntime()-time < 1.5 || !robot.drivetrain.isStalled()) && !robot.timeToStop()) robot.drivetrain.strafeToBall(robot.limelight.getBallOffset(), 0.3);
+        robot.kicker.engageKicker();
+        if (robot.timeToStop()) return;
+        robot.opMode.sleep(200);
+        robot.intake.stopIntake();
+        robot.drivetrain.getFollower().setMaxPower(1.0);
+        robot.setPatternInsideRobot(Robot.ColorPattern.PPG);
+
+    }
     public void intakeLine2Auto() {
         robot.drivetrain.getFollower().setMaxPower(0.7);
         robot.drivetrain.driveToTargetAuto(robot.pathManager.getPathAuto(PathManager.DestinationAuto.PRE_LINE_2), false, 0);
